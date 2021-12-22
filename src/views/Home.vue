@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <div class="center">
+      <h1 class="main-header">Find poll by putting id in the field below</h1>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import httpClient from '@/api/axios.js'
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  data: () => {
+    return {
+      users: []
+    }
+  },
+  mounted () {
+    httpClient.get('auth/users')
+    .then((response) => {
+      console.log(response.data)
+      this.users = response.data
+    })
   }
 }
 </script>
+
+<style scoped>
+
+
+.tbl {
+  margin-top: 50px;
+}
+</style>
