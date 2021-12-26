@@ -1,11 +1,11 @@
 <template>
   <div class="center">
       <h1 class="main-header">Find poll by putting id in the field below</h1>
+      <h1>Hello world</h1>
     </div>
 </template>
 
 <script>
-import httpClient from '@/api/axios.js'
 export default {
   name: 'Home',
   data: () => {
@@ -13,18 +13,11 @@ export default {
       users: []
     }
   },
-  mounted () {
-    httpClient.get('auth/users')
-    .then((response) => {
-      console.log(response.data)
-      this.users = response.data
-    })
-  }
+
 }
 </script>
 
-<style scoped>
-
+<style>
 
 .tbl {
   margin-top: 50px;
