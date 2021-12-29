@@ -1,20 +1,20 @@
 <template>
-    <vs-navbar center-collapsed square not-line v-model="active">
+    <vs-navbar center-collapsed square not-line>
         <template #left>
           <vs-navbar-item @click="emitToggleSidebar">
             <unicon name="align-justify" fill="royalblue"/>
           </vs-navbar-item>
         </template>
-        <vs-navbar-item @click="toggleSidebar" :active="active == 'guide'" id="guide">
-          Guide
+        <vs-navbar-item to="/qa" id="guide">
+          Q&A
         </vs-navbar-item>
-        <vs-navbar-item @click="toggleTheme" :active="active == 'docs'" id="docs">
+        <vs-navbar-item id="docs">
           Documents
         </vs-navbar-item>
-        <vs-navbar-item :active="active == 'components'" id="components">
+        <vs-navbar-item id="components">
           Components
         </vs-navbar-item>
-        <vs-navbar-item :active="active == 'license'" id="license">
+        <vs-navbar-item id="license">
           license
         </vs-navbar-item>
         <template #right>
@@ -24,8 +24,8 @@
               <unicon v-else name="brightness" />
             </template>
           </vs-switch>
-          <vs-button flat >Login</vs-button>
-          <vs-button>Get Started</vs-button>
+          <vs-button v-if="!isLogined" flat >Login</vs-button>
+          <vs-button v-if="!isLogined">Get Started</vs-button>
         </template>
       </vs-navbar>
 </template>
@@ -39,7 +39,7 @@ export default {
         }
     },
     computed: {
-    ...mapGetters(['currentTheme']),
+    ...mapGetters(['currentTheme', 'isLogined']),
     },
     methods: {
         ...mapActions(['setTheme']),
@@ -62,13 +62,19 @@ export default {
             this.emitToggleTheme()
         }
     },
-    mounted() {
+    created() {
         if (this.currentTheme) {
-            this.theme = true
+            if(this.currentTheme == 'light') {
+              this.theme = false
+            }
+            else {
+              this.theme = true
+            }
         }
         else {
-            this.them = false
+            this.theme = false
         }
+        console.log(this.theme)
     }
 }
 </script>

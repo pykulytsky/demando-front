@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <loading v-if="isLoading" />
     <div class="hidden">
       <vs-sidebar
         absolute
@@ -20,10 +21,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Navbar from './components/core/Navbar.vue'
+import Loader from './components/core/Loader.vue'
 
 export default {
   components: {
     navBar: Navbar,
+    loading: Loader
   },
   data: () => {
     return {
@@ -32,32 +35,46 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUsers', 'currentTheme'])
+    ...mapGetters(['currentTheme', 'isLoading'])
   },
   methods: {
-    ...mapActions(['loadAllUsers', 'setTheme', 'setDefaultTheme']),
+    ...mapActions([
+      'setTheme',
+      'setDefaultTheme',
+      'setLoading'
+      ]),
     toggleSidebar() {
       this.sidebar = !this.sidebar
     },
     toggleTheme() {
-      const returnTheme = this.$vs.toggleTheme()
-      this.setTheme(returnTheme)
-
+      let returnTheme = this.$vs.toggleTheme()
+      // this.setTheme(returnTheme)
+      console.log("vs theme: ", returnTheme)
+      console.log("store theme: ", this.currentTheme)
+      if (returnTheme !== this.currentTheme) {
+        returnTheme = this.$vs.toggleTheme()
+      }
       if (returnTheme == 'dark') {
         document.body.classList.remove('light-color')
         document.body.classList.add('darken', 'dark-color')
       } else {
-        document.body.classList.remove('darken')
+        document.body.classList.remove('darken', 'dark-color')
         document.body.classList.add('light-color')
       }
    }
   },
 
-  async created() {
-    // this.setDefaultTheme()
-    await this.loadAllUsers()
-    console.log(this.getUsers[0].username)
-    console.log(this.currentTheme)
+  created() {
+    console.log("localstorage: ", localStorage.getItem('theme'))
+    this.setDefaultTheme()
+    console.log("Current theme created: ", this.currentTheme)
+
+  },
+  mounted () {
+    console.log("Current theme mounted: ", this.currentTheme)
+  },
+  updated()  {
+    console.log("Current theme updated: ", this.currentTheme)
   }
 
 }
@@ -65,8 +82,6 @@ export default {
 
 <style>
 body {
-  /* background-color: #18191c;
-  color: aliceblue; */
   font-size: 14px;
 }
 

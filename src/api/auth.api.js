@@ -2,7 +2,7 @@ import httpClient from "./axios";
 
 const ENDPOINT = 'auth/users'
 
-const getUsers = () => httpClient.get(ENDPOINT)
+// const getUsers = () => httpClient.get(ENDPOINT)
 
 
 
@@ -40,7 +40,7 @@ const getUser = (id) => {
 }
 
 export {
-    getUsers,
+    // getUsers,
     getMe,
     refreshToken,
     register,

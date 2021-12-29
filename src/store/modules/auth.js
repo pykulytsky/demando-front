@@ -7,14 +7,10 @@ import {
 
 export default {
   state: {
-      users: [],
       currentUser: null,
       token: null
   },
   mutations: {
-      SET_USERS(state, data) {
-          state.users = data
-      },
       SET_CURRENT_USER(state, data) {
           state.currentUser = data
       },
@@ -24,17 +20,6 @@ export default {
       }
   },
   actions: {
-      async loadAllUsers({commit}) {
-        commit('SET_LOADING', true)
-        try {
-            const response = await getUsers()
-            commit('SET_USERS', response.data)
-        }
-        catch (error) {
-            console.log(error)
-        }
-        commit('SET_LOADING', true)
-      },
       async loadCurrentUser({commit}) {
         commit('SET_LOADING', true)
         try {
