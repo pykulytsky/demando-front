@@ -74,7 +74,6 @@ export default {
         else {
             this.theme = false
         }
-        console.log(this.theme)
     }
 }
 </script>

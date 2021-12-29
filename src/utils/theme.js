@@ -12,13 +12,3 @@ export default function toggleTheme() {
         document.body.classList.add('light-color')
       }
 }
-DOMTokenList ['vs-remove-transition', value: 'vs-remove-transition']
-0: "light-color"
-length: 1
-value: "light-color"
-[[Prototype]]: DOMTokenList
-DOMTokenList ['vs-remove-transition', value: 'vs-remove-transition']
-0: "light-color"
-length: 1
-value: "light-color"
-[[Prototype]]: DOMTokenList

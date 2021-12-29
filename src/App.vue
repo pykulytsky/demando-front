@@ -65,18 +65,8 @@ export default {
   },
 
   created() {
-    console.log("localstorage: ", localStorage.getItem('theme'))
     this.setDefaultTheme()
-    console.log("Current theme created: ", this.currentTheme)
-
   },
-  mounted () {
-    console.log("Current theme mounted: ", this.currentTheme)
-  },
-  updated()  {
-    console.log("Current theme updated: ", this.currentTheme)
-  }
-
 }
 </script>
 
