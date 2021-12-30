@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import QnA from '../views/QnA.vue'
+import Polls from '../views/Polls.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
     path: '/qa',
     name: 'Q&A',
     component: QnA
+  },
+  {
+    path: '/polls',
+    name: 'Polls',
+    component: Polls
   }
 ]
 

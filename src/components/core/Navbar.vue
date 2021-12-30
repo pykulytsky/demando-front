@@ -5,11 +5,11 @@
             <unicon name="align-justify" fill="royalblue"/>
           </vs-navbar-item>
         </template>
-        <vs-navbar-item to="/qa" id="guide">
+        <vs-navbar-item to="/qa" id="qna">
           Q&A
         </vs-navbar-item>
-        <vs-navbar-item id="docs">
-          Documents
+        <vs-navbar-item to="/polls" id="polls">
+          Polls
         </vs-navbar-item>
         <vs-navbar-item id="components">
           Components
