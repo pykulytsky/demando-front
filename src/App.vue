@@ -12,7 +12,7 @@
       @toggleSidebar="toggleSidebar"
       @toggleTheme="toggleTheme"
     />
-    <div class="main">
+    <div class="main" id="scroll-main">
       <router-view/>
     </div>
   </div>
@@ -48,9 +48,6 @@ export default {
     },
     toggleTheme() {
       let returnTheme = this.$vs.toggleTheme()
-      // this.setTheme(returnTheme)
-      console.log("vs theme: ", returnTheme)
-      console.log("store theme: ", this.currentTheme)
       if (returnTheme !== this.currentTheme) {
         returnTheme = this.$vs.toggleTheme()
       }
@@ -67,15 +64,13 @@ export default {
   created() {
     this.setDefaultTheme()
   },
+
 }
 </script>
 
 <style>
-body {
-}
-
 * {
-    font-family: 'Montserrat';
+    font-family: 'Montserrat', sans-serif;
 }
 
 .dark-color {
@@ -86,10 +81,6 @@ body {
 .light-color {
   background-color: #ffff;
   color: #18191c;
-}
-
-h1 {
-  font-family: 'Montserrat', sans-serif;
 }
 
 .navb {

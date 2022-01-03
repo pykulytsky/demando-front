@@ -1,5 +1,4 @@
 import {
-    getUsers,
     getMe,
     refreshToken,
     register

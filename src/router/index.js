@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import QnA from '../views/QnA.vue'
 import Polls from '../views/Polls.vue'
+import Event from '../views/Event'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,11 @@ const routes = [
     path: '/qa',
     name: 'Q&A',
     component: QnA
+  },
+  {
+    path: '/qa/events/:pk',
+    name: 'Event detailed',
+    component: Event
   },
   {
     path: '/polls',

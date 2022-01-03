@@ -1,5 +1,5 @@
 <template>
-    <vs-navbar center-collapsed square not-line>
+    <vs-navbar target-scroll center-collapsed square not-line>
         <template #left>
           <vs-navbar-item @click="emitToggleSidebar">
             <unicon name="align-justify" fill="royalblue"/>
