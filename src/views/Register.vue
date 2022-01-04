@@ -10,14 +10,28 @@
                         <template #icon>
                             <unicon name="user" fill="royalblue" />
                         </template>
+                        <template v-if="validateUsername" #message-success>
+                            Valid username
+                        </template>
                     </vs-input>
                 </vs-col>
             </vs-row>
             <vs-row>
                 <vs-col w="12">
-                    <vs-input type="email" icon-after v-model="email" label-placeholder="E-mail">
+                    <vs-input
+                        type="email"
+                        icon-after
+                        v-model="email"
+                        label-placeholder="E-mail"
+                    >
                         <template #icon>
                             <unicon name="mailbox" fill="royalblue" />
+                        </template>
+                        <template v-if="validateEmail" #message-success>
+                            Valid email
+                        </template>
+                        <template #message-danger v-if="email !== '' && !validateEmail">
+                            Email not valid
                         </template>
                     </vs-input>
                 </vs-col>
@@ -47,7 +61,7 @@
                 <vs-checkbox>Remember me</vs-checkbox>
             </vs-row>
             <vs-row>
-                <vs-button block>Register</vs-button>
+                <vs-button @click="registerUser" block>Register</vs-button>
             </vs-row>
             <vs-row>
                 <router-link class="register-link" to="/login">Already have an account? Login here</router-link>
@@ -57,13 +71,21 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+import {getUsers} from '../api/auth.api'
 export default {
     data: () => {
         return {
             username: '',
             email: '',
             password: '',
-            showPassword: false
+            showPassword: false,
+            registeredUsers: []
+        }
+    },
+    watch: {
+        email() {
+            console.log("not valid: ", this.email !== '' && !this.validateEmail)
         }
     },
     computed: {
@@ -101,7 +123,39 @@ export default {
           }
 
           return progress
+        },
+        validateEmail() {
+            let valid = false
+            if(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email)) {
+                valid = true
+            }
+
+            let isEmailUsed = false
+            this.registeredUsers.forEach((user) => {
+                if(user.email === this.email) {
+                    isEmailUsed = true
+                }
+            })
+
+            return valid && !isEmailUsed
+        },
+        validateUsername() {
+            if(/^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(this.username)) {
+                return true
+            }
+            else {
+                return false
+            }
         }
+    },
+    methods: {
+        ...mapActions(),
+        registerUser() {
+
+        }
+    },
+    async created() {
+        this.registeredUsers = await (await getUsers()).data
     }
 }
 </script>
