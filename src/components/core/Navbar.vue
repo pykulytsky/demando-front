@@ -24,8 +24,8 @@
               <unicon v-else name="brightness" />
             </template>
           </vs-switch>
-          <vs-button v-if="!isLogined" flat >Login</vs-button>
-          <vs-button v-if="!isLogined">Get Started</vs-button>
+          <vs-button to="/login" v-if="!isLogined" flat >Login</vs-button>
+          <vs-button to="/register" v-if="!isLogined">Get Started</vs-button>
         </template>
       </vs-navbar>
 </template>

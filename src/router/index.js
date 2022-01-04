@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import QnA from '../views/QnA.vue'
 import Polls from '../views/Polls.vue'
 import Event from '../views/Event'
+import Login from '../views/Login'
+import Register from '../views/Register'
 
 Vue.use(VueRouter)
 
@@ -35,6 +37,16 @@ const routes = [
     path: '/polls',
     name: 'Polls',
     component: Polls
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 ]
 

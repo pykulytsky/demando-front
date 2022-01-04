@@ -98,7 +98,6 @@ export default {
     align-items: center;
     padding: 25px;
 }
-
 .vs-button {
     margin-top: 12px;
 }

@@ -13,7 +13,12 @@ import {
   uniBrightness,
   uniAngleDoubleRight,
   uniArrowRight,
-  uniExclamationTriangle
+  uniExclamationTriangle,
+  uniUser,
+  uniLock,
+  uniMailbox,
+  uniEye,
+  uniEyeSlash
 } from 'vue-unicons/dist/icons'
 
 Vue.config.productionTip = process.env.VUE_APP_DEBUG
@@ -25,7 +30,12 @@ Unicon.add([
   uniBrightness,
   uniAngleDoubleRight,
   uniArrowRight,
-  uniExclamationTriangle
+  uniExclamationTriangle,
+  uniUser,
+  uniLock,
+  uniMailbox,
+  uniEye,
+  uniEyeSlash
 ])
 Vue.use(Unicon)
 
