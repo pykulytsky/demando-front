@@ -85,7 +85,6 @@ export default {
     },
     async created() {
         this.events = await (await getEvents()).data
-        console.log(this.events)
     }
 }
 </script>

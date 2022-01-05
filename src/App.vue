@@ -13,7 +13,9 @@
       @toggleTheme="toggleTheme"
     />
     <div class="main" id="scroll-main">
-      <router-view/>
+      <transition name="component-fade" mode="out-in">
+        <router-view/>
+      </transition>
     </div>
   </div>
 </template>
@@ -23,10 +25,11 @@ import { mapActions, mapGetters } from 'vuex'
 import Navbar from './components/core/Navbar.vue'
 import Loader from './components/core/Loader.vue'
 
+
 export default {
   components: {
     navBar: Navbar,
-    loading: Loader
+    loading: Loader,
   },
   data: () => {
     return {
@@ -41,7 +44,8 @@ export default {
     ...mapActions([
       'setTheme',
       'setDefaultTheme',
-      'setLoading'
+      'setLoading',
+      'loadCurrentUser'
       ]),
     toggleSidebar() {
       this.sidebar = !this.sidebar
@@ -63,6 +67,8 @@ export default {
 
   created() {
     this.setDefaultTheme()
+
+    this.loadCurrentUser()
   },
 
 }
@@ -93,5 +99,13 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
+}
+
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .2s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+/* .component-fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
 }
 </style>

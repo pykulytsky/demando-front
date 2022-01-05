@@ -31,7 +31,7 @@
                 </vs-col>
             </vs-row>
             <vs-row>
-                <vs-button block>Login</vs-button>
+                <vs-button @click="onLogin" block>Login</vs-button>
             </vs-row>
             <vs-row>
                 <router-link class="register-link" to="/register">Don't have an account yet, register here</router-link>
@@ -41,11 +41,45 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex'
 export default {
     data: () => {
         return {
             username: '',
-            password: ''
+            password: '',
+        }
+    },
+    computed: {
+        ...mapGetters(['isLogined', 'currentUser']),
+        isEmail() {
+            if(this.username.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+                return true
+            }
+            return false
+        }
+    },
+    methods: {
+        ...mapActions(['login', 'setLoading']),
+        async onLogin() {
+            if(this.username !== '' && this.password !== '') {
+                await this.login({
+                    username: this.username,
+                    password: this.password,
+                    isEmail: this.isEmail
+                })
+            }
+            if(this.isLogined) {
+                this.$router.push('/qa')
+            }
+            else {
+                this.$vs.notification({
+                    color: 'danger',
+                    icon: '<unicon name="exclamation-triangle" fill="white"/>',
+                    position: 'top-center',
+                    title: "No account with such data was found",
+                    text: "Username, email or password is incorect, please check them and try again!"
+                })
+            }
         }
     }
 }

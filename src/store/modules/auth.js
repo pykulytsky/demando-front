@@ -15,27 +15,44 @@ export default {
       },
       SET_TOKEN(state, data) {
           state.token = data
-          localStorage.setItem('token', data)
-      }
+          if(data === null) {
+              localStorage.removeItem('token')
+          }
+          else{
+            localStorage.setItem('token', data)
+          }
+    }
   },
   actions: {
       async loadCurrentUser({commit}) {
         commit('SET_LOADING', true)
-        try {
-            const response = await getMe()
-            commit ('SET_CURRENT_USER', response.data)
+        try{
+            if(localStorage.getItem('token') !== null) {
+                const response = await getMe()
+                commit ('SET_CURRENT_USER', response.data)
+            }
+            commit('SET_LOADING', false)
         }
-        catch(error) {
-            console.log(error)
+        catch(error){
+            console.log(error.response.data)
         }
-        commit('SET_LOADING', false)
-      },
+        finally {
+            commit('SET_LOADING', false)
+        }
+    },
       async login({commit, dispatch}, payload) {
           commit('SET_LOADING', true)
-          const response = await refreshToken(payload.password, payload.username, payload.isEmail)
-          commit('SET_TOKEN', response.data)
-          dispatch('loadCurrentUser')
-          commit('SET_LOADING', false)
+          try {
+            const response = await refreshToken(payload.password, payload.username, payload.isEmail)
+            commit('SET_TOKEN', response.data.token)
+            dispatch('loadCurrentUser')
+          }
+          catch (error) {
+            console.log(error.response.data)
+          }
+          finally {
+            commit('SET_LOADING', false)
+          }
       },
       async register({commit, dispatch}, payload) {
           commit('SET_LOADING', true)
@@ -46,7 +63,14 @@ export default {
           commit('SET_TOKEN', response.data.token)
           dispatch('loadCurrentUser')
           commit('SET_LOADING', false)
+      },
+      async logout({commit}) {
+          commit('SET_LOADING', true)
+          commit('SET_TOKEN', null)
+          commit('SET_CURRENT_USER', null)
+          commit('SET_LOADING', false)
       }
+
 
   },
   getters: {

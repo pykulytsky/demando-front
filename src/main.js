@@ -18,7 +18,8 @@ import {
   uniLock,
   uniMailbox,
   uniEye,
-  uniEyeSlash
+  uniEyeSlash,
+  uniSignOutAlt
 } from 'vue-unicons/dist/icons'
 
 Vue.config.productionTip = process.env.VUE_APP_DEBUG
@@ -35,7 +36,8 @@ Unicon.add([
   uniLock,
   uniMailbox,
   uniEye,
-  uniEyeSlash
+  uniEyeSlash,
+  uniSignOutAlt
 ])
 Vue.use(Unicon)
 

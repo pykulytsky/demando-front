@@ -6,6 +6,7 @@ import Polls from '../views/Polls.vue'
 import Event from '../views/Event'
 import Login from '../views/Login'
 import Register from '../views/Register'
+import Logout from '../views/Logout'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
   }
 ]
 

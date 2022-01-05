@@ -26,6 +26,11 @@
           </vs-switch>
           <vs-button to="/login" v-if="!isLogined" flat >Login</vs-button>
           <vs-button to="/register" v-if="!isLogined">Get Started</vs-button>
+          <div class="sign-out-btn">
+            <vs-button icon border to="/logout" v-if="isLogined">
+              <unicon name="sign-out-alt" fill="royalblue" />
+            </vs-button>
+          </div>
         </template>
       </vs-navbar>
 </template>
@@ -77,3 +82,11 @@ export default {
     }
 }
 </script>
+
+<style>
+.sign-out-btn .vs-button {
+  padding: 0;
+  width: 32px;
+  height: 35px;
+}
+</style>

@@ -10,7 +10,7 @@ const getMe = () => httpClient.get(ENDPOINT + 'me/')
 
 const refreshToken = (password, username, isEmail) => {
     if (!isEmail) {
-        return httpClient.post(ENDPOINT + '/refresh/',
+        return httpClient.post(ENDPOINT + 'refresh/',
         {
             username,
             password
