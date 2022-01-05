@@ -1,12 +1,12 @@
 import httpClient from "./axios";
 
-const ENDPOINT = 'auth/users'
+const ENDPOINT = 'auth/users/'
 
 const getUsers = () => httpClient.get(ENDPOINT)
 
 
 
-const getMe = () => httpClient.get(ENDPOINT + '/me')
+const getMe = () => httpClient.get(ENDPOINT + 'me/')
 
 const refreshToken = (password, username, isEmail) => {
     if (!isEmail) {
@@ -17,7 +17,7 @@ const refreshToken = (password, username, isEmail) => {
         })
     }
     else {
-        return httpClient.post(ENDPOINT + '/refresh/',
+        return httpClient.post(ENDPOINT + 'refresh/',
         {
             email: username,
             password
@@ -27,15 +27,15 @@ const refreshToken = (password, username, isEmail) => {
 
 const register = (username, email, password) => {
     return httpClient.post(ENDPOINT, {
-        username,
         email,
+        username,
         password
     })
 
 }
 
 const getUser = (id) => {
-    return httpClient.get(ENDPOINT + '/' + id)
+    return httpClient.get(ENDPOINT + id)
     .then(response => response.data)
 }
 

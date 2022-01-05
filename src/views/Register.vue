@@ -13,6 +13,9 @@
                         <template v-if="validateUsername" #message-success>
                             Valid username
                         </template>
+                        <template v-if="username !== '' && !validateUsername" #message-danger>
+                            Username not valid
+                        </template>
                     </vs-input>
                 </vs-col>
             </vs-row>
@@ -57,6 +60,29 @@
                     </vs-input>
                 </vs-col>
             </vs-row>
+            <vs-row>
+                <vs-col w="12">
+                    <vs-input
+                        icon-after
+                        v-model="password2"
+                        type="password"
+                        :visiblePassword="showPassword2"
+                        label-placeholder="Confirm password"
+                        @click-icon="showPassword2 = !showPassword2"
+                    >
+                        <template #icon>
+                            <unicon v-if="showPassword2" name="eye-slash" fill="royalblue" />
+                            <unicon v-else name="eye" fill="royalblue" />
+                        </template>
+                        <template v-if="validatePassword2" #message-success>
+                            Password match
+                        </template>
+                        <template v-if="!validatePassword2 && password2 !== ''" #message-danger>
+                            Password don't match
+                        </template>
+                    </vs-input>
+                </vs-col>
+            </vs-row>
             <vs-row justify="flex-end" align="center">
                 <vs-checkbox>Remember me</vs-checkbox>
             </vs-row>
@@ -71,7 +97,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {getUsers} from '../api/auth.api'
 export default {
     data: () => {
@@ -79,16 +105,14 @@ export default {
             username: '',
             email: '',
             password: '',
+            password2: '',
             showPassword: false,
+            showPassword2: false,
             registeredUsers: []
         }
     },
-    watch: {
-        email() {
-            console.log("not valid: ", this.email !== '' && !this.validateEmail)
-        }
-    },
     computed: {
+        ...mapGetters(['currentUser', 'isLogined']),
         getProgressPassword() {
             let progress = 0
 
@@ -124,11 +148,14 @@ export default {
 
           return progress
         },
-        validateEmail() {
-            let valid = false
-            if(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email)) {
-                valid = true
+        validatePassword2() {
+            if (this.password === this.password2 && this.password !== '') {
+                return true
             }
+            else return false
+        },
+        validateEmail() {
+            let valid = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.email)
 
             let isEmailUsed = false
             this.registeredUsers.forEach((user) => {
@@ -148,10 +175,45 @@ export default {
             }
         }
     },
+    watch: {
+        currentUser() {
+            console.log(this.currentUser)
+        }
+    },
     methods: {
-        ...mapActions(),
-        registerUser() {
-
+        ...mapActions(['setLoading', 'register']),
+        async registerUser() {
+            this.setLoading(true)
+            if(this.username == '' || this.email == '' || this.password == '') {
+                this.$vs.notification({
+                    color: 'warning',
+                    icon: '<unicon name="exclamation-triangle" fill="white"/>',
+                    position: 'top-center',
+                    title: "Some fields in the form are empty",
+                    text: "Please fill your username, email or password, they can be empty!"
+                })
+            }
+            else {
+                if(this.validateEmail && this.validateUsername && this.getProgressPassword >= 60 && this.validatePassword2) {
+                    await this.register({
+                        username: this.username,
+                        email: this.email,
+                        password: this.password}
+                    )
+                    console.log("is logined: ", this.isLogined)
+                    console.log("current user: ", this.currentUser.username)
+                }
+                else {
+                    this.$vs.notification({
+                            color: 'danger',
+                            icon: '<unicon name="exclamation-triangle" fill="white"/>',
+                            position: 'top-center',
+                            title: "Some fields in the form are invalid",
+                            text: "Please check your username, email or password, they can be invalid!"
+                    })
+                }
+            }
+            this.setLoading(false)
         }
     },
     async created() {

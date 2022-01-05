@@ -11,7 +11,7 @@ const httpClient = axios.create({
 const getAuthToken = () => {
     let token =  localStorage.getItem('token')
     if (token) {
-        token = 'Bearer' + token
+        token = 'Bearer ' + token
     }
 
     return token

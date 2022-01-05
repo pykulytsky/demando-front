@@ -30,30 +30,27 @@ export default {
         }
         commit('SET_LOADING', false)
       },
-      async login({commit}, payload) {
+      async login({commit, dispatch}, payload) {
           commit('SET_LOADING', true)
           const response = await refreshToken(payload.password, payload.username, payload.isEmail)
           commit('SET_TOKEN', response.data)
-          this.loadCurrentUser()
+          dispatch('loadCurrentUser')
           commit('SET_LOADING', false)
       },
-      async register({commit}, payload) {
+      async register({commit, dispatch}, payload) {
           commit('SET_LOADING', true)
           const response = await register(
               payload.username,
               payload.email,
-              payload.password
-        )
-          commit('SET_TOKEN', response.data)
+              payload.password)
+          commit('SET_TOKEN', response.data.token)
+          dispatch('loadCurrentUser')
           commit('SET_LOADING', false)
       }
 
   },
   getters: {
-      getUsers(state) {
-          return state.users
-      },
-      getCurrentUser(state) {
+      currentUser(state) {
           return state.currentUser
       },
       isLogined(state) {
