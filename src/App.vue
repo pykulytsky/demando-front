@@ -76,8 +76,14 @@ export default {
 
 <style>
 * {
-    font-family: 'Montserrat', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
 }
+
+h1 {
+  font-weight: 900;
+}
+
 
 .dark-color {
   background-color: #18191c;

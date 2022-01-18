@@ -200,8 +200,7 @@ export default {
                         email: this.email,
                         password: this.password}
                     )
-                    console.log("is logined: ", this.isLogined)
-                    console.log("current user: ", this.currentUser.username)
+                    this.$router.push('/qa')
                 }
                 else {
                     this.$vs.notification({
@@ -232,7 +231,7 @@ export default {
 }
 
 .register-main .vs-input {
-    width: 100%;
+    width: 350px;
     font-size: 20px;
 
 }

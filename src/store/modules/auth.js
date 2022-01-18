@@ -45,7 +45,7 @@ export default {
           try {
             const response = await refreshToken(payload.password, payload.username, payload.isEmail)
             commit('SET_TOKEN', response.data.token)
-            dispatch('loadCurrentUser')
+            await dispatch('loadCurrentUser')
           }
           catch (error) {
             console.log(error.response.data)
@@ -61,7 +61,7 @@ export default {
               payload.email,
               payload.password)
           commit('SET_TOKEN', response.data.token)
-          dispatch('loadCurrentUser')
+          await dispatch('loadCurrentUser')
           commit('SET_LOADING', false)
       },
       async logout({commit}) {

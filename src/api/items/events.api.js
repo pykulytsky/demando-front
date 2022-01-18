@@ -1,11 +1,14 @@
 import httpClient from "../axios";
 
 
-const ENDPOINT = 'qa/events'
+const ENDPOINT = 'qa/events/'
 
-const getEvent = (eventId) => httpClient.get(ENDPOINT + '/' + eventId)
+const getEvents = () => httpClient.get(ENDPOINT)
+
+const getEvent = (eventId) => httpClient.get(ENDPOINT + eventId)
 
 
 export {
-    getEvent
+    getEvent,
+    getEvents
 }

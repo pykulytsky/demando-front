@@ -41,9 +41,8 @@
 </template>
 
 <script>
-import {getEvents} from '../api/events.api'
 import EventTable from '../components/events/EventTable.vue'
-import {getEvent} from '../api/items/events.api'
+import {getEvent, getEvents} from '../api/items/events.api'
 import {mapActions, mapGetters} from 'vuex'
 
 export default {

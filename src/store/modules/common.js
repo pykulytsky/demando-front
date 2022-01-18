@@ -35,6 +35,12 @@ export default {
     },
     currentTheme(state) {
         return state.currentTheme
+    },
+    iconColor(state) {
+        if (state.currentTheme == 'light') {
+            return 'black'
+        }
+        else return 'white'
     }
   }
 }

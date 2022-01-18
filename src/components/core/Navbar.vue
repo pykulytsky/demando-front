@@ -1,5 +1,5 @@
 <template>
-    <vs-navbar target-scroll center-collapsed square not-line>
+    <vs-navbar class="custom-navbar" target-scroll center-collapsed square not-line>
         <template #left>
           <vs-navbar-item @click="emitToggleSidebar">
             <unicon name="align-justify" fill="royalblue"/>
@@ -20,7 +20,7 @@
         <template #right>
           <vs-switch v-model="theme">
             <template #circle>
-              <unicon v-if="theme" name="moon" height="20" width="20" fill="white" />
+              <unicon v-if="theme" name="moon" height="18" width="18" fill="royalblue" />
               <unicon v-else name="brightness" />
             </template>
           </vs-switch>
@@ -89,4 +89,9 @@ export default {
   width: 32px;
   height: 35px;
 }
+
+.custom-navbar .vs-navbar__item {
+  font-weight: 500;
+}
+
 </style>

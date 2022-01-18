@@ -19,7 +19,12 @@ import {
   uniMailbox,
   uniEye,
   uniEyeSlash,
-  uniSignOutAlt
+  uniSignOutAlt,
+  uniThumbsUp,
+  uniThumbsDown,
+  uniCalendarAlt,
+  uniSchedule,
+  uniCalender
 } from 'vue-unicons/dist/icons'
 
 Vue.config.productionTip = process.env.VUE_APP_DEBUG
@@ -37,6 +42,11 @@ Unicon.add([
   uniMailbox,
   uniEye,
   uniEyeSlash,
+  uniThumbsUp,
+  uniThumbsDown,
+  uniCalendarAlt,
+  uniSchedule,
+  uniCalender,
   uniSignOutAlt
 ])
 Vue.use(Unicon)

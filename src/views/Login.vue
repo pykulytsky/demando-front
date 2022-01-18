@@ -67,18 +67,20 @@ export default {
                     password: this.password,
                     isEmail: this.isEmail
                 })
-            }
-            if(this.isLogined) {
-                this.$router.push('/qa')
-            }
-            else {
-                this.$vs.notification({
-                    color: 'danger',
-                    icon: '<unicon name="exclamation-triangle" fill="white"/>',
-                    position: 'top-center',
-                    title: "No account with such data was found",
-                    text: "Username, email or password is incorect, please check them and try again!"
-                })
+                console.log("isLogined: ", this.isLogined)
+                console.log("currentUser: ", this.currentUser)
+                if(this.isLogined) {
+                    this.$router.push('/qa')
+                }
+                else {
+                    this.$vs.notification({
+                        color: 'danger',
+                        icon: '<unicon name="exclamation-triangle" fill="white"/>',
+                        position: 'top-center',
+                        title: "No account with such data was found",
+                        text: "Username, email or password is incorect, please check them and try again!"
+                    })
+                }
             }
         }
     }
@@ -95,7 +97,7 @@ export default {
 }
 
 .login-main .vs-input {
-    width: 100%;
+    width: 350px;
     font-size: 20px;
 
 }
@@ -110,5 +112,8 @@ export default {
 }
 .register-link:hover {
     color: rgb(132, 132, 187);
+}
+h3 {
+    font-weight: 600;
 }
 </style>
