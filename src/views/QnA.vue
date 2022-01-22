@@ -6,11 +6,29 @@
             </vs-row>
             <vs-row  align="center" justify="center">
                 <vs-col w="11">
-                    <vs-input shadow v-model="eventId" color="primary" class="event-input"></vs-input>
+                    <vs-input
+                        placeholder="Enter id of event..."
+                        shadow
+                        v-model="eventId"
+                        color="primary"
+                        class="event-input"
+                        @keydown.enter="goToEvent"
+                    />
                 </vs-col>
                 <vs-col w="1">
-                    <vs-button @click="goToEvent" icon size="xl" class="go-btn">
-                        <unicon class="arrow-btn" circle name="arrow-right" height="27" width="27" fill="white" />
+                    <vs-button
+                        @click="goToEvent"
+                        icon size="xl"
+                        class="go-btn"
+                    >
+                        <unicon
+                            class="arrow-btn"
+                            circle
+                            name="arrow-right"
+                            height="27"
+                            width="27"
+                            fill="white"
+                        />
                     </vs-button>
                 </vs-col>
             </vs-row>
@@ -33,15 +51,14 @@
                 </template>
             </vs-alert>
         </div>
-        <div v-else class="create-event">
-
-        </div>
+        <new-event v-else />
         <event-table :events="events"></event-table>
     </div>
 </template>
 
 <script>
 import EventTable from '../components/events/EventTable.vue'
+import NewEvent from '../components/events/NewEvent.vue'
 import {getEvent, getEvents} from '../api/items/events.api'
 import {mapActions, mapGetters} from 'vuex'
 
@@ -53,7 +70,8 @@ export default {
         }
     },
     components: {
-        eventTable: EventTable
+        EventTable,
+        NewEvent
     },
 
     computed: {

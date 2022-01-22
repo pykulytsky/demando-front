@@ -39,10 +39,14 @@ const getUser = (id) => {
     .then(response => response.data)
 }
 
+const verifyEmail = (verificationCode) => {
+    return httpClient.patch(ENDPOINT + 'verify/' + verificationCode)
+}
 export {
     getUsers,
     getMe,
     refreshToken,
     register,
-    getUser
+    getUser,
+    verifyEmail
 }

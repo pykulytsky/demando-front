@@ -24,8 +24,10 @@ import {
   uniThumbsDown,
   uniCalendarAlt,
   uniSchedule,
-  uniCalender
+  uniCalender,
+  uniPlus
 } from 'vue-unicons/dist/icons'
+import VueScrollTo from 'vue-scrollto'
 
 Vue.config.productionTip = process.env.VUE_APP_DEBUG
 Vue.use(Vuesax)
@@ -47,9 +49,11 @@ Unicon.add([
   uniCalendarAlt,
   uniSchedule,
   uniCalender,
-  uniSignOutAlt
+  uniSignOutAlt,
+  uniPlus
 ])
 Vue.use(Unicon)
+Vue.use(VueScrollTo)
 
 new Vue({
   router,

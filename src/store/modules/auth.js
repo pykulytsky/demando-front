@@ -79,6 +79,9 @@ export default {
       },
       isLogined(state) {
           return (state.currentUser ? true : false)
+      },
+      isEmailVerified(state) {
+          return state.currentUser.email_verified
       }
 
   }

@@ -78,7 +78,7 @@
                             Password match
                         </template>
                         <template v-if="!validatePassword2 && password2 !== ''" #message-danger>
-                            Password don't match
+                            Password doesn't match
                         </template>
                     </vs-input>
                 </vs-col>

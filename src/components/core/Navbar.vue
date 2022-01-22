@@ -85,11 +85,30 @@ export default {
 
 <style>
 .sign-out-btn .vs-button {
-  padding: 0;
+  padding-top: 3px;
   width: 32px;
   height: 35px;
+  border: none;
 }
 
+.sign-out-btn .vs-button:hover {
+  border: none;
+}
+
+.sign-out-btn .vs-button--border:hover:before {
+  border: none;
+}
+.sign-out-btn .vs-button--border:hover {
+  border: none;
+}
+
+.sign-out-btn .vs-button--border:before {
+  border: none;
+}
+
+.sign-out-btn .vs-button--border:after {
+  border: none;
+}
 .custom-navbar .vs-navbar__item {
   font-weight: 500;
 }
