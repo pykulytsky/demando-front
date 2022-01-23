@@ -1,7 +1,8 @@
 export default {
   state: {
       isLoading: false,
-      currentTheme: null
+      currentTheme: null,
+      error: null
   },
   mutations: {
       SET_LOADING(state, data) {
@@ -9,6 +10,9 @@ export default {
       },
       SET_THEME(state, data) {
           state.currentTheme = data
+      },
+      SET_ERROR(state, error) {
+          state.error = error
       }
   },
   actions: {
@@ -27,6 +31,9 @@ export default {
           else {
               commit('SET_THEME', 'light')
           }
+      },
+      setError({commit}, reason) {
+          commit('SET_ERROR', reason)
       }
   },
   getters: {
@@ -41,6 +48,9 @@ export default {
             return 'black'
         }
         else return 'white'
+    },
+    error(state) {
+        return state.error
     }
   }
 }

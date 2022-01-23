@@ -6,6 +6,9 @@
 
 <script>
 export default {
-
+    name: 'Polls',
+    metaInfo: {
+        title: 'Polls'
+    }
 }
 </script>

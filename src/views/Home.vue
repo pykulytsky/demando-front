@@ -8,6 +8,9 @@
 <script>
 export default {
   name: 'Home',
+  metaInfo: {
+    title: 'Home'
+  },
   data: () => {
     return {
       users: []

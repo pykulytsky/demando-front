@@ -63,6 +63,10 @@ import {getEvent, getEvents} from '../api/items/events.api'
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
+    name: 'QnA',
+    metaInfo: {
+        title: 'Q&A'
+    },
     data: () => {
         return {
             events: [],

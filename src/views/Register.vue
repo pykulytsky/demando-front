@@ -100,6 +100,10 @@
 import {mapActions, mapGetters} from 'vuex'
 import {getUsers} from '../api/auth.api'
 export default {
+    name: 'Registration',
+    metaInfo: {
+        title: 'Create new account'
+    },
     data: () => {
         return {
             username: '',

@@ -33,7 +33,7 @@ export default {
   display: inline-block;
   width: 80px;
   height: 80px;
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

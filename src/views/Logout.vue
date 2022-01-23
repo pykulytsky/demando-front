@@ -17,6 +17,10 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 export default {
+    name: 'Logout',
+    metaInfo: {
+        title: 'Logout'
+    },
     computed: {
         ...mapGetters(['isLogined'])
     },

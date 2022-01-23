@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const httpClient = axios.create({
     baseURL: process.env.VUE_APP_BASE_URL,
     headers: {
@@ -21,5 +20,6 @@ httpClient.interceptors.request.use(config => {
     config.headers['Authorization'] = getAuthToken()
     return config
 })
+
 
 export default httpClient;

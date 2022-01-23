@@ -28,6 +28,7 @@ import {
   uniPlus
 } from 'vue-unicons/dist/icons'
 import VueScrollTo from 'vue-scrollto'
+import VueMeta from 'vue-meta'
 
 Vue.config.productionTip = process.env.VUE_APP_DEBUG
 Vue.use(Vuesax)
@@ -54,6 +55,7 @@ Unicon.add([
 ])
 Vue.use(Unicon)
 Vue.use(VueScrollTo)
+Vue.use(VueMeta)
 
 new Vue({
   router,

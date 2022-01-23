@@ -4,12 +4,7 @@
       <vs-row justify="space-around">
         <vs-col w="5" justify="center" align="center">
           <vs-row>
-            <qrcode-vue
-              class="qr-code"
-              :value="link"
-              :size="260"
-              level="H"
-            />
+            <qrcode-vue class="qr-code" :value="link" :size="260" level="H" />
           </vs-row>
         </vs-col>
         <vs-col w="5" justify="center">
@@ -29,23 +24,21 @@
                       ></unicon>
                       {{ event.owner.username }}
                     </vs-col>
-                    <vs-col>
-                        questions: {{event.questions.length}}
-                    </vs-col>
+                    <vs-col> questions: {{ event.questions.length }} </vs-col>
                   </vs-row>
                 </vs-col>
 
                 <vs-col class="info-second" w="5">
-                    <vs-row flex-direction="column">
-                        <vs-col>
-                            <unicon name="calender" fill="white" />
-                            {{ event.created.toLocaleDateString("en-US") }}
-                        </vs-col>
-                        <vs-col>
-                            <unicon name="calender" fill="white" />
-                            {{ event.updated.toLocaleDateString() }}
-                        </vs-col>
-                    </vs-row>
+                  <vs-row flex-direction="column">
+                    <vs-col>
+                      <unicon name="calender" fill="white" />
+                      {{ event.created.toLocaleDateString("en-US") }}
+                    </vs-col>
+                    <vs-col>
+                      <unicon name="calender" fill="white" />
+                      {{ event.updated.toLocaleDateString() }}
+                    </vs-col>
+                  </vs-row>
                 </vs-col>
               </vs-row>
             </vs-col>
@@ -54,20 +47,26 @@
       </vs-row>
     </div>
     <transition name="slide-fade">
-      <new-question v-if="newQuestionIsShown" id="new-question" />
+      <new-question
+        :eventId="eventId"
+        @handleIsShown="newQuestionIsShown = false"
+        @updateQuestions="updateQuestions"
+        v-if="newQuestionIsShown"
+        id="new-question"
+      />
     </transition>
     <div class="event-content">
-        <vs-row
-          v-for="question in event.questions"
-          :key="question.pk"
-          justify="center"
-          align="center"
-        >
-            <question-item
-              :question="question"
-              @updateQuestions="updateQuestions"
-            />
-        </vs-row>
+      <vs-row
+        v-for="question in event.questions"
+        :key="question.pk"
+        justify="center"
+        align="center"
+      >
+        <question-item
+          :question="question"
+          @updateQuestions="updateQuestions"
+        />
+      </vs-row>
     </div>
     <div class="event-footer"></div>
     <vs-button
@@ -80,10 +79,10 @@
       v-scroll-to="{
         el: '#new-question',
         offset: -200,
-        easing: 'ease-in-out'
+        easing: 'ease-in-out',
       }"
     >
-      <unicon name="plus" fill="white"  />
+      <unicon name="plus" fill="white" />
     </vs-button>
   </div>
 </template>
@@ -93,23 +92,34 @@ import { mapActions, mapGetters } from "vuex";
 import { getEvent } from "../api/items/events.api";
 import QrcodeVue from "qrcode.vue";
 import QuestionItem from "../components/questions/QuestionItem.vue";
-import NewQuestion from '../components/questions/NewQuestion.vue'
+import NewQuestion from "../components/questions/NewQuestion.vue";
 
 export default {
+  name: 'Event',
+  metaInfo() {
+    return {
+      meta: [{
+        vmid: 'description',
+        name: 'description',
+        content: this.description,
+      }]
+    }
+  },
   data: () => {
     return {
       eventId: null,
       event: null,
       link: "",
-      newQuestionIsShown: false
+      newQuestionIsShown: false,
+      description: undefined
     };
   },
   components: {
     QrcodeVue,
     QuestionItem,
-    NewQuestion
+    NewQuestion,
   },
-  computed: {...mapGetters(['isLogined'])},
+  computed: { ...mapGetters(["isLogined"]) },
   methods: {
     ...mapActions(["setLoading"]),
 
@@ -117,43 +127,47 @@ export default {
       this.event = await (await getEvent(this.eventId)).data;
       this.event.created = new Date(this.event.created);
       this.event.updated = new Date(this.event.updated);
-      this.event.questions.forEach(question => {
-        this.parseTime(question)
-      })
+      this.event.questions.forEach((question) => {
+        this.parseTime(question);
+      });
     },
 
     async parseTime(question) {
-        let measureOfTime = ' second'
-        let diffInSeconds = Math.round((new Date() - new Date(question.created)) / 1000)
+      let measureOfTime = " second";
+      let diffInSeconds = Math.round(
+        (new Date() - new Date(question.created)) / 1000
+      );
 
-        if(diffInSeconds < 60) {
-            question.created = diffInSeconds
-            measureOfTime = ' second'
-        }
-        else if(diffInSeconds >=60 && diffInSeconds < 3600) {
-            question.created = Math.round(diffInSeconds / 60)
-            measureOfTime = ' minute'
-        }
-        else if (diffInSeconds >= 3600 && diffInSeconds < (3600 * 24)) {
-            question.created = Math.round(diffInSeconds / 3600)
-            measureOfTime = ' hour'
-        }
-        else {
-            question.created = Math.round(diffInSeconds / (3600 * 24))
-            measureOfTime = ' day'
-        }
+      if (diffInSeconds < 60) {
+        question.created = diffInSeconds;
+        measureOfTime = " second";
+      } else if (diffInSeconds >= 60 && diffInSeconds < 3600) {
+        question.created = Math.round(diffInSeconds / 60);
+        measureOfTime = " minute";
+      } else if (diffInSeconds >= 3600 && diffInSeconds < 3600 * 24) {
+        question.created = Math.round(diffInSeconds / 3600);
+        measureOfTime = " hour";
+      } else {
+        question.created = Math.round(diffInSeconds / (3600 * 24));
+        measureOfTime = " day";
+      }
 
-        if(question.created > 1) {
-            measureOfTime += 's'
-        }
+      if (question.created > 1) {
+        measureOfTime += "s";
+      }
 
-        question.created += measureOfTime
+      question.created += measureOfTime;
     },
+  },
+  watch: {
+    event() {
+      this.title = this.title + ' ' + this.event.name
+    }
   },
   async created() {
     this.setLoading(true);
     this.eventId = this.$route.params.pk;
-    await this.updateQuestions()
+    await this.updateQuestions();
     this.link = "localhost:8080" + this.$route.fullPath;
     this.setLoading(false);
   },
@@ -189,18 +203,20 @@ canvas {
   text-align: right;
 }
 
-.unicon{
+.unicon {
   display: flex;
 }
 
-.component-fade-enter-active, .component-fade-leave-active {
-  transition: opacity .3s ease;
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.3s ease;
 }
 .component-fade-enter, .component-fade-leave-to
 /* .component-fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
-.list-enter-active, .list-leave-active {
+.list-enter-active,
+.list-leave-active {
   transition: all 1s;
 }
 .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
@@ -209,7 +225,7 @@ canvas {
 }
 .item-move {
   /* applied to the element when moving */
-  transition: transform .5s cubic-bezier(.55,0,.1,1);
+  transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
 }
 
 .event-main .add-event-btn {
@@ -220,7 +236,8 @@ canvas {
   border-radius: 50px;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 1s ease;
 }
 .fade-enter, .fade-leave-to
@@ -229,10 +246,10 @@ canvas {
 }
 
 .slide-fade-enter-active {
-  transition: all .5s ease;
+  transition: all 0.8s ease;
 }
 .slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
