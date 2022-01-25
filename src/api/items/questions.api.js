@@ -17,9 +17,12 @@ const createQuestion = (eventId, body) => httpClient.post(
 
 const patchQuestion = (args, questionId) => httpClient.patch(ENDPOINT + questionId, args)
 
+const deleteQuestion = (questionId) => httpClient.delete(ENDPOINT + questionId)
+
 export {
     getQuestions,
     getQuestion,
     patchQuestion,
-    createQuestion
+    createQuestion,
+    deleteQuestion
 }

@@ -6,7 +6,7 @@
       </vs-row>
       <vs-row>
         <vs-col w="12">
-          <vs-input v-model="username" label-placeholder="Username or E-mail">
+          <vs-input @keydown.enter="onLogin" v-model="username" label-placeholder="Username or E-mail">
             <template #icon>
               <unicon name="user" fill="royalblue" />
             </template>
@@ -19,6 +19,7 @@
             v-model="password"
             type="password"
             label-placeholder="Password"
+            @keydown.enter="onLogin"
           >
             <template #icon>
               <unicon name="lock" fill="royalblue" />
@@ -90,10 +91,10 @@ export default {
         } else {
           this.$vs.notification({
             color: "danger",
-            icon: '<unicon name="exclamation-triangle" fill="white"/>',
+            icon: '<i class="isax-radar15"> </i>',
             position: "top-center",
-            title: "No account with such data was found",
-            text: "Username, email or password is incorect, please check them and try again!",
+            title: "no account with such data was found",
+            text: "username, email or password is incorect, please check them and try again!",
           });
         }
       }

@@ -25,10 +25,26 @@ import {
   uniCalendarAlt,
   uniSchedule,
   uniCalender,
-  uniPlus
+  uniPlus,
+  uniComments,
+  uniLightbulbAlt,
+  uniPen,
+  uniShare,
+  uniShareAlt,
+  uniEllipsisV,
+  uniEllipsisH,
+  uniTimes,
+  uniGoogle
 } from 'vue-unicons/dist/icons'
 import VueScrollTo from 'vue-scrollto'
 import VueMeta from 'vue-meta'
+import GAuth from 'vue-google-oauth2'
+
+const gauthOption = {
+  clientId: '969331023358-h9klfqv0tdpbi6cjrof87i9u72sld7r6.apps.googleusercontent.com',
+  scope: 'profile email',
+  prompt: 'select_account'
+}
 
 Vue.config.productionTip = process.env.VUE_APP_DEBUG
 Vue.use(Vuesax)
@@ -51,11 +67,21 @@ Unicon.add([
   uniSchedule,
   uniCalender,
   uniSignOutAlt,
-  uniPlus
+  uniPlus,
+  uniComments,
+  uniLightbulbAlt,
+  uniPen,
+  uniShare,
+  uniShareAlt,
+  uniEllipsisV,
+  uniEllipsisH,
+  uniTimes,
+  uniGoogle
 ])
 Vue.use(Unicon)
 Vue.use(VueScrollTo)
 Vue.use(VueMeta)
+Vue.use(GAuth, gauthOption)
 
 new Vue({
   router,

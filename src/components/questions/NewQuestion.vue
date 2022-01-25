@@ -1,6 +1,6 @@
 <template>
   <vs-row class="new-question" align="center" justify="center">
-    <vs-col w="11">
+    <vs-col w="10">
       <vs-input
         placeholder="Enter your question..."
         shadow
@@ -22,10 +22,14 @@
         />
       </vs-button>
     </vs-col>
+    <vs-col class="cancel-btn" w="1">
+      <unicon @click="$emit('handleIsShown')" name="times" :fill="iconColor" />
+    </vs-col>
   </vs-row>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import {createQuestion} from '../../api/items/questions.api'
 export default {
     props: {
@@ -36,6 +40,7 @@ export default {
             questionName: ''
         }
     },
+    computed: {...mapGetters(['iconColor'])},
     methods: {
         async handleCreateQuestion() {
             await createQuestion(this.eventId, this.questionName)
@@ -53,6 +58,12 @@ export default {
 }
 .new-question .vs-input {
     font-size: 24px;
-    min-width: 450px;
+}
+.new-question input {
+  min-width: 100%;
+}
+.cancel-btn .unicon {
+  margin-top: 10px;
+  cursor: pointer;
 }
 </style>

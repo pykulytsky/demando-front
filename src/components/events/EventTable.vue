@@ -74,4 +74,5 @@ export default {
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
+
 </style>

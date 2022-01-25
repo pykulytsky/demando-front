@@ -5,6 +5,7 @@
         <vs-col w="5" justify="center" align="center">
           <vs-row>
             <qrcode-vue class="qr-code" :value="link" :size="260" level="H" />
+            <unicon class="share-btn" name="share-alt" fill="white" @click="copyToClipBoard" />
           </vs-row>
         </vs-col>
         <vs-col w="5" justify="center">
@@ -24,18 +25,18 @@
                       ></unicon>
                       {{ event.owner.username }}
                     </vs-col>
-                    <vs-col> questions: {{ event.questions.length }} </vs-col>
+                    <vs-col> <unicon name="comments" fill="white" /> {{ event.questions.length }} </vs-col>
                   </vs-row>
                 </vs-col>
 
                 <vs-col class="info-second" w="5">
                   <vs-row flex-direction="column">
                     <vs-col>
-                      <unicon name="calender" fill="white" />
+                      <unicon name="lightbulb-alt" fill="white" />
                       {{ event.created.toLocaleDateString("en-US") }}
                     </vs-col>
                     <vs-col>
-                      <unicon name="calender" fill="white" />
+                      <unicon name="pen" fill="white" />
                       {{ event.updated.toLocaleDateString() }}
                     </vs-col>
                   </vs-row>
@@ -123,6 +124,17 @@ export default {
   methods: {
     ...mapActions(["setLoading"]),
 
+    async copyToClipBoard() {
+      await navigator.clipboard.writeText(window.location.href)
+      this.$vs.notification({
+        icon: "<unicon name='share' fill='white' />",
+        position: "bottom-right",
+        duration: 1000,
+        title: "Copied to clipboard",
+        text: "Link to this event was succesfully copied to your clipboard, you can share it as you want!",
+      });
+    },
+
     async updateQuestions() {
       this.event = await (await getEvent(this.eventId)).data;
       this.event.created = new Date(this.event.created);
@@ -177,13 +189,14 @@ export default {
 <style>
 .event-header {
   margin-top: 75px;
-  border: 2px solid royalblue;
   border-radius: 15px;
   padding-top: 15px;
-  background-color: royalblue;
   min-width: 750px;
   max-width: 950px;
   color: white;
+  background-color: #4158D0;
+  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 .event-header .vs-col {
   margin: 10px 5px;
@@ -197,6 +210,8 @@ canvas {
 }
 .event-name {
   text-align: center;
+  text-shadow: 3px 4px 7px rgba(81,67,21,0.8);
+
 }
 
 .info-second {
@@ -255,5 +270,11 @@ canvas {
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateX(20px);
   opacity: 0;
+}
+.share-btn {
+  margin-left: 8px;
+}
+.share-btn:hover {
+  cursor: pointer;
 }
 </style>

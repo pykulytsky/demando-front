@@ -1,6 +1,6 @@
 <template>
     <div class="register-main">
-        <div class="center grid login-input content-inputs">
+        <div v-if="!isUserRegistered" class="center grid login-input content-inputs">
             <vs-row align="center" justify="center">
                 <h3 class="center">Welcome to Demando!</h3>
             </vs-row>
@@ -90,9 +90,20 @@
                 <vs-button @click="registerUser" block>Register</vs-button>
             </vs-row>
             <vs-row>
+                <vs-button icon color="google-plus" @click="registerUserUsingOauth" block>
+                    <unicon name="google" fill="white"/>
+                </vs-button>
+            </vs-row>
+            <vs-row>
                 <router-link class="register-link" to="/login">Already have an account? Login here</router-link>
             </vs-row>
         </div>
+        <vs-alert v-else gradient>
+            <template #title>
+                Email verification needed
+            </template>
+            Thanks for joining our service, next you have to verify your email. Check your inbox and follow the instruction.
+        </vs-alert>
     </div>
 </template>
 
@@ -112,7 +123,8 @@ export default {
             password2: '',
             showPassword: false,
             showPassword2: false,
-            registeredUsers: []
+            registeredUsers: [],
+            isUserRegistered: false
         }
     },
     computed: {
@@ -204,7 +216,7 @@ export default {
                         email: this.email,
                         password: this.password}
                     )
-                    this.$router.push('/qa')
+                    this.isUserRegistered = true
                 }
                 else {
                     this.$vs.notification({
@@ -217,6 +229,10 @@ export default {
                 }
             }
             this.setLoading(false)
+        },
+        async registerUserUsingOauth() {
+            const googleUser = await this.$gAuth.signIn()
+            console.log(googleUser)
         }
     },
     async created() {

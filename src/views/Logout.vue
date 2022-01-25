@@ -1,5 +1,5 @@
 <template>
-    <div class="logout">
+    <div :class="{logout, 'logout-dark': currentTheme === 'dark'}">
         <vs-row>
             <h3>Are you sure you want to sign out?</h3>
         </vs-row>
@@ -8,7 +8,7 @@
                 <vs-button @click="onConfirm">Confirm</vs-button>
             </vs-col>
             <vs-col w="4">
-                <vs-button>Go back</vs-button>
+                <vs-button :to="from">Go back</vs-button>
             </vs-col>
         </vs-row>
     </div>
@@ -21,8 +21,13 @@ export default {
     metaInfo: {
         title: 'Logout'
     },
+    data: () => {
+        return {
+            from: ''
+        }
+    },
     computed: {
-        ...mapGetters(['isLogined'])
+        ...mapGetters(['isLogined', 'currentTheme'])
     },
     methods: {
         ...mapActions(['logout']),
@@ -31,8 +36,8 @@ export default {
             this.$router.push('/login')
         }
     },
-    beforeCreate() {
-
+    created() {
+        this.from = this.$route.query.from
     }
 }
 </script>
@@ -41,10 +46,12 @@ export default {
 .logout {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 40%;
     transform: translate(-50%, -50%);
     padding: 15px;
     border-radius: 20px;
+}
+.logout-dark {
     background-color: rgb(30, 32, 35);
 }
 </style>

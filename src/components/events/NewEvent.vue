@@ -26,6 +26,14 @@ export default {
     margin-top: 55px;
 }
 
+.new-event a {
+    color: royalblue;
+}
+
+.new-event a:active {
+    color: royalblue;
+}
+
 .fade-enter, .fade-leave-to {
   transition: opacity .1s;
 }

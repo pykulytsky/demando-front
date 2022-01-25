@@ -27,7 +27,7 @@
           <vs-button to="/login" v-if="!isLogined" flat >Login</vs-button>
           <vs-button to="/register" v-if="!isLogined">Get Started</vs-button>
           <div class="sign-out-btn">
-            <vs-button icon border to="/logout" v-if="isLogined">
+            <vs-button icon border :to="'/logout?from=' + $route.fullPath" v-if="isLogined">
               <unicon name="sign-out-alt" fill="royalblue" />
             </vs-button>
           </div>

@@ -126,6 +126,8 @@ export default {
 .event-search .vs-input {
     font-size: 24px;
     min-width: 450px;
+    --vs-shadow-opcaity: 0.8;
+
 }
 
 .arrow-btn {

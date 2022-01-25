@@ -42,7 +42,7 @@ export default {
   display: inline-block;
   width: 80px;
   height: 80px;
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -50,6 +50,7 @@ export default {
 .lds-dual-ring:after {
   content: " ";
   display: block;
+  position: fixed;
   width: 64px;
   height: 64px;
   margin: 8px;
@@ -63,6 +64,7 @@ export default {
   display: block;
   width: 64px;
   height: 64px;
+  position: fixed;
   margin: 8px;
   border-radius: 50%;
   border: 6px solid #000;

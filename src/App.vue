@@ -71,7 +71,6 @@ export default {
 
   created() {
     this.setDefaultTheme();
-
     this.loadCurrentUser();
   },
 };
@@ -97,6 +96,8 @@ h1 {
   color: #18191c;
 }
 
+.vs-input {
+}
 .navb {
   margin-bottom: 150px;
 }
