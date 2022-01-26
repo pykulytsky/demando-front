@@ -34,7 +34,8 @@ import {
   uniEllipsisV,
   uniEllipsisH,
   uniTimes,
-  uniGoogle
+  uniGoogle,
+  uniSetting
 } from 'vue-unicons/dist/icons'
 import VueScrollTo from 'vue-scrollto'
 import VueMeta from 'vue-meta'
@@ -76,7 +77,8 @@ Unicon.add([
   uniEllipsisV,
   uniEllipsisH,
   uniTimes,
-  uniGoogle
+  uniGoogle,
+  uniSetting
 ])
 Vue.use(Unicon)
 Vue.use(VueScrollTo)

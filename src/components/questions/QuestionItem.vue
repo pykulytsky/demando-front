@@ -13,7 +13,7 @@
           </vs-col>
           <vs-col w="2">
             <vs-tooltip
-              v-if="currentUser.pk == question.author.pk"
+              v-if="user"
               bottom
               shadow
               not-hover
@@ -51,9 +51,9 @@
       <h2>{{ question.body }}</h2>
     </vs-row>
     <vs-row justify="flex-end" align="center">
-      <unicon @click="updateLikes(-1)" name="thumbs-down" :fill="iconColor" />
+      <unicon class="hvr-bob" @click="updateLikes(-1)" name="thumbs-down" :fill="iconColor" />
       {{ question.likes_count }}
-      <unicon @click="updateLikes(1)" name="thumbs-up" :fill="iconColor" />
+      <unicon class="hvr-bob" @click="updateLikes(1)" name="thumbs-up" :fill="iconColor" />
     </vs-row>
   </div>
 </template>
@@ -74,6 +74,14 @@ export default {
 
   computed: {
     ...mapGetters(["iconColor", "currentUser"]),
+    user() {
+      if(this.currentUser) {
+        return this.currentUser.pk == this.question.author.pk
+      }
+      else {
+        return false
+      }
+    }
   },
 
   methods: {
@@ -133,5 +141,68 @@ export default {
 }
 .vs-tooltip {
   padding: 0;
+}
+@-webkit-keyframes hvr-bob {
+  0% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+  50% {
+    -webkit-transform: translateY(-4px);
+    transform: translateY(-4px);
+  }
+  100% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+}
+@keyframes hvr-bob {
+  0% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+  50% {
+    -webkit-transform: translateY(-4px);
+    transform: translateY(-4px);
+  }
+  100% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+}
+@-webkit-keyframes hvr-bob-float {
+  100% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+}
+@keyframes hvr-bob-float {
+  100% {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+  }
+}
+.hvr-bob {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.hvr-bob:hover, .hvr-bob:focus, .hvr-bob:active {
+  -webkit-animation-name: hvr-bob-float, hvr-bob;
+  animation-name: hvr-bob-float, hvr-bob;
+  -webkit-animation-duration: .3s, 1.5s;
+  animation-duration: .3s, 1.5s;
+  -webkit-animation-delay: 0s, .3s;
+  animation-delay: 0s, .3s;
+  -webkit-animation-timing-function: ease-out, ease-in-out;
+  animation-timing-function: ease-out, ease-in-out;
+  -webkit-animation-iteration-count: 1, infinite;
+  animation-iteration-count: 1, infinite;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-direction: normal, alternate;
+  animation-direction: normal, alternate;
 }
 </style>

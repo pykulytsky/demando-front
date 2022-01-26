@@ -10,12 +10,14 @@
         <router-view />
       </transition>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import Navbar from "./components/core/Navbar.vue";
+import Footer from "./components/core/Footer.vue";
 import Loader from "./components/core/Loader.vue";
 
 export default {
@@ -27,6 +29,7 @@ export default {
   components: {
     navBar: Navbar,
     loading: Loader,
+    Footer
   },
   data: () => {
     return {

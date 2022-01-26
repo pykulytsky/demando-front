@@ -2,13 +2,38 @@
   <div class="event-main">
     <div class="event-header">
       <vs-row justify="space-around">
-        <vs-col w="5" justify="center" align="center">
+        <vs-col w="3" justify="center" align="center">
           <vs-row>
-            <qrcode-vue class="qr-code" :value="link" :size="260" level="H" />
-            <unicon class="share-btn" name="share-alt" fill="white" @click="copyToClipBoard" />
+            <vs-col>
+              <qrcode-vue class="qr-code" :value="link" :size="150" level="H" />
+            </vs-col>
+            <vs-col>
+              <vs-row>
+                <vs-col w="5">
+                  <unicon
+                    class="share-btn hvr-pulse-shrink"
+                    name="share-alt"
+                    fill="white"
+                    width="30"
+                    height="30"
+                    @click="copyToClipBoard"
+                  />
+                </vs-col>
+                <vs-col w="5">
+                  <unicon
+                    class="share-btn hvr-pulse-shrink"
+                    name="setting"
+                    fill="white"
+                    width="30"
+                    height="30"
+                    @click="copyToClipBoard"
+                  />
+                </vs-col>
+              </vs-row>
+            </vs-col>
           </vs-row>
         </vs-col>
-        <vs-col w="5" justify="center">
+        <vs-col w="6" justify="center">
           <vs-row>
             <vs-col vs-justify="flex-end">
               <h1 class="event-name">{{ event.name }}</h1>
@@ -19,24 +44,27 @@
                   <vs-row flex-direction="column">
                     <vs-col>
                       <unicon
-                        class="user-icon"
+                        class="user-icon hvr-pulse-shrink"
                         name="user"
                         fill="white"
                       ></unicon>
                       {{ event.owner.username }}
                     </vs-col>
-                    <vs-col> <unicon name="comments" fill="white" /> {{ event.questions.length }} </vs-col>
+                    <vs-col>
+                      <unicon name="comments" fill="white" class="hvr-pulse-shrink" />
+                      {{ event.questions.length }}
+                    </vs-col>
                   </vs-row>
                 </vs-col>
 
                 <vs-col class="info-second" w="5">
                   <vs-row flex-direction="column">
                     <vs-col>
-                      <unicon name="lightbulb-alt" fill="white" />
+                      <unicon name="lightbulb-alt" fill="white" class="hvr-pulse-shrink" />
                       {{ event.created.toLocaleDateString("en-US") }}
                     </vs-col>
                     <vs-col>
-                      <unicon name="pen" fill="white" />
+                      <unicon name="pen" fill="white" class="hvr-pulse-shrink" />
                       {{ event.updated.toLocaleDateString() }}
                     </vs-col>
                   </vs-row>
@@ -96,15 +124,17 @@ import QuestionItem from "../components/questions/QuestionItem.vue";
 import NewQuestion from "../components/questions/NewQuestion.vue";
 
 export default {
-  name: 'Event',
+  name: "Event",
   metaInfo() {
     return {
-      meta: [{
-        vmid: 'description',
-        name: 'description',
-        content: this.description,
-      }]
-    }
+      meta: [
+        {
+          vmid: "description",
+          name: "description",
+          content: this.description,
+        },
+      ],
+    };
   },
   data: () => {
     return {
@@ -112,7 +142,7 @@ export default {
       event: null,
       link: "",
       newQuestionIsShown: false,
-      description: undefined
+      description: undefined,
     };
   },
   components: {
@@ -125,7 +155,7 @@ export default {
     ...mapActions(["setLoading"]),
 
     async copyToClipBoard() {
-      await navigator.clipboard.writeText(window.location.href)
+      await navigator.clipboard.writeText(window.location.href);
       this.$vs.notification({
         icon: "<unicon name='share' fill='white' />",
         position: "bottom-right",
@@ -173,8 +203,8 @@ export default {
   },
   watch: {
     event() {
-      this.title = this.title + ' ' + this.event.name
-    }
+      this.title = this.title + " " + this.event.name;
+    },
   },
   async created() {
     this.setLoading(true);
@@ -194,9 +224,16 @@ export default {
   min-width: 750px;
   max-width: 950px;
   color: white;
-  background-color: #4158D0;
-  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  background-color: #4158d0;
+  background-image: linear-gradient(
+    43deg,
+    #4158d0 0%,
+    #c850c0 46%,
+    #ffcc70 100%
+  );
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 .event-header .vs-col {
   margin: 10px 5px;
@@ -210,8 +247,7 @@ canvas {
 }
 .event-name {
   text-align: center;
-  text-shadow: 3px 4px 7px rgba(81,67,21,0.8);
-
+  text-shadow: 3px 4px 7px rgba(81, 67, 21, 0.8);
 }
 
 .info-second {
@@ -274,7 +310,43 @@ canvas {
 .share-btn {
   margin-left: 8px;
 }
+.share-btn {
+  padding: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+}
 .share-btn:hover {
   cursor: pointer;
+}
+@-webkit-keyframes hvr-pulse-shrink {
+  to {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+@keyframes hvr-pulse-shrink {
+  to {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+}
+.hvr-pulse-shrink {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.hvr-pulse-shrink:hover, .hvr-pulse-shrink:focus, .hvr-pulse-shrink:active {
+  -webkit-animation-name: hvr-pulse-shrink;
+  animation-name: hvr-pulse-shrink;
+  -webkit-animation-duration: 0.3s;
+  animation-duration: 0.3s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
 }
 </style>
