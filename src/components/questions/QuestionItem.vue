@@ -27,16 +27,14 @@
               <template #tooltip>
                 <div class="content-tooltip">
                   <vs-button
-                    square
                     transparent
-                    dark
+                    warn
                     block
 
                   > Edit </vs-button>
                   <vs-button
-                    square
                     transparent
-                    dark
+                    danger
                     block
                     @click="handleDeleteQuestion"
                   > Delete </vs-button>

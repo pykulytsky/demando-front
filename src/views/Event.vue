@@ -21,7 +21,7 @@
                 </vs-col>
                 <vs-col w="5">
                   <unicon
-                    class="share-btn hvr-pulse-shrink"
+                    class="settings-btn"
                     name="setting"
                     fill="white"
                     width="30"
@@ -339,16 +339,19 @@ canvas:hover {
   transform: translateX(20px);
   opacity: 0;
 }
-.share-btn {
+.settings-btn, .share-btn {
   margin-left: 8px;
-}
-.share-btn {
   padding: 5px;
   padding-left: 7px;
   padding-right: 7px;
+  transition: transform .3s ease-in-out;
 }
 .share-btn:hover {
   cursor: pointer;
+}
+.settings-btn:hover {
+  cursor: pointer;
+  transform: rotate(90deg);
 }
 @-webkit-keyframes hvr-pulse-shrink {
   to {
@@ -413,4 +416,5 @@ canvas:hover {
     background-position: 100% 92%;
   }
 }
+
 </style>

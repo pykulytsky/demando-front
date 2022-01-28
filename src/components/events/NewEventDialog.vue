@@ -5,12 +5,20 @@
     </template>
 
     <div class="con-content">
-      <vs-input v-model="eventName" placeholder="Event name"></vs-input>
+      <vs-input v-if="!eventCreated" v-model="eventName" placeholder="Event name">
+        <template v-if="eventName.length < 6 && eventName.length !== 0" #message-danger>
+          At least 6 symbols
+        </template>
+      </vs-input>
+      <div v-else class="event-info-after">
+        <h2>Event was succesfully created!</h2>
+        <h3>Your event ID: <router-link :to="'/qa/events/' + newEvent.pk"><b>{{newEvent.pk}}</b></router-link></h3>
+      </div>
     </div>
 
     <template #footer>
       <div class="con-footer">
-        <vs-button @click="handleEventCreate" success flat> Create </vs-button>
+        <vs-button v-if="!eventCreated"  @click="handleEventCreate" success flat> Create </vs-button>
         <vs-button @click="$emit('handleClose')" danger flat>
           Cancel
         </vs-button>
@@ -27,12 +35,20 @@ export default {
     },
     data: () => {
         return {
-            eventName: ''
+            eventName: '',
+            newEvent: null,
+            eventCreated: false
         }
     },
     methods: {
         async handleEventCreate() {
-            await createEvent(this.eventName)
+            if(this.eventName.length > 6) {
+              this.newEvent = await (await createEvent(this.eventName)).data
+              this.eventName = ''
+              this.eventCreated = true
+              console.log(this.newEvent)
+            }
+
         }
     }
 }

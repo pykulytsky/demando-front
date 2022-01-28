@@ -12,8 +12,8 @@
     <vs-button flat block>Info</vs-button>
     <vs-button flat block @click="qrCodeIsShown = true">QR Code</vs-button>
     <div v-if="isCurrentUserOwner">
-      <vs-button flat block>Edit</vs-button>
-      <vs-button flat block>Delete</vs-button>
+      <vs-button flat warn block>Edit</vs-button>
+      <vs-button flat danger block>Delete</vs-button>
     </div>
     <qr-code-dialog
       @handleClose="qrCodeIsShown = false"
