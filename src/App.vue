@@ -35,6 +35,7 @@ export default {
     return {
       sidebar: false,
       active: true,
+      footerNotRequiredPages: ['Login', 'Register', 'Logout']
     };
   },
   computed: {
@@ -75,6 +76,7 @@ export default {
   created() {
     this.setDefaultTheme();
     this.loadCurrentUser();
+    console.log(this.$router.curretRoute)
   },
 };
 </script>

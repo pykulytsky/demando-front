@@ -105,10 +105,7 @@ export default {
 
 <style>
 .login-main {
-  position: absolute;
-  left: 50%;
-  top: 40%;
-  transform: translate(-50%, -50%);
+  margin-top: 100px;
 }
 
 .login-main .vs-input {

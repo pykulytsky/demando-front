@@ -26,7 +26,7 @@
                     fill="white"
                     width="30"
                     height="30"
-                    @click="copyToClipBoard"
+                    @click="actionsIsShown = true"
                   />
                 </vs-col>
               </vs-row>
@@ -51,7 +51,11 @@
                       {{ event.owner.username }}
                     </vs-col>
                     <vs-col>
-                      <unicon name="comments" fill="white" class="hvr-pulse-shrink" />
+                      <unicon
+                        name="comments"
+                        fill="white"
+                        class="hvr-pulse-shrink"
+                      />
                       {{ event.questions.length }}
                     </vs-col>
                   </vs-row>
@@ -60,11 +64,19 @@
                 <vs-col class="info-second" w="5">
                   <vs-row flex-direction="column">
                     <vs-col>
-                      <unicon name="lightbulb-alt" fill="white" class="hvr-pulse-shrink" />
+                      <unicon
+                        name="lightbulb-alt"
+                        fill="white"
+                        class="hvr-pulse-shrink"
+                      />
                       {{ event.created.toLocaleDateString("en-US") }}
                     </vs-col>
                     <vs-col>
-                      <unicon name="pen" fill="white" class="hvr-pulse-shrink" />
+                      <unicon
+                        name="pen"
+                        fill="white"
+                        class="hvr-pulse-shrink"
+                      />
                       {{ event.updated.toLocaleDateString() }}
                     </vs-col>
                   </vs-row>
@@ -97,6 +109,18 @@
         />
       </vs-row>
     </div>
+
+    <event-actions
+      @handleClose="actionsIsShown = false"
+      :isShown="actionsIsShown"
+      :isCurrentUserOwner="event.owner.pk == currentUser.pk"
+    />
+    <qr-code-dialog
+      @handleClose="qrCodeDialogIsShown = false"
+      :link="link"
+      :isShown="qrCodeDialogIsShown"
+    />
+
     <div class="event-footer"></div>
     <vs-button
       v-if="isLogined"
@@ -122,6 +146,8 @@ import { getEvent } from "../api/items/events.api";
 import QrcodeVue from "qrcode.vue";
 import QuestionItem from "../components/questions/QuestionItem.vue";
 import NewQuestion from "../components/questions/NewQuestion.vue";
+import EventActions from "../components/events/EventActions.vue";
+import QRCodeDialog from "../components/events/QRCodeDialog.vue";
 
 export default {
   name: "Event",
@@ -143,14 +169,18 @@ export default {
       link: "",
       newQuestionIsShown: false,
       description: undefined,
+      actionsIsShown: false,
+      qrCodeDialogIsShown: false,
     };
   },
   components: {
     QrcodeVue,
     QuestionItem,
     NewQuestion,
+    EventActions,
+    qrCodeDialog: QRCodeDialog,
   },
-  computed: { ...mapGetters(["isLogined"]) },
+  computed: { ...mapGetters(["isLogined", "currentUser"]) },
   methods: {
     ...mapActions(["setLoading"]),
 
@@ -173,6 +203,8 @@ export default {
         this.parseTime(question);
       });
     },
+
+    async showActions() {},
 
     async parseTime(question) {
       let measureOfTime = " second";
@@ -224,13 +256,10 @@ export default {
   min-width: 750px;
   max-width: 950px;
   color: white;
-  background-color: #4158d0;
-  background-image: linear-gradient(
-    43deg,
-    #4158d0 0%,
-    #c850c0 46%,
-    #ffcc70 100%
-  );
+  background: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+  -webkit-animation: gradient 15s ease infinite;
+  -moz-animation: gradient 15s ease infinite;
+  animation: gradient 15s ease infinite;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -244,6 +273,9 @@ export default {
 
 canvas {
   border-radius: 12px;
+}
+canvas:hover {
+  cursor: pointer;
 }
 .event-name {
   text-align: center;
@@ -337,7 +369,9 @@ canvas {
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px rgba(0, 0, 0, 0);
 }
-.hvr-pulse-shrink:hover, .hvr-pulse-shrink:focus, .hvr-pulse-shrink:active {
+.hvr-pulse-shrink:hover,
+.hvr-pulse-shrink:focus,
+.hvr-pulse-shrink:active {
   -webkit-animation-name: hvr-pulse-shrink;
   animation-name: hvr-pulse-shrink;
   -webkit-animation-duration: 0.3s;
@@ -348,5 +382,35 @@ canvas {
   animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
   animation-direction: alternate;
+}
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-webkit-keyframes gradient {
+  0% {
+    background-position: 0% 9%;
+  }
+  50% {
+    background-position: 100% 92%;
+  }
+  100% {
+    background-position: 0% 9%;
+  }
+}
+@-moz-keyframes gradient {
+  0% {
+    background-position: 0% 9%;
+  }
+  50% {
+    background-position: 100% 92%;
+  }
 }
 </style>

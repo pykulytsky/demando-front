@@ -44,10 +44,7 @@ export default {
 
 <style>
 .logout {
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
+    margin-top: 100px;
     padding: 15px;
     border-radius: 20px;
 }
