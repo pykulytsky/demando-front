@@ -3,10 +3,11 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import QnA from '../views/QnA.vue'
 import Polls from '../views/Polls.vue'
-import Event from '../views/Event'
-import Login from '../views/Login'
-import Register from '../views/Register'
-import Logout from '../views/Logout'
+import Poll from '../views/Poll.vue'
+import Event from '../views/Event.vue'
+import Login from '../views/auth/Login.vue'
+import Register from '../views/auth/Register.vue'
+import Logout from '../views/auth/Logout.vue'
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,11 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     component: Logout
+  },
+  {
+    path: '/poll/:pk',
+    name: 'Poll',
+    component: Poll
   }
 ]
 

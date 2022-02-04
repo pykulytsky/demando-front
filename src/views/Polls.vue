@@ -1,14 +1,12 @@
 <template>
-    <div class="polls-main">
-
-    </div>
+  <div class="polls-main"></div>
 </template>
 
 <script>
 export default {
-    name: 'Polls',
-    metaInfo: {
-        title: 'Polls'
-    }
-}
+  name: "Polls",
+  metaInfo: {
+    title: "Polls",
+  },
+};
 </script>

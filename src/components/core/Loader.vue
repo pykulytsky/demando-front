@@ -1,32 +1,30 @@
 <template>
-<div :class="klass"></div>
+  <div :class="klass"></div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   data: () => {
     return {
-      klass: 'lds-dual-ring'
-    }
+      klass: "lds-dual-ring",
+    };
   },
   computed: {
-    ...mapGetters(['currentTheme'])
+    ...mapGetters(["currentTheme"]),
   },
   watch: {
-    currentTheme () {
-      if (this.currentTheme === 'dark') {
-        this.klass = 'lds-dual-ring'
+    currentTheme() {
+      if (this.currentTheme === "dark") {
+        this.klass = "lds-dual-ring";
+      } else {
+        this.klass = "lds-dual-ring-dark";
       }
-      else {
-        this.klass = 'lds-dual-ring-dark'
-      }
-    }
-  }
-}
+    },
+  },
+};
 </script>
-
 
 <style>
 .lds-dual-ring {

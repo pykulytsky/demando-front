@@ -10,24 +10,30 @@
             <vs-col>
               <vs-row>
                 <vs-col w="5">
-                  <unicon
-                    class="share-btn hvr-pulse-shrink"
-                    name="share-alt"
-                    fill="white"
-                    width="30"
-                    height="30"
-                    @click="copyToClipBoard"
-                  />
+                  <vs-tooltip bottom>
+                    <unicon
+                      class="share-btn hvr-pulse-shrink"
+                      name="share-alt"
+                      fill="white"
+                      width="30"
+                      height="30"
+                      @click="copyToClipBoard"
+                    />
+                    <template #tooltip> Share </template>
+                  </vs-tooltip>
                 </vs-col>
                 <vs-col w="5">
-                  <unicon
-                    class="settings-btn"
-                    name="setting"
-                    fill="white"
-                    width="30"
-                    height="30"
-                    @click="actionsIsShown = true"
-                  />
+                  <vs-tooltip bottom>
+                    <unicon
+                      class="settings-btn"
+                      name="setting"
+                      fill="white"
+                      width="30"
+                      height="30"
+                      @click="actionsIsShown = true"
+                    />
+                    <template #tooltip> Actions </template>
+                  </vs-tooltip>
                 </vs-col>
               </vs-row>
             </vs-col>
@@ -69,7 +75,7 @@
                         fill="white"
                         class="hvr-pulse-shrink"
                       />
-                      {{ event.created.toLocaleDateString("en-US") }}
+                      {{ event.created.toLocaleDateString() }}
                     </vs-col>
                     <vs-col>
                       <unicon
@@ -113,7 +119,7 @@
     <event-actions
       @handleClose="actionsIsShown = false"
       :isShown="actionsIsShown"
-      :isCurrentUserOwner="event.owner.pk == currentUser.pk"
+      :isCurrentUserOwner="!!currentUser && event.owner.pk == currentUser.pk"
     />
     <qr-code-dialog
       @handleClose="qrCodeDialogIsShown = false"
@@ -234,7 +240,7 @@ export default {
     },
   },
   watch: {
-    event() {
+    async event() {
       this.title = this.title + " " + this.event.name;
     },
   },
@@ -315,7 +321,7 @@ canvas:hover {
   position: fixed;
   right: 5%;
   bottom: 5%;
-  padding: 8px;
+  padding: 7px 8px;
   border-radius: 50px;
 }
 
@@ -339,12 +345,13 @@ canvas:hover {
   transform: translateX(20px);
   opacity: 0;
 }
-.settings-btn, .share-btn {
+.settings-btn,
+.share-btn {
   margin-left: 8px;
   padding: 5px;
   padding-left: 7px;
   padding-right: 7px;
-  transition: transform .3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 .share-btn:hover {
   cursor: pointer;
@@ -416,5 +423,4 @@ canvas:hover {
     background-position: 100% 92%;
   }
 }
-
 </style>

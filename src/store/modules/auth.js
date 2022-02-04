@@ -82,6 +82,10 @@ export default {
       },
       isEmailVerified(state) {
           return state.currentUser.email_verified
+      },
+
+      token(state) {
+          return state.token
       }
 
   }

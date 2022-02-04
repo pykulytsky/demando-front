@@ -21,21 +21,21 @@ import Footer from "./components/core/Footer.vue";
 import Loader from "./components/core/Loader.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   metaInfo: {
-    title: 'Demando',
-    titleTemplate: '%s | Demando'
+    title: "Demando",
+    titleTemplate: "%s | Demando",
   },
   components: {
     navBar: Navbar,
     loading: Loader,
-    Footer
+    Footer,
   },
   data: () => {
     return {
       sidebar: false,
       active: true,
-      footerNotRequiredPages: ['Login', 'Register', 'Logout']
+      footerNotRequiredPages: ["Login", "Register", "Logout"],
     };
   },
   computed: {
@@ -68,15 +68,14 @@ export default {
   watch: {
     error() {
       if (this.error !== null) {
-        console.log(this.error)
+        console.log(this.error);
       }
-    }
+    },
   },
 
   created() {
     this.setDefaultTheme();
     this.loadCurrentUser();
-    console.log(this.$router.curretRoute)
   },
 };
 </script>

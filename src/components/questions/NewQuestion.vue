@@ -23,7 +23,7 @@
       </vs-button>
     </vs-col>
     <vs-col class="cancel-btn" w="1">
-      <unicon @click="$emit('handleIsShown')" name="times" :fill="iconColor" />
+      <unicon class="close__new__question" @click="$emit('handleIsShown')" name="times" />
     </vs-col>
   </vs-row>
 </template>
@@ -65,5 +65,12 @@ export default {
 .cancel-btn .unicon {
   margin-top: 10px;
   cursor: pointer;
+}
+
+.close__new__question {
+  transition: transform 0.3s ease-in-out;
+}
+.close__new__question:hover {
+  transform: rotate(90deg);
 }
 </style>

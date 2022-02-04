@@ -20,7 +20,7 @@
       <div class="con-footer">
         <vs-button v-if="!eventCreated"  @click="handleEventCreate" success flat> Create </vs-button>
         <vs-button @click="$emit('handleClose')" danger flat>
-          Cancel
+          Close
         </vs-button>
       </div>
     </template>
@@ -46,7 +46,7 @@ export default {
               this.newEvent = await (await createEvent(this.eventName)).data
               this.eventName = ''
               this.eventCreated = true
-              console.log(this.newEvent)
+              this.$emit('handleCreate')
             }
 
         }

@@ -8,7 +8,7 @@
         <vs-col w="12">
           <vs-input @keydown.enter="onLogin" v-model="username" label-placeholder="Username or E-mail">
             <template #icon>
-              <unicon name="user" fill="royalblue" />
+              <unicon name="user" />
             </template>
           </vs-input>
         </vs-col>
@@ -22,7 +22,7 @@
             @keydown.enter="onLogin"
           >
             <template #icon>
-              <unicon name="lock" fill="royalblue" />
+              <unicon name="lock"  />
             </template>
           </vs-input>
         </vs-col>
@@ -119,7 +119,7 @@ export default {
 
 .register-link {
   font-size: 14px;
-  color: royalblue;
+  color: #0ec4a6;
 }
 .register-link:hover {
   color: rgb(132, 132, 187);

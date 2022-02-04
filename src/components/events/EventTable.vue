@@ -1,6 +1,6 @@
 <template>
    <div class="events-table">
-        <h2>Avaliable events</h2>
+        <h2>Related events</h2>
         <vs-table striped>
             <template #header>
                 <vs-input v-model="searchEvent" border placeholder="Search" />
@@ -28,7 +28,7 @@
                         circle
                         :to="'/qa/events/'+ event.pk"
                     >
-                        <unicon name="angle-double-right" height="20" width="20" fill="royalblue" />
+                        <unicon name="angle-double-right" height="20" width="20" />
                     </vs-button></vs-td>
                 </vs-tr>
             </template>

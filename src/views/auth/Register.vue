@@ -109,7 +109,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import {getUsers} from '../api/auth.api'
+import {getUsers} from '../../api/auth.api'
 export default {
     name: 'Registration',
     metaInfo: {

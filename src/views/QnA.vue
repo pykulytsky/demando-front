@@ -58,7 +58,11 @@
     >
       <unicon name="plus" fill="white" />
     </vs-button>
-    <new-event-dialog @handleClose="newEventIsShown = false" :isShown="newEventIsShown" />
+    <new-event-dialog
+      @handleCreate="fetchEvents"
+      @handleClose="newEventIsShown = false"
+      :isShown="newEventIsShown"
+    />
   </div>
 </template>
 
@@ -77,12 +81,12 @@ export default {
     return {
       events: [],
       eventId: null,
-      newEventIsShown: false
+      newEventIsShown: false,
     };
   },
   components: {
     EventTable,
-    NewEventDialog
+    NewEventDialog,
   },
 
   computed: {
@@ -111,9 +115,12 @@ export default {
         }
       }
     },
+    async fetchEvents() {
+      this.events = await (await getEvents(5, "created", true)).data;
+    },
   },
   async created() {
-    this.events = await (await getEvents()).data;
+    await this.fetchEvents();
   },
 };
 </script>
@@ -133,9 +140,7 @@ export default {
 .event-search .vs-input {
   font-size: 24px;
   min-width: 450px;
-  --vs-shadow-opcaity: 0.8;
 }
-
 .arrow-btn {
   margin-left: 3px;
   margin-right: 3px;
@@ -155,7 +160,7 @@ export default {
   position: fixed;
   right: 5%;
   bottom: 5%;
-  padding: 8px;
+  padding: 7px 8px;
   border-radius: 50px;
 }
 </style>

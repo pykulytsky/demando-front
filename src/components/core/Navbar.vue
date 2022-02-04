@@ -1,86 +1,95 @@
 <template>
-    <vs-navbar class="custom-navbar" target-scroll center-collapsed square not-line>
-        <template #left>
-          <vs-navbar-item @click="emitToggleSidebar">
-            <unicon name="align-justify" fill="royalblue"/>
-          </vs-navbar-item>
+  <vs-navbar
+    class="custom-navbar"
+    target-scroll
+    center-collapsed
+    square
+    not-line
+  >
+    <template #left>
+      <vs-navbar-item @click="emitToggleSidebar">
+        <unicon name="align-justify" />
+      </vs-navbar-item>
+    </template>
+    <vs-navbar-item to="/qa" id="qna"> Q&A </vs-navbar-item>
+    <vs-navbar-item to="/polls" id="polls"> Polls </vs-navbar-item>
+    <vs-navbar-item id="components"> Components </vs-navbar-item>
+    <vs-navbar-item id="license"> license </vs-navbar-item>
+    <template #right>
+      <vs-switch
+        @mouseover="isSwitchHovered = true"
+        @mouseleave="isSwitchHovered = false"
+        v-model="theme"
+      >
+        <template #circle>
+          <unicon
+            ref="moon"
+            :class="{ unicon__moon: true, unicon__hover: isSwitchHovered }"
+            v-if="theme"
+            name="moon"
+            height="18"
+            width="18"
+          />
+          <unicon v-else ref="sun" name="brightness" />
         </template>
-        <vs-navbar-item to="/qa" id="qna">
-          Q&A
-        </vs-navbar-item>
-        <vs-navbar-item to="/polls" id="polls">
-          Polls
-        </vs-navbar-item>
-        <vs-navbar-item id="components">
-          Components
-        </vs-navbar-item>
-        <vs-navbar-item id="license">
-          license
-        </vs-navbar-item>
-        <template #right>
-          <vs-switch v-model="theme">
-            <template #circle>
-              <unicon v-if="theme" name="moon" height="18" width="18" fill="royalblue" />
-              <unicon v-else name="brightness" />
-            </template>
-          </vs-switch>
-          <vs-button to="/login" v-if="!isLogined" flat >Login</vs-button>
-          <vs-button to="/register" v-if="!isLogined">Get Started</vs-button>
-          <div class="sign-out-btn">
-            <vs-button icon border :to="'/logout?from=' + $route.fullPath" v-if="isLogined">
-              <unicon name="sign-out-alt" fill="royalblue" />
-            </vs-button>
-          </div>
-        </template>
-      </vs-navbar>
+      </vs-switch>
+      <vs-button to="/login" v-if="!isLogined" flat>Login</vs-button>
+      <vs-button to="/register" v-if="!isLogined" flat>Get Started</vs-button>
+      <div class="sign-out-btn">
+        <unicon
+          @click="$router.push('/logout?from=' + $route.fullPath)"
+          name="sign-out-alt"
+          v-if="isLogined"
+        />
+      </div>
+    </template>
+  </vs-navbar>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 export default {
-    data: () => {
-        return {
-            theme: false
-        }
+  data: () => {
+    return {
+      theme: false,
+      isSwitchHovered: true,
+    };
+  },
+  computed: {
+    ...mapGetters(["currentTheme", "isLogined"]),
+  },
+  methods: {
+    ...mapActions(["setTheme"]),
+    emitToggleSidebar() {
+      this.$emit("toggleSidebar");
     },
-    computed: {
-    ...mapGetters(['currentTheme', 'isLogined']),
+    emitToggleTheme() {
+      this.$emit("toggleTheme");
     },
-    methods: {
-        ...mapActions(['setTheme']),
-        emitToggleSidebar() {
-            this.$emit('toggleSidebar')
-        },
-        emitToggleTheme() {
-            this.$emit('toggleTheme')
-        }
+  },
+  watch: {
+    theme: function (val) {
+      this.theme = val;
+      if (this.theme) {
+        this.setTheme("dark");
+      } else {
+        this.setTheme("light");
+      }
+      this.emitToggleTheme();
     },
-    watch: {
-        theme: function(val) {
-            this.theme = val
-            if(this.theme) {
-                this.setTheme('dark')
-            }
-            else {
-                this.setTheme('light')
-            }
-            this.emitToggleTheme()
-        }
-    },
-    created() {
-        if (this.currentTheme) {
-            if(this.currentTheme == 'light') {
-              this.theme = false
-            }
-            else {
-              this.theme = true
-            }
-        }
-        else {
-            this.theme = false
-        }
+  },
+  created() {
+    if (this.currentTheme) {
+      if (this.currentTheme == "light") {
+        this.theme = false;
+      } else {
+        this.theme = true;
+      }
+    } else {
+      this.theme = false;
     }
-}
+  },
+};
 </script>
 
 <style>
@@ -91,26 +100,25 @@ export default {
   border: none;
 }
 
-.sign-out-btn .vs-button:hover {
-  border: none;
+.sign-out-btn .unicon {
+  margin-top: 5px;
+  margin-left: 15px;
 }
 
-.sign-out-btn .vs-button--border:hover:before {
-  border: none;
-}
-.sign-out-btn .vs-button--border:hover {
-  border: none;
+.sign-out-btn .unicon:hover {
+  cursor: pointer;
 }
 
-.sign-out-btn .vs-button--border:before {
-  border: none;
+.vs-switch .unicon__moon {
+  margin-top: 4px;
+  margin-left: 0.5px;
 }
 
-.sign-out-btn .vs-button--border:after {
-  border: none;
-}
-.custom-navbar .vs-navbar__item {
-  font-weight: 500;
+.vs-switch .unicon {
+  transition: transform 0.3s ease-in-out;
 }
 
+.unicon__hover {
+  transform: rotate(30deg);
+}
 </style>

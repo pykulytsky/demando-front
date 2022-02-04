@@ -2,16 +2,16 @@
   <div class="question-item">
     <vs-row justify="space-between">
       <vs-col w="2">
-        <unicon name="user" height="15" width="18" fill="royalblue" />
+        <unicon name="user" height="15" width="18" />
         <i>{{ question.author.username }}</i>
       </vs-col>
       <vs-col w="2">
         <vs-row>
-          <vs-col w="10">
-            <unicon name="calender" :fill="iconColor" />
+          <vs-col w="11">
+            <unicon name="clock-five" :fill="iconColor" />
             {{ question.created }} ago
           </vs-col>
-          <vs-col w="2">
+          <vs-col w="1">
             <vs-tooltip
               v-if="user"
               bottom
@@ -27,13 +27,13 @@
               <template #tooltip>
                 <div class="content-tooltip">
                   <vs-button
-                    transparent
+                    flat
                     warn
                     block
 
                   > Edit </vs-button>
                   <vs-button
-                    transparent
+                    flat
                     danger
                     block
                     @click="handleDeleteQuestion"
@@ -108,12 +108,12 @@ export default {
   border-radius: 10px;
   min-width: 100%;
   max-width: 900px;
-  border: 3px royalblue solid;
+  border: 3px #0ec4a6 solid;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 .question-item i {
-  color: royalblue;
+  color: #0ec4a6;
 }
 
 .question-item .unicon:hover {

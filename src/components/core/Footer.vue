@@ -5,32 +5,57 @@
       <div class="con-form">
         <h4 v-if="data" v-html="data" />
         <h4 v-else>
-          <b>Subscribe</b> to our <br> Weekly Newsletter
+          <b>Subscribe</b> to our <br />
+          Weekly Newsletter
         </h4>
-        <form action="https://lusaxweb.us19.list-manage.com/subscribe/post?u=0437617d8716e89975fcc0f14&amp;id=8188b99f63" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-            <div id="mc_embed_signup_scroll">
-
-          <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Email" required>
+        <form
+          action="https://lusaxweb.us19.list-manage.com/subscribe/post?u=0437617d8716e89975fcc0f14&amp;id=8188b99f63"
+          method="post"
+          id="mc-embedded-subscribe-form"
+          name="mc-embedded-subscribe-form"
+          class="validate"
+          target="_blank"
+          novalidate
+        >
+          <div id="mc_embed_signup_scroll">
+            <input
+              type="email"
+              value=""
+              name="EMAIL"
+              class="email"
+              id="mce-EMAIL"
+              placeholder="Email"
+              required
+            />
             <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_0437617d8716e89975fcc0f14_8188b99f63" tabindex="-1" value=""></div>
-            <div class="clear"><input type="submit" value="SUSCRIBE!" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+            <div style="position: absolute; left: -5000px" aria-hidden="true">
+              <input
+                type="text"
+                name="b_0437617d8716e89975fcc0f14_8188b99f63"
+                tabindex="-1"
+                value=""
+              />
             </div>
+            <div class="clear">
+              <input
+                type="submit"
+                value="SUSCRIBE!"
+                name="subscribe"
+                id="mc-embedded-subscribe"
+                class="button"
+              />
+            </div>
+          </div>
         </form>
       </div>
     </div>
     <!--End mc_embed_signup-->
     <div class="footer__uls">
-      <ul
-        v-for="(link, index) in links"
-        :key="index"
-        >
+      <ul v-for="(link, index) in links" :key="index">
         <li class="title">
           {{ link.title }}
         </li>
-        <li
-          v-for="(item, i) in link.items"
-          :key="i"
-        >
+        <li v-for="(item, i) in link.items" :key="i">
           <a target="_blank" :href="item.link">
             {{ item.text }}
           </a>
@@ -39,13 +64,9 @@
     </div>
 
     <div class="copy">
-      <span class="span-copy">
-        Copyright © 2020 Vuesax
-      </span>
+      <span class="span-copy"> Copyright © 2020 Vuesax </span>
       <span class="span-lusaxweb">
-        <span>
-          Created By
-        </span>
+        <span> Created By </span>
         <a target="_blank" href="http://lusaxweb.net">Lusaxweb</a>
       </span>
     </div>
@@ -53,86 +74,86 @@
 </template>
 <script>
 export default {
-  props: ['data'],
+  props: ["data"],
   data() {
     return {
-      links:[
+      links: [
         {
-          title: 'Vuesax',
+          title: "Vuesax",
           items: [
             {
-              text: 'What is Vuesax?',
-              link: '/docs/guide/#whats-is-vuesax'
+              text: "What is Vuesax?",
+              link: "/docs/guide/#whats-is-vuesax",
             },
             {
-              text: 'Why Vuesax?',
-              link: '/docs/guide/#why-vuesax'
+              text: "Why Vuesax?",
+              link: "/docs/guide/#why-vuesax",
             },
             {
-              text: 'What\'s new in v4',
-              link: '/docs/guide/#features'
+              text: "What's new in v4",
+              link: "/docs/guide/#features",
             },
             {
-              text: 'FAQ',
-              link: '/license/#faq'
-            }
-          ]
+              text: "FAQ",
+              link: "/license/#faq",
+            },
+          ],
         },
         {
-          title: 'Resources',
+          title: "Resources",
           items: [
             // {
             //   text: 'Blog',
             //   link: '/'
             // },
             {
-              text: 'Documentation',
-              link: '/docs/'
+              text: "Documentation",
+              link: "/docs/",
             },
             {
-              text: 'Github',
-              link: 'https://github.com/lusaxweb/vuesax-next'
+              text: "Github",
+              link: "https://github.com/lusaxweb/vuesax-next",
             },
             {
-              text: 'Privacy Policy',
-              link: '/license/'
-            }
-          ]
+              text: "Privacy Policy",
+              link: "/license/",
+            },
+          ],
         },
         {
-          title: 'Help',
+          title: "Help",
           items: [
             {
-              text: 'Github Issues',
-              link: 'https://github.com/lusaxweb/vuesax-next/issues'
+              text: "Github Issues",
+              link: "https://github.com/lusaxweb/vuesax-next/issues",
             },
             // {
             //   text: 'Latest Releases',
             //   link: '/'
             // },
             {
-              text: 'FAQ',
-              link: '/license/#faq'
-            }
-          ]
+              text: "FAQ",
+              link: "/license/#faq",
+            },
+          ],
         },
         {
-          title: 'Community',
+          title: "Community",
           items: [
             {
-              text: 'Discord',
-              link: 'https://discord.gg/6AZNXEa'
+              text: "Discord",
+              link: "https://discord.gg/6AZNXEa",
             },
             {
-              text: 'Github',
-              link: 'https://github.com/lusaxweb/vuesax-next/'
-            }
-          ]
-        }
-      ]
-    }
+              text: "Github",
+              link: "https://github.com/lusaxweb/vuesax-next/",
+            },
+          ],
+        },
+      ],
+    };
   },
-}
+};
 </script>
 <style lang="stylus" scoped>
 getColor(colorx, alpha = 1)
