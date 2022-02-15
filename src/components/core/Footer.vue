@@ -64,10 +64,10 @@
     </div>
 
     <div class="copy">
-      <span class="span-copy"> Copyright © 2020 Vuesax </span>
+      <span class="span-copy"> Copyright © 2020</span>
       <span class="span-lusaxweb">
         <span> Created By </span>
-        <a target="_blank" href="http://lusaxweb.net">Lusaxweb</a>
+        <a target="_blank" href="https://github.com/pykulytsky">Pytkulytsky</a>
       </span>
     </div>
   </footer>
@@ -227,6 +227,7 @@ getVar(var)
 .footer
   width 95%
   margin 0px
+  margin-top 250px
   display flex
   align-items center
   justify-content center

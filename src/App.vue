@@ -2,7 +2,11 @@
   <div id="app">
     <loading v-if="isLoading" />
     <div class="hidden">
-      <vs-sidebar absolute :open.sync="sidebar"> </vs-sidebar>
+      <vs-sidebar absolute :open.sync="sidebar">
+        <template #logo>
+          <img src="./assets/logo1-d.png" alt="" />
+        </template>
+      </vs-sidebar>
     </div>
     <nav-bar @toggleSidebar="toggleSidebar" @toggleTheme="toggleTheme" />
     <div class="main" id="scroll-main">

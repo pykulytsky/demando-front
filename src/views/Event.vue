@@ -1,5 +1,5 @@
 <template>
-  <div class="event-main">
+  <div class="event-main" v-if="!!event">
     <div class="event-header">
       <vs-row justify="space-around">
         <vs-col w="3" justify="center" align="center">

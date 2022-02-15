@@ -1,5 +1,5 @@
 <template>
-  <div class="poll">
+  <div class="poll" v-if="!isLoading && poll">
     <div class="poll-header">
       <h1>{{ poll.name }}</h1>
     </div>
@@ -22,7 +22,7 @@
             bar-color="#0ec4a6"
             :bg-color="currentTheme == 'dark' ? '#18191c' : 'white'"
             text-align="right"
-            text-fg-color="white"
+            :text-fg-color="getPercentTextColor(option)"
             :text="getPercent(option).toString() + '%'"
             :font-size="25"
             :bar-border-radius="50"
@@ -41,8 +41,7 @@
 </template>
 
 <script>
-import { getPoll } from "../api/items/polls.api";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import ProgressBar from "vue-simple-progress";
 export default {
   components: {
@@ -56,12 +55,27 @@ export default {
       connection: null,
       voted: false,
       vote: -1,
+      pollLoaded: false,
     };
   },
   computed: {
-    ...mapGetters(["token", "currentTheme", "currentUser"]),
+    ...mapGetters(["token", "currentTheme", "currentUser", "isLoading"]),
+  },
+  watch: {
+    poll() {
+      this.pollLoaded = true;
+    },
+    pollLoaded() {
+      console.log(this.poll);
+      this.poll.votes.forEach((vote) => {
+        if (vote.owner.pk == this.currentUser.pk) {
+          this.voted = true;
+        }
+      });
+    }
   },
   methods: {
+    ...mapActions(["setLoading"]),
     sendWithWebsocket(optionId) {
       this.connection.send(
         JSON.stringify({
@@ -81,25 +95,40 @@ export default {
       );
       return !isNaN(percent) ? percent : 0;
     },
+    getPercentTextColor(option) {
+      if (this.getPercent(option) === 0 && this.currentTheme == "light") {
+        return "black";
+      } else {
+        return "white";
+      }
+    },
+    connectToWebsocket() {
+      this.connection = new WebSocket(
+        "ws://localhost:8000/ws/vote/" + this.pollId
+      );
+      this.connection.onmessage = (event) => {
+        this.poll = JSON.parse(event.data);
+      };
+      this.connection.onopen = () => {
+      };
+      this.connection.onclose = (e) => {
+        console.log(e);
+        // this.connectToWebsocket()
+      };
+      this.connection.onerror = (err) => {
+        console.log(err);
+        // this.connectToWebsocket()
+      };
+    },
   },
   async created() {
+    this.setLoading(true);
     this.pollId = this.$route.params.pk;
-    this.poll = await (await getPoll(this.pollId)).data;
-    this.poll.votes.forEach((vote) => {
-      if (vote.owner.pk == this.currentUser.pk) {
-        this.voted = true;
-      }
-    });
-
-    this.connection = new WebSocket(
-      "ws://localhost:8000/ws/vote/" + this.pollId
-    );
-    this.connection.onmessage = (event) => {
-      this.poll = JSON.parse(event.data);
-    };
-    this.connection.onopen = () => {
-      console.log("Successfully connected to the echo websocket server...");
-    };
+    this.connectToWebsocket();
+    this.setLoading(false);
+  },
+  destroyed() {
+    this.connection.close();
   },
 };
 </script>
