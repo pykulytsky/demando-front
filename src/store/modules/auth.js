@@ -29,7 +29,7 @@ export default {
         try{
             if(localStorage.getItem('token') !== null) {
                 const response = await getMe()
-                commit ('SET_CURRENT_USER', response.data)
+                await commit('SET_CURRENT_USER', response.data)
             }
             commit('SET_LOADING', false)
         }

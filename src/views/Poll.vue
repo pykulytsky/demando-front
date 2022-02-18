@@ -28,7 +28,9 @@
             :bar-border-radius="50"
             :val="getPercent(option)"
           ></progress-bar>
-          <h2 v-else>{{ option.name }}</h2>
+          <h2 class="prevote__header" @click="handleVote(option.pk)" v-else>
+            {{ option.name }}
+          </h2>
         </vs-col>
         <vs-col w="2">
           <h4 v-if="voted" class="option-percent">
@@ -43,6 +45,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import ProgressBar from "vue-simple-progress";
+import jwt_decode from "jwt-decode";
 export default {
   components: {
     ProgressBar,
@@ -60,19 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters(["token", "currentTheme", "currentUser", "isLoading"]),
-  },
-  watch: {
-    poll() {
-      this.pollLoaded = true;
-    },
-    pollLoaded() {
-      console.log(this.poll);
-      this.poll.votes.forEach((vote) => {
-        if (vote.owner.pk == this.currentUser.pk) {
-          this.voted = true;
-        }
-      });
-    }
   },
   methods: {
     ...mapActions(["setLoading"]),
@@ -107,21 +97,22 @@ export default {
         "ws://localhost:8000/ws/vote/" + this.pollId
       );
       this.connection.onmessage = (event) => {
-        this.poll = JSON.parse(event.data);
+        this.setLoading(true)
+        this.poll = JSON.parse(event.data)
+        const userPk = jwt_decode(localStorage.getItem("token")).pk
+        this.voted =  !!this.poll.votes.filter(vote => vote.owner.pk == userPk)
+        this.setLoading(false)
       };
-      this.connection.onopen = () => {
-      };
+      this.connection.onopen = () => {};
       this.connection.onclose = (e) => {
         console.log(e);
-        // this.connectToWebsocket()
       };
       this.connection.onerror = (err) => {
         console.log(err);
-        // this.connectToWebsocket()
       };
     },
   },
-  async created() {
+  created() {
     this.setLoading(true);
     this.pollId = this.$route.params.pk;
     this.connectToWebsocket();
@@ -148,5 +139,8 @@ export default {
 }
 .poll-header h1 {
   text-align: center;
+}
+.prevote__header:hover {
+  cursor: pointer;
 }
 </style>

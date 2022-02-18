@@ -77,9 +77,9 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     this.setDefaultTheme();
-    this.loadCurrentUser();
+    await this.loadCurrentUser();
   },
 };
 </script>
