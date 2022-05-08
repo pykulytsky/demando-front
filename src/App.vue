@@ -8,13 +8,13 @@
         </template>
       </vs-sidebar>
     </div>
-    <nav-bar @toggleSidebar="toggleSidebar" @toggleTheme="toggleTheme" />
+    <nav-bar v-if="!['Login', 'Register', 'NotFound'].includes($route.name)" @toggleSidebar="toggleSidebar" @toggleTheme="toggleTheme" />
     <div class="main" id="scroll-main">
       <transition name="component-fade" mode="out-in">
         <router-view />
       </transition>
     </div>
-    <Footer />
+    <Footer v-if="!['Login', 'Register', 'NotFound'].includes($route.name)" />
   </div>
 </template>
 
@@ -80,6 +80,7 @@ export default {
   async created() {
     this.setDefaultTheme();
     await this.loadCurrentUser();
+    console.log(this.$route.name)
   },
 };
 </script>

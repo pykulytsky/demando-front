@@ -102,7 +102,7 @@
         id="new-question"
       />
     </transition>
-    <div class="event-content">
+    <div class="event-content" v-if="event.questions.length > 0">
       <vs-row
         v-for="question in event.questions"
         :key="question.pk"
@@ -115,11 +115,18 @@
         />
       </vs-row>
     </div>
+    <vs-row justify="center" v-else class="no-questions">
+      <h2 class="no-questions-header">
+        There are no questions yet, you have the chance to be first )
+      </h2>
+    </vs-row>
 
     <event-actions
       @handleClose="actionsIsShown = false"
       :isShown="actionsIsShown"
       :isCurrentUserOwner="!!currentUser && event.owner.pk == currentUser.pk"
+      :eventId="eventId"
+      :eventName="event.name"
     />
     <qr-code-dialog
       @handleClose="qrCodeDialogIsShown = false"
@@ -275,6 +282,15 @@ export default {
 }
 .event-content {
   margin-top: 55px;
+}
+
+.no-questions {
+  margin-top: 120px;
+}
+
+.no-questions-header {
+  color: grey;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
 }
 
 canvas {

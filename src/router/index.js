@@ -5,6 +5,10 @@ import QnA from '../views/QnA.vue'
 import Polls from '../views/Polls.vue'
 import Poll from '../views/Poll.vue'
 import Event from '../views/Event.vue'
+import Quiz from '../views/Quiz.vue'
+import Quizzes from '../views/Quizzes.vue'
+import QuizConstructor from '../views/QuizConstructor.vue'
+import NotFound from '../views/NotFound.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 import Logout from '../views/auth/Logout.vue'
@@ -56,9 +60,29 @@ const routes = [
     component: Logout
   },
   {
-    path: '/poll/:pk',
+    path: '/polls/:pk',
     name: 'Poll',
     component: Poll
+  },
+  {
+    path: '/quizzes',
+    name: "Quizzes",
+    component: Quizzes,
+  },
+  {
+    path: "/quizzes/constructor",
+    component: QuizConstructor,
+    name: "Constructor"
+  },
+  {
+    path: "/quizzes/quiz/:quizId",
+    component: Quiz,
+    name: "Quiz"
+  },
+  {
+    path: '*',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 

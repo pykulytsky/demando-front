@@ -13,8 +13,7 @@
     </template>
     <vs-navbar-item to="/qa" id="qna"> Q&A </vs-navbar-item>
     <vs-navbar-item to="/polls" id="polls"> Polls </vs-navbar-item>
-    <vs-navbar-item id="components"> Components </vs-navbar-item>
-    <vs-navbar-item id="license"> license </vs-navbar-item>
+    <vs-navbar-item to="/quizzes" id="quiz"> Quiz </vs-navbar-item>
     <template #right>
       <vs-switch
         @mouseover="isSwitchHovered = true"
