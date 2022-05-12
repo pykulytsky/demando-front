@@ -41,6 +41,8 @@ import {
 import VueScrollTo from "vue-scrollto";
 import VueMeta from "vue-meta";
 import GAuth from "vue-google-oauth2";
+import VueNumber from 'vue-number-animation'
+
 
 const gauthOption = {
   clientId:
@@ -98,6 +100,7 @@ Vue.use(Unicon, {
 Vue.use(VueScrollTo);
 Vue.use(VueMeta);
 Vue.use(GAuth, gauthOption);
+Vue.use(VueNumber);
 
 new Vue({
   router,

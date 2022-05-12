@@ -23,6 +23,7 @@
     "vue-google-oauth2": "^1.5.8",
     "vue-meta": "^2.4.0",
     "vue-multiple-progress": "^1.6.0",
+    "vue-number-animation": "^1.1.2",
     "vue-router": "^3.2.0",
     "vue-scrollto": "^2.20.0",
     "vue-simple-progress": "^1.1.1",

@@ -89,6 +89,8 @@ export default {
 * {
   font-family: "Work Sans", sans-serif;
   font-weight: 400;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 h1 {
@@ -112,7 +114,7 @@ h1 {
 }
 
 .main {
-  margin-top: 50px;
+  margin-top: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
