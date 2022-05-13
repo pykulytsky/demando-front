@@ -3,10 +3,10 @@
     <div class="quiz-start-page" v-if="currentStep == 0">
       <h3>Use this code to join the game:</h3>
       <vs-tooltip>
-        <h1 class="code">{{ quiz.enter_code }}</h1>
+        <h1 class="code"><span>{{ quiz.enter_code }}</span></h1>
         <template #tooltip> Click here copy the code </template>
       </vs-tooltip>
-      <h3>or join the game using QR-code bellow</h3>
+      <h4>or join the game using QR-code bellow</h4>
       <qrcode-vue class="qr-code" :value="link" :size="220" level="H" />
       <h3>Members:</h3>
       <div class="members">
@@ -21,10 +21,11 @@
           </template>
         </vs-tooltip>
       </div>
-      <vs-button flat transparent v-if="isOwner" @click="startQuiz">
+      <vs-button flat size="xl" class="start-btn"  v-if="isOwner" @click="startQuiz">
         Start Game
       </vs-button>
       <h3 v-else>Please, wait when game owner starts the game!</h3>
+      <img v-if="!isOwner" src="../assets/spinner3.gif" width="100" height="100" />
     </div>
 
     <transition name="component-fade" mode="out-in">
@@ -48,22 +49,27 @@
         :val="(timer * 100) / 30"
       ></progress-bar>
     </transition>
-    <h2 v-if="timerEnabled">{{ timer }}</h2>
     <transition name="component-fade" mode="out-in">
       <div class="current-results" v-if="answerTimerEnabled">
         <h1 v-if="currentAnswer.option.is_right">Your answer is correct!</h1>
-        <h1 v-else>Your answer is wrong!</h1>
+        <h1 v-if="!currentAnswer.option.is_right && !isNoAnswer">Your answer is wrong!</h1>
+        <h1 v-if="isNoAnswer">There was no answer</h1>
         <img
           v-if="currentAnswer.option.is_right"
           width="150"
           height="150"
-          src="../assets/icons8-ok.svg"
+          src="../assets/check.png"
         />
-        <img v-else width="150" height="150" src="../assets/icons8-close.svg" />
+        <img v-if="!currentAnswer.option.is_right || isNoAnswer" width="150" height="150" src="../assets/icons8-close.svg" />
         <number tag="h1" :from="0" :to="currentResults" :duration="3" />
+        <h1 v-if="!currentAnswer.option.is_right || isNoAnswer">Corrent answer: {{rightAnswer}}</h1>
+        <h3>Waiting for the next question...</h3>
+        <img src="../assets/spinner3.gif" width="150" height="150" />
       </div>
     </transition>
-    <div class="final-results" v-if="finalResults">{{ finalResults }}</div>
+    <div class="final-results" v-if="finalResults">
+      <results-table :results="finalResults"></results-table>
+    </div>
   </div>
 </template>
 
@@ -74,11 +80,13 @@ import jwt_decode from "jwt-decode";
 import QrcodeVue from "qrcode.vue";
 import QuizStep from "../components/quizzes/QuizStep.vue";
 import ProgressBar from "vue-simple-progress";
+import ResultsTable from "../components/quizzes/ResultsTable.vue";
 export default {
   components: {
     QrcodeVue,
     QuizStep,
     ProgressBar,
+    ResultsTable
   },
   data: () => {
     return {
@@ -100,6 +108,8 @@ export default {
 
       testTimer: 10,
       testTimerEnabled: false,
+
+      isNoAnswer: false
     };
   },
   watch: {
@@ -133,6 +143,7 @@ export default {
         } else if (this.timerEnabled) {
           this.setLoading(true);
           if (this.currentAnswer == null) {
+            this.isNoAnswer = true;
             this.currentStepData.options.forEach((option) => {
               if (!option.is_right) {
                 this.currentAnswer = {
@@ -178,6 +189,7 @@ export default {
         if (value > 0 && this.answerTimerEnabled) {
           setTimeout(() => {
             this.answerTimer--;
+            console.log(this.rightAnswer)
           }, 1000);
         } else if (this.answerTimerEnabled) {
           if (this.isOwner) {
@@ -192,13 +204,24 @@ export default {
           this.answerTimerEnabled = false;
           this.answerTimer = 5;
           this.currentAnswer = null;
+          this.isNoAnswer = false
           this.setLoading(true);
           this.setLoading(false);
         }
       },
     },
   },
-  computed: { ...mapGetters(["currentUser", "isLoading", "currentTheme"]) },
+  computed: {
+    ...mapGetters(["currentUser", "isLoading", "currentTheme"]),
+    rightAnswer() {
+      this.currentStepData.options.forEach(option => {
+        if(option.is_right) {
+          return option.title
+        }
+      })
+      return null
+    },
+  },
   methods: {
     ...mapActions(["setLoading"]),
     startTimer() {
@@ -247,6 +270,7 @@ export default {
         }
       });
     },
+
     getRandomColor() {
       let colors = ["primary", "success", "danger", "warn", "dark"];
       return colors[Math.floor(colors.length * Math.random())];
@@ -269,6 +293,12 @@ export default {
       this.sendActionToWebsocket("start");
     },
   },
+  beforeCreate() {
+    document.body.classList.add('gradient-background')
+  },
+  destroyed() {
+    document.body.classList.remove('gradient-background')
+  },
   created() {
     this.setLoading(true);
     this.quizId = this.$route.params.quizId;
@@ -282,7 +312,9 @@ export default {
         if (userPk == this.quiz.owner.pk) {
           this.isOwner = true;
         }
-        this.connectToWebsocket();
+        if(!this.connection) {
+          this.connectToWebsocket();
+        }
       })
       .catch(() => {
         this.$router.push("/404");
@@ -293,7 +325,12 @@ export default {
 </script>
 
 <style>
-html {
+/* html {
+  background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+} */
+.gradient-background {
   background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
@@ -316,6 +353,7 @@ html {
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  margin-bottom: 25px;
 }
 .members .vs-avatar-content {
   margin-right: 5px;
@@ -326,7 +364,8 @@ html {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 150px;
+  margin-top: 100px;
+  text-align: center;
 }
 .final-results {
   display: flex;
@@ -353,5 +392,17 @@ html {
 }
 .code {
   cursor: pointer;
+  font-size: 50px;
+}
+.code span {
+  background-color: rgb(24, 24, 24);
+  opacity: 0.5;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: white;
+}
+.start-btn .vs-button--size-xl {
+  font-size: 75px;
 }
 </style>

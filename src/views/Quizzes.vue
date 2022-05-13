@@ -1,11 +1,12 @@
 <template>
   <vs-row>
-    <vs-col w="6">
-      <create-quiz-alert />
+    <vs-col w="6" v-responsive.lg.xl >
+      <create-quiz-alert/>
     </vs-col>
-    <vs-col w="6">
+    <vs-col w="6" v-responsive.lg.xl>
       <code-input-form />
     </vs-col>
+      <code-input-form v-responsive.sm.xs />
   </vs-row>
 </template>
 
