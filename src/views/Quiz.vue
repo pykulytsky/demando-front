@@ -1,14 +1,15 @@
 <template>
   <div class="quiz">
     <div class="quiz-start-page" v-if="currentStep == 0">
-      <h3>Use this code to join the game:</h3>
+      <h1>{{quiz.name}}</h1>
+      <h3>Use this PIN code to join the game:</h3>
       <vs-tooltip>
         <h1 class="code"><span>{{ quiz.enter_code }}</span></h1>
         <template #tooltip> Click here copy the code </template>
       </vs-tooltip>
       <h4>or join the game using QR-code bellow</h4>
-      <qrcode-vue class="qr-code" :value="link" :size="220" level="H" />
-      <h3>Members:</h3>
+      <qrcode-vue class="qr-code" :value="link" :size="200" level="H" />
+      <h3>Waiting for other users to join...</h3>
       <div class="members">
         <vs-tooltip v-for="member in members" :key="member">
           <vs-avatar :color="getRandomColor()" circle>
@@ -24,7 +25,7 @@
       <vs-button flat size="xl" class="start-btn"  v-if="isOwner" @click="startQuiz">
         Start Game
       </vs-button>
-      <h3 v-else>Please, wait when game owner starts the game!</h3>
+      <h3 v-else>Please, wait when game owner starts the game...</h3>
       <img v-if="!isOwner" src="../assets/spinner3.gif" width="100" height="100" />
     </div>
 
@@ -352,8 +353,6 @@ export default {
 .members {
   display: flex;
   flex-direction: row;
-  margin-top: 20px;
-  margin-bottom: 25px;
 }
 .members .vs-avatar-content {
   margin-right: 5px;

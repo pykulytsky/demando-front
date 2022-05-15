@@ -8,6 +8,9 @@
         <unicon @click="addStep" class="add-step-btn" name="plus" width="15" height="15" fill="grey" />
       </vs-col>
     </vs-row>
+    <vs-row align="flex-end">
+      <vs-col w="11" v-for="step in existsSteps" :key="step.pk">{{step}}</vs-col>
+    </vs-row>
     <vs-row v-for="(step, index) in steps" :key="index" class="step-item" align="center">
       <vs-col w="10">
         <vs-input placeholder="Question..." v-model="steps[index]" />
@@ -40,6 +43,9 @@ export default {
       currentStepTitle: '',
       steps: []
     }
+  },
+  props: {
+    existsSteps: Object
   },
   methods: {
     addStep() {

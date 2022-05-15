@@ -2,13 +2,22 @@
   <div class="constructor-header">
     <vs-input placeholder="Quiz name..."></vs-input>
     <div class="quiz-options">
-      <vs-checkbox>Test</vs-checkbox>
+
       <vs-checkbox>Test</vs-checkbox>
       <vs-checkbox>Test</vs-checkbox>
     </div>
   </div>
 </template>
-
+<script>
+export default {
+  data: () => {
+    return {
+      seconds: 30,
+      isPrivate: false
+    }
+  }
+}
+</script>
 <style>
 .constructor-header {
   margin-top: 25px;
@@ -21,12 +30,10 @@
   justify-content: center;
 }
 .constructor-header .vs-input {
-  font-size: 45px;
   width: 100%;
   min-width: 100%;
 }
 .constructor-header .vs-input__label {
-  font-size: 45px;
 }
 .quiz-options {
   margin-top: 10px;
