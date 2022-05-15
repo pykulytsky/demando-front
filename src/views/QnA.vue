@@ -1,12 +1,29 @@
 <template>
   <div class="qa-main">
-    <div class="grid event-search">
+    <div class="qa-header">
+      <h1 class="qa-title-header">Create events, where other people can ask questions to you, or join to events witch was created by other users!</h1>
+      <vs-button
+        size="xl"
+        flat
+        icon
+        circle
+        v-scroll-to="{
+          el: '#event-search',
+          offset: -80,
+          easing: 'ease-in-out',
+        }"
+      >
+          <unicon  name="arrow-down" />
+      </vs-button>
+    </div>
+    <div class="event-search">
       <vs-row align="center" justify="center">
         <h1>Enter identifier of event</h1>
       </vs-row>
       <vs-row align="center" justify="center">
         <vs-col w="11">
           <vs-input
+            id="event-search"
             placeholder="Enter id of event..."
             shadow
             v-model="eventId"
@@ -128,10 +145,8 @@ export default {
 <style>
 .qa-main {
   display: flex;
-  margin-top: 25px;
   flex-direction: column;
   align-items: center;
-  padding: 25px;
 }
 .vs-button {
   margin-top: 12px;
@@ -162,5 +177,33 @@ export default {
   bottom: 5%;
   padding: 7px 8px;
   border-radius: 50px;
+}
+.qa-header {
+  background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  text-align: center;
+  display: flex;
+  padding-left: 12.5%;
+  margin-left: -12.5%;
+  padding-right: 12.5%;
+  margin-right: 0;
+  flex-direction: column;
+  padding-top: 15%;
+  padding-bottom: 15%;
+  justify-content: center;
+  align-items: center;
+}
+.qa-title-header {
+  font-size: 50px;
+  margin: 5%;
+  margin-left: 20%;
+}
+.qa-header .vs-button {
+  width: 50px;
+  margin-left: 15%;
+}
+.qa-header .vs-button__content {
+  font-size: 40px;
 }
 </style>

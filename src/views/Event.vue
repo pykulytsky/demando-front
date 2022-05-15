@@ -262,12 +262,13 @@ export default {
 </script>
 
 <style>
+.event-main {
+  width: 85%;
+}
 .event-header {
   margin-top: 75px;
   border-radius: 15px;
   padding-top: 15px;
-  min-width: 750px;
-  max-width: 950px;
   color: white;
   background: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
   -webkit-animation: gradient 15s ease infinite;

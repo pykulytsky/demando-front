@@ -1,7 +1,13 @@
 <template>
   <div class="constructor">
+    <div class="constructor-head" v-if="!startDialog">
+      <h1 class="quiz-name">{{quiz.name}}</h1>
+      <div class="quiz-details">
+
+      </div>
+    </div>
     <h3>Next you have to add some questions to your quiz...</h3>
-    <step-constructor v-if="!startDialog" :quizID="quiz.pk"></step-constructor>
+    <step-constructor v-if="!startDialog" :quiz="quiz"></step-constructor>
     <vs-dialog
       not-close
       prevent-close
@@ -17,7 +23,9 @@
       <div class="con-content">
         <p>Enter name of your quiz</p>
         <vs-input v-model="quizName" placeholder="Name">
-          <template v-if="nameValid" #message-danger> At least 6 symbols </template>
+          <template v-if="nameValid" #message-danger>
+            At least 6 symbols
+          </template>
         </vs-input>
         <p>Seconds per answer:</p>
         <vs-input type="number" v-model="seconds"> </vs-input>
@@ -48,8 +56,9 @@
 </template>
 <script>
 import StepConstructor from "../components/quizzes/quizConstructor/StepConstructor.vue";
-import { createQuiz } from "../api/items/quizzes.api";
+import { createQuiz, getQuizzes } from "../api/items/quizzes.api";
 import CodeInput from "vue-verification-code-input";
+import {mapGetters} from "vuex"
 export default {
   components: {
     StepConstructor,
@@ -63,10 +72,11 @@ export default {
       seconds: 30,
       isPrivate: false,
       deleteAfterFinish: false,
-      quiz: null
+      quiz: null,
     };
   },
   computed: {
+    ...mapGetters(["isAuthenticated"]),
     nameValid() {
       if (this.quizName.length > 6 || this.quizName == 0) {
         return false;
@@ -75,14 +85,34 @@ export default {
   },
   methods: {
     handleCreateQuiz() {
-      if(!this.nameValid && this.quizName != "") {
-        createQuiz(this.quizName, this.enterCode).then((response) => {
-          this.quiz = response.data;
-          this.startDialog = false;
-          console.log(this.quiz);
-        });
-      }
-      else {
+      if (!this.nameValid && this.quizName != "") {
+        let enterCodeIsUsed = false;
+        this.quizzes.forEach(quiz => {
+          if(quiz.enter_code == this.enterCode) {
+            enterCodeIsUsed = true
+          }
+        })
+        if (!enterCodeIsUsed) {
+          createQuiz(
+            this.quizName,
+            this.enterCode,
+            this.isPrivate,
+            this.deleteAfterFinish
+          ).then((response) => {
+            this.quiz = response.data;
+            this.startDialog = false;
+          });
+        } else {
+          this.$vs.notification({
+            icon: "<unicon name='share' fill='white' />",
+            position: "bottom-center",
+            color: "danger",
+            duration: 3000,
+            title: "PIN code is already in use",
+            text: "PIN code is already in use, please, try another one.",
+          });
+        }
+      } else {
         this.$vs.notification({
           icon: "<unicon name='share' fill='white' />",
           position: "bottom-center",
@@ -97,11 +127,23 @@ export default {
       this.enterCode = v;
     },
   },
+  created() {
+    if(!localStorage.getItem("token")) {
+      this.$router.push("/login")
+    }
+    getQuizzes().then((response) => {
+      this.quizzes = response.data;
+    });
+  },
 };
 </script>
 <style>
 .constructor {
   width: 75%;
   margin-top: 25px;
+}
+.quiz-name {
+  text-align: center;
+  font-size: 60px;
 }
 </style>

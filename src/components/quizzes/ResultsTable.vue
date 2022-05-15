@@ -10,7 +10,7 @@
       :index="i"
     ></table-item>
 
-    <vs-button size="xl" flat class="exit-quiz-btn">Exit</vs-button>
+    <vs-button @click="$router.push('/quizzes')" size="xl" flat class="exit-quiz-btn">Exit</vs-button>
   </div>
 </template>
 <script>

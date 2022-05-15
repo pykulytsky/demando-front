@@ -2,19 +2,55 @@
   <div id="app">
     <loading v-if="isLoading" />
     <div class="hidden">
-      <vs-sidebar absolute :open.sync="sidebar">
+      <vs-sidebar absolute  :open.sync="sidebar">
         <template #logo>
           <img src="./assets/logo1-d.png" alt="" />
         </template>
+        <vs-sidebar-item id="explore">
+          <template #icon>
+            <unicon name="search" fill="royalblue" width="30" height="30" />
+          </template>
+          Explore
+        </vs-sidebar-item>
+        <vs-sidebar-item id="home">
+          <template #icon>
+            <unicon name="estate" fill="royalblue" width="30" height="30" />
+          </template>
+          Home
+        </vs-sidebar-item>
+        <vs-sidebar-item id="qna">
+          <template #icon>
+            <unicon name="question" fill="royalblue" width="50" height="50" />
+          </template>
+          Q&A
+        </vs-sidebar-item>
+        <vs-sidebar-item id="polls">
+          <template #icon>
+            <unicon name="thumbs-up" fill="royalblue" width="30" height="30" />
+          </template>
+          Polls
+        </vs-sidebar-item>
+        <vs-sidebar-item id="quizzes">
+          <template #icon>
+            <unicon name="comment-question" fill="royalblue" width="30" height="30" />
+          </template>
+          Quizzes
+        </vs-sidebar-item>
       </vs-sidebar>
     </div>
-    <nav-bar v-if="!['Login', 'Register', 'NotFound', 'Quiz'].includes($route.name)" @toggleSidebar="toggleSidebar" @toggleTheme="toggleTheme" />
+    <nav-bar
+      v-if="!['Login', 'Register', 'NotFound', 'Quiz'].includes($route.name)"
+      @toggleSidebar="toggleSidebar"
+      @toggleTheme="toggleTheme"
+    />
     <div class="main" id="scroll-main">
       <transition name="component-fade" mode="out-in">
         <router-view />
       </transition>
     </div>
-    <Footer v-if="!['Login', 'Register', 'NotFound', 'Quiz'].includes($route.name)" />
+    <Footer
+      v-if="!['Login', 'Register', 'NotFound', 'Quiz'].includes($route.name)"
+    />
   </div>
 </template>
 
@@ -80,7 +116,7 @@ export default {
   async created() {
     this.setDefaultTheme();
     await this.loadCurrentUser();
-    console.log(this.$route.name)
+    console.log(this.$route.name);
   },
 };
 </script>

@@ -9,7 +9,8 @@
       </vs-col>
     </vs-row>
     <vs-row align="flex-end">
-      <vs-col w="11" v-for="step in existsSteps" :key="step.pk">{{step}}</vs-col>
+      <vs-col w="11" v-for="(step, index) in existsSteps" :key="step.pk">
+      <h4 class="exists-step">{{index+1}}. {{step.title}}</h4></vs-col>
     </vs-row>
     <vs-row v-for="(step, index) in steps" :key="index" class="step-item" align="center">
       <vs-col w="10">
@@ -72,7 +73,7 @@ export default {
 </script>
 <style>
 .steps-create {
-  border: 2px rgb(65, 64, 64) solid;
+  border: 2px rgba(65, 64, 64, .5) solid;
   padding: 10px 5px;
   border-radius: 10px;
   margin-right: 20px;
@@ -86,5 +87,8 @@ export default {
 }
 .steps-create .vs-input {
   min-width: 390px;
+}
+.exists-step {
+  margin-left: 10px;
 }
 </style>

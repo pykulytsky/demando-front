@@ -8,9 +8,10 @@
       In order to make any votes, you should log in or create a new account if
       you don't have it yet!
     </vs-alert>
-    <div class="vote-item-wrap"  v-for="option in poll.options" :key="option.pk">
+    <div class="vote-item-wrap" v-for="option in poll.options" :key="option.pk">
       <div class="vote-item">
-        <h2 v-if="voted">{{ option.name }}</h2>
+        <h2 v-responsive.lg.xl v-if="voted">{{ option.name }}</h2>
+        <p v-responsive.sm.xs v-if="voted">{{ option.name }}</p>
         <vs-row align="center">
           <vs-col w="1" v-if="!voted">
             <vs-radio
@@ -19,7 +20,7 @@
               :val="option.pk"
             ></vs-radio>
           </vs-col>
-          <vs-col :w="voted ? 10 : 9">
+          <vs-col :w="voted ? 10 : 9" v-responsive.lg.xl>
             <progress-bar
               v-if="voted"
               class="option"
@@ -38,7 +39,26 @@
               {{ option.name }}
             </h2>
           </vs-col>
-          <vs-col w="2">
+          <vs-col w="12" v-responsive.sm.xs>
+            <progress-bar
+              v-if="voted"
+              class="option"
+              text-position="inside"
+              size="14"
+              bar-color="#0ec4a6"
+              :bg-color="currentTheme == 'dark' ? '#18191c' : 'white'"
+              text-align="right"
+              :text-fg-color="getPercentTextColor(option)"
+              :text="getPercent(option).toString() + '%'"
+              :font-size="14"
+              :bar-border-radius="50"
+              :val="getPercent(option)"
+            ></progress-bar>
+            <h2 class="prevote__header" @click="handleVote(option.pk)" v-else>
+              {{ option.name }}
+            </h2>
+          </vs-col>
+          <vs-col w="2" v-responsive.lg.xl>
             <h4 v-if="voted" class="option-percent">
               {{ option.votes.length }} votes
             </h4>
@@ -103,7 +123,10 @@ export default {
       }
     },
     getPercent(option) {
-      let percent = ((option.votes.length / this.poll.votes.length) * 100).toFixed()
+      let percent = (
+        (option.votes.length / this.poll.votes.length) *
+        100
+      ).toFixed();
 
       return !isNaN(percent) ? percent : 0;
     },
@@ -123,9 +146,9 @@ export default {
         this.poll = JSON.parse(event.data);
         try {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;
-          this.voted  = this.poll.votes.filter(
-            (vote) => vote.owner.pk == userPk
-          ).length > 0
+          this.voted =
+            this.poll.votes.filter((vote) => vote.owner.pk == userPk).length >
+            0;
         } catch {
           this.voted = false;
         }
@@ -155,7 +178,7 @@ export default {
 <style scoped>
 .poll {
   margin-top: 50px;
-  width: 60%;
+  width: 75%;
 }
 
 .vote-item {

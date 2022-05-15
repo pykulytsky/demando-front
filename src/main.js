@@ -36,7 +36,12 @@ import {
   uniTimes,
   uniGoogle,
   uniSetting,
-  uniClockFive
+  uniClockFive,
+  uniArrowDown,
+  uniEstate,
+  uniQuestion,
+  uniCommentQuestion,
+  uniSearch
 } from "vue-unicons/dist/icons";
 import VueScrollTo from "vue-scrollto";
 import VueMeta from "vue-meta";
@@ -94,6 +99,11 @@ Unicon.add([
   uniGoogle,
   uniSetting,
   uniClockFive,
+  uniArrowDown,
+  uniEstate,
+  uniQuestion,
+  uniCommentQuestion,
+  uniSearch
 ]);
 Vue.use(Unicon, {
   fill: "#0ec4a6"

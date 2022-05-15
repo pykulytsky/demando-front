@@ -50,6 +50,7 @@ export default {
         this.$vs.notification({
           icon: "<unicon name='share' fill='white' />",
           position: "bottom-right",
+          color: "danger",
           duration: 2000,
           title: "No quiz was found",
           text: "Enter code that you just puted, don't match any quiz. Probably, you made any mistake. Please, try again.",

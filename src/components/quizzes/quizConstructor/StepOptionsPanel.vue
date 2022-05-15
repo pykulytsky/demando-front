@@ -54,7 +54,7 @@ export default {
 </script>
 <style>
 .step-options-create {
-  border: 2px rgb(65, 64, 64) solid;
+  border: 2px rgba(65, 64, 64, .5) solid;
   padding: 10px 5px;
   border-radius: 10px;
 }

@@ -60,7 +60,7 @@
         text-align="right"
         :font-size="25"
         :bar-border-radius="50"
-        :val="(timer * 100) / 30"
+        :val="(timer * 100) / quiz.seconds_per_answer"
       ></progress-bar>
     </transition>
     <transition name="component-fade" mode="out-in">
@@ -217,7 +217,7 @@ export default {
           );
           this.answerTimerEnabled = true;
           this.timerEnabled = false;
-          this.timer = 30;
+          this.timer = this.quiz.seconds_per_answer;
           this.setLoading(false);
         }
       },
@@ -381,7 +381,7 @@ export default {
     getQuiz(this.quizId)
       .then((response) => {
         this.quiz = response.data;
-
+        this.timer = this.quiz.seconds_per_answer;
         this.link = "localhost:8080" + this.$route.fullPath;
 
         if (localStorage.getItem("token") !== null) {

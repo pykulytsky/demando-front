@@ -6,13 +6,13 @@
         <vs-col w="6">
           <div :class="{'option-item': true, 'picked-option': pickedOption == 0}" @click="answer(step.options[0], 0)">
             <h2 v-if="step.options[0].title.length < 15" class="option-text">{{ step.options[0].title }}</h2>
-            <h4 v-else>{{ step.options[0].title }}</h4>
+            <h4 class="option-text" v-else>{{ step.options[0].title }}</h4>
           </div>
         </vs-col>
         <vs-col w="6">
           <div :class="{'option-item': true, 'picked-option': pickedOption == 1}" @click="answer(step.options[1], 1)">
             <h2 v-if="step.options[1].title.length < 15" class="option-text">{{ step.options[1].title }}</h2>
-            <h4 v-else>{{ step.options[1].title }}</h4>
+            <h4 class="option-text" v-else>{{ step.options[1].title }}</h4>
           </div>
         </vs-col>
       </vs-row>
@@ -20,13 +20,13 @@
         <vs-col w="6">
           <div :class="{'option-item': true, 'picked-option': pickedOption == 2}" @click="answer(step.options[2], 2)">
             <h2 v-if="step.options[2].title.length < 15" class="option-text">{{ step.options[2].title }}</h2>
-            <h4 v-else>{{ step.options[2].title }}</h4>
+            <h4 class="option-text" v-else>{{ step.options[2].title }}</h4>
           </div>
         </vs-col>
         <vs-col w="6">
           <div :class="{'option-item': true, 'picked-option': pickedOption == 3}" @click="answer(step.options[3], 3)">
             <h2 v-if="step.options[3].title.length < 15" class="option-text">{{ step.options[3].title }}</h2>
-            <h4 v-else>{{ step.options[3].title }}</h4>
+            <h4 class="option-text" v-else>{{ step.options[3].title }}</h4>
           </div>
         </vs-col>
       </vs-row>
