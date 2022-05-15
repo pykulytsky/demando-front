@@ -1,10 +1,12 @@
 <template>
   <div class="quiz">
     <div class="quiz-start-page" v-if="currentStep == 0">
-      <h1>{{quiz.name}}</h1>
+      <h1>{{ quiz.name }}</h1>
       <h3>Use this PIN code to join the game:</h3>
       <vs-tooltip>
-        <h1 class="code"><span>{{ quiz.enter_code }}</span></h1>
+        <h1 class="code">
+          <span>{{ quiz.enter_code }}</span>
+        </h1>
         <template #tooltip> Click here copy the code </template>
       </vs-tooltip>
       <h4>or join the game using QR-code bellow</h4>
@@ -22,11 +24,22 @@
           </template>
         </vs-tooltip>
       </div>
-      <vs-button flat size="xl" class="start-btn"  v-if="isOwner" @click="startQuiz">
+      <vs-button
+        flat
+        size="xl"
+        class="start-btn"
+        v-if="isOwner"
+        @click="startQuiz"
+      >
         Start Game
       </vs-button>
       <h3 v-else>Please, wait when game owner starts the game...</h3>
-      <img v-if="!isOwner" src="../assets/spinner3.gif" width="100" height="100" />
+      <img
+        v-if="!isOwner"
+        src="../assets/spinner3.gif"
+        width="100"
+        height="100"
+      />
     </div>
 
     <transition name="component-fade" mode="out-in">
@@ -53,7 +66,9 @@
     <transition name="component-fade" mode="out-in">
       <div class="current-results" v-if="answerTimerEnabled">
         <h1 v-if="currentAnswer.option.is_right">Your answer is correct!</h1>
-        <h1 v-if="!currentAnswer.option.is_right && !isNoAnswer">Your answer is wrong!</h1>
+        <h1 v-if="!currentAnswer.option.is_right && !isNoAnswer">
+          Your answer is wrong!
+        </h1>
         <h1 v-if="isNoAnswer">There was no answer</h1>
         <img
           v-if="currentAnswer.option.is_right"
@@ -61,9 +76,16 @@
           height="150"
           src="../assets/check.png"
         />
-        <img v-if="!currentAnswer.option.is_right || isNoAnswer" width="150" height="150" src="../assets/icons8-close.svg" />
+        <img
+          v-if="!currentAnswer.option.is_right || isNoAnswer"
+          width="150"
+          height="150"
+          src="../assets/icons8-close.svg"
+        />
         <number tag="h1" :from="0" :to="currentResults" :duration="3" />
-        <h1 v-if="!currentAnswer.option.is_right || isNoAnswer">Corrent answer: {{rightAnswer}}</h1>
+        <h1 v-if="!currentAnswer.option.is_right || isNoAnswer">
+          Corrent answer: {{ rightAnswer }}
+        </h1>
         <h3>Waiting for the next question...</h3>
         <img src="../assets/spinner3.gif" width="150" height="150" />
       </div>
@@ -71,6 +93,31 @@
     <div class="final-results" v-if="finalResults">
       <results-table :results="finalResults"></results-table>
     </div>
+
+    <vs-dialog
+      width="300px"
+      blur
+      not-close
+      prevent-close
+      v-model="createUserDialog"
+    >
+      <template #header>
+        <h3 class="not-margin">Welcome, pick up your nickname</h3>
+      </template>
+
+      <div class="con-content-nickname">
+        <vs-input v-model="newUserNickname" placeholder="Nickname"></vs-input>
+      </div>
+
+      <template #footer>
+        <div class="con-footer">
+          <vs-button @click="createTempUser" transparent> Ok </vs-button>
+          <vs-button @click="cancelTempUser" dark transparent>
+            Cancel
+          </vs-button>
+        </div>
+      </template>
+    </vs-dialog>
   </div>
 </template>
 
@@ -82,12 +129,13 @@ import QrcodeVue from "qrcode.vue";
 import QuizStep from "../components/quizzes/QuizStep.vue";
 import ProgressBar from "vue-simple-progress";
 import ResultsTable from "../components/quizzes/ResultsTable.vue";
+import { register } from "../api/auth.api";
 export default {
   components: {
     QrcodeVue,
     QuizStep,
     ProgressBar,
-    ResultsTable
+    ResultsTable,
   },
   data: () => {
     return {
@@ -110,7 +158,12 @@ export default {
       testTimer: 10,
       testTimerEnabled: false,
 
-      isNoAnswer: false
+      isNoAnswer: false,
+
+      createUserDialog: false,
+      isUserCreated: false,
+      newUserNickname: '',
+      newUserToken: null
     };
   },
   watch: {
@@ -190,7 +243,7 @@ export default {
         if (value > 0 && this.answerTimerEnabled) {
           setTimeout(() => {
             this.answerTimer--;
-            console.log(this.rightAnswer)
+            console.log(this.rightAnswer);
           }, 1000);
         } else if (this.answerTimerEnabled) {
           if (this.isOwner) {
@@ -205,7 +258,7 @@ export default {
           this.answerTimerEnabled = false;
           this.answerTimer = 5;
           this.currentAnswer = null;
-          this.isNoAnswer = false
+          this.isNoAnswer = false;
           this.setLoading(true);
           this.setLoading(false);
         }
@@ -215,12 +268,12 @@ export default {
   computed: {
     ...mapGetters(["currentUser", "isLoading", "currentTheme"]),
     rightAnswer() {
-      this.currentStepData.options.forEach(option => {
-        if(option.is_right) {
-          return option.title
+      this.currentStepData.options.forEach((option) => {
+        if (option.is_right) {
+          return option.title;
         }
-      })
-      return null
+      });
+      return null;
     },
   },
   methods: {
@@ -232,12 +285,22 @@ export default {
       this.timerEnabled = false;
     },
     connectToWebsocket() {
-      this.connection = new WebSocket(
-        "ws://localhost:8000/ws/quiz/" +
-          this.quiz.enter_code +
-          "/" +
-          localStorage.getItem("token")
-      );
+      if(!this.newUserToken) {
+        this.connection = new WebSocket(
+          "ws://localhost:8000/ws/quiz/" +
+            this.quiz.enter_code +
+            "/" +
+            localStorage.getItem("token")
+        );
+      }
+      else {
+        this.connection = new WebSocket(
+          "ws://localhost:8000/ws/quiz/" +
+            this.quiz.enter_code +
+            "/" +
+            this.newUserToken
+        );
+      }
       this.connection.onmessage = (message) => {
         this.setLoading(true);
         let data = JSON.parse(message.data);
@@ -293,15 +356,27 @@ export default {
     startQuiz() {
       this.sendActionToWebsocket("start");
     },
+    createTempUser() {
+      register(this.newUserNickname, "temp.email.quiz@temp.quiz", "UNSECURE_PASSWORD")
+      .then(response => {
+        this.newUserToken = response.data.token
+        this.connectToWebsocket()
+        this.createUserDialog = false;
+      })
+    },
+    cancelTempUser() {
+        this.$router.push("/quizzes");
+    }
   },
   beforeCreate() {
-    document.body.classList.add('gradient-background')
+    document.body.classList.add("gradient-background");
   },
   destroyed() {
-    document.body.classList.remove('gradient-background')
+    document.body.classList.remove("gradient-background");
   },
   created() {
     this.setLoading(true);
+    console.log(localStorage.getItem("token"));
     this.quizId = this.$route.params.quizId;
     getQuiz(this.quizId)
       .then((response) => {
@@ -309,17 +384,23 @@ export default {
 
         this.link = "localhost:8080" + this.$route.fullPath;
 
-        const userPk = jwt_decode(localStorage.getItem("token")).pk;
-        if (userPk == this.quiz.owner.pk) {
-          this.isOwner = true;
-        }
-        if(!this.connection) {
-          this.connectToWebsocket();
+        if (localStorage.getItem("token") !== null) {
+          const userPk = jwt_decode(localStorage.getItem("token")).pk;
+          if (userPk == this.quiz.owner.pk) {
+            this.isOwner = true;
+          }
+          if (!this.connection) {
+            this.connectToWebsocket();
+          }
+        } else {
+          this.createUserDialog = true;
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         this.$router.push("/404");
       });
+
     this.setLoading(false);
   },
 };
@@ -403,5 +484,16 @@ export default {
 }
 .start-btn .vs-button--size-xl {
   font-size: 75px;
+}
+.con-content-nickname .vs-input {
+  font-size: 32px;
+  min-width: 350px;
+}
+.con-content-nickname .vs-input-content {
+  font-size: 32px;
+  min-width: 300px;
+}
+.con-content-nickname .vs-input__label {
+  font-size : 32px;
 }
 </style>
