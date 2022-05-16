@@ -36,6 +36,15 @@
           </template>
           Quizzes
         </vs-sidebar-item>
+    <template #footer>
+      <vs-row justify="space-between">
+        <vs-avatar>
+          <img src="/avatars/avatar-5.png" alt="" />
+        </vs-avatar>
+
+        <vs-switch></vs-switch>
+      </vs-row>
+    </template>
       </vs-sidebar>
     </div>
     <nav-bar
@@ -79,7 +88,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentTheme", "isLoading", "error"]),
+    ...mapGetters(["currentTheme", "isLoading", "error", "currentUser"]),
+    activeRoute() {
+      return this.$route.name
+    }
   },
   methods: {
     ...mapActions([
@@ -116,7 +128,6 @@ export default {
   async created() {
     this.setDefaultTheme();
     await this.loadCurrentUser();
-    console.log(this.$route.name);
   },
 };
 </script>

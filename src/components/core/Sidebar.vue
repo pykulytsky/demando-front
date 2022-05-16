@@ -9,5 +9,14 @@
       </template>
       Home
     </vs-sidebar-item>
+    <template #footer>
+      <vs-row justify="space-between">
+        <vs-avatar>
+          <img src="/avatars/avatar-5.png" alt="" />
+        </vs-avatar>
+
+        <vs-switch></vs-switch>>
+      </vs-row>
+    </template>
   </vs-sidebar>
 </template>

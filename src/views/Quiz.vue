@@ -376,7 +376,6 @@ export default {
   },
   created() {
     this.setLoading(true);
-    console.log(localStorage.getItem("token"));
     this.quizId = this.$route.params.quizId;
     getQuiz(this.quizId)
       .then((response) => {

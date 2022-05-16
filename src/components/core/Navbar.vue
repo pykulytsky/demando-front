@@ -5,16 +5,17 @@
     center-collapsed
     square
     not-line
+    v-model="active"
   >
     <template #left>
       <vs-navbar-item @click="emitToggleSidebar">
         <unicon name="align-justify" />
       </vs-navbar-item>
     </template>
-    <vs-navbar-item to="/qa" id="qna"> Q&A </vs-navbar-item>
-    <vs-navbar-item to="/polls" id="polls"> Polls </vs-navbar-item>
-    <vs-navbar-item to="/quizzes" id="quiz"> Quizzes </vs-navbar-item>
-    <vs-navbar-item to="/explore" id="explore"> Explore </vs-navbar-item>
+    <vs-navbar-item :active="active == 'qna'"  to="/qa" id="qna"> Q&A </vs-navbar-item>
+    <vs-navbar-item :active="active == 'polls'" to="/polls" id="polls"> Polls </vs-navbar-item>
+    <vs-navbar-item :active="active == 'quiz'" to="/quizzes" id="quiz"> Quizzes </vs-navbar-item>
+    <vs-navbar-item :active="active == 'explore'" to="/" id="explore"> Explore </vs-navbar-item>
     <template #right>
       <vs-switch
         @mouseover="isSwitchHovered = true"
@@ -53,6 +54,7 @@ export default {
     return {
       theme: false,
       isSwitchHovered: true,
+      active: ''
     };
   },
   computed: {

@@ -9,7 +9,9 @@ const getPoll = (pollId) => {
     })
 }
 
+const getPolls = () => httpClient.get(ENDPOINT)
 
 export {
-    getPoll
+    getPoll,
+    getPolls
 }

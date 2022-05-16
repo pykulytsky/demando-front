@@ -2,6 +2,11 @@
   <div class="poll" v-if="!isLoading && poll">
     <div class="poll-header">
       <h1>{{ poll.name }}</h1>
+      <div class="poll-info">
+       <h1 class="event-code"><span>#{{poll.pk}}</span></h1>
+
+        <qrcode-vue class="qr-code" :value="link" :size="100" level="H" />
+      </div>
     </div>
     <vs-alert gradient v-if="!isLogined">
       <template #title> Authorization is require </template>
@@ -73,9 +78,11 @@
 import { mapGetters, mapActions } from "vuex";
 import ProgressBar from "vue-simple-progress";
 import jwt_decode from "jwt-decode";
+import QrcodeVue from "qrcode.vue";
 export default {
   components: {
     ProgressBar,
+    QrcodeVue
   },
   data: () => {
     return {
@@ -86,6 +93,7 @@ export default {
       voted: false,
       vote: -1,
       pollLoaded: false,
+      link: ""
     };
   },
   computed: {
@@ -167,6 +175,7 @@ export default {
     this.setLoading(true);
     this.pollId = this.$route.params.pk;
     this.connectToWebsocket();
+    this.link = "localhost:8080" + this.$route.fullPath;
     this.setLoading(false);
   },
   destroyed() {
@@ -182,7 +191,6 @@ export default {
 }
 
 .vote-item {
-  margin-top: 5px;
   padding: 10px 0;
 }
 
@@ -195,5 +203,24 @@ export default {
 }
 .prevote__header:hover {
   cursor: pointer;
+}
+.poll-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.event-code {
+  cursor: pointer;
+  text-align: center;
+}
+.event-code span {
+  background-color: rgb(24, 24, 24);
+  opacity: 0.5;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: white;
+}
+.poll-info {
 }
 </style>

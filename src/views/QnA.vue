@@ -114,23 +114,22 @@ export default {
     ...mapActions(["setLoading"]),
     async goToEvent() {
       this.setLoading(true);
-      if (this.eventId !== null) {
-        try {
-          await (
-            await getEvent(this.eventId)
-          ).data;
-          this.$router.push("/qa/events/" + this.eventId);
-        } catch (e) {
-          this.$vs.notification({
-            color: "danger",
-            icon: '<unicon name="exclamation-triangle" fill="white"/>',
-            position: "bottom-center",
-            title: "No event with such id was found",
-            text: "We could not find an event with such data, please try again!",
-          });
-          this.setLoading(false);
-        }
+      try {
+        await (
+          await getEvent(this.eventId)
+        ).data;
+        this.$router.push("/qa/events/" + this.eventId);
+      } catch (e) {
+        this.$vs.notification({
+          color: "danger",
+          icon: '<unicon name="exclamation-triangle" fill="white"/>',
+          position: "bottom-center",
+          title: "No event with such id was found",
+          text: "We could not find an event with such data, please try again!",
+        });
       }
+
+      this.setLoading(false);
     },
     async fetchEvents() {
       this.events = await (await getEvents(5, "created", true)).data;
@@ -154,7 +153,9 @@ export default {
 
 .event-search .vs-input {
   font-size: 24px;
-  min-width: 450px;
+}
+.event-search .vs-input-content {
+  font-size: 24px;
 }
 .arrow-btn {
   margin-left: 3px;
@@ -180,7 +181,6 @@ export default {
 }
 .qa-header {
   background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
-  background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   text-align: center;
   display: flex;
@@ -206,4 +206,17 @@ export default {
 .qa-header .vs-button__content {
   font-size: 40px;
 }
+@media screen and (max-width: 400px) {
+  .event-search .vs-input__content {
+    font-size: 24px;
+    max-width: 45%;
+  }
+  .qa-header {
+    padding-left: 0%;
+    margin-left: 0%;
+    padding-right: 0%;
+    margin-right: 0;
+  }
+}
+
 </style>

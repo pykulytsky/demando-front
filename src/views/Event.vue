@@ -43,6 +43,7 @@
           <vs-row>
             <vs-col vs-justify="flex-end">
               <h1 class="event-name">{{ event.name }}</h1>
+              <h2 class="event-code"><span>#{{event.pk}}</span></h2>
             </vs-col>
             <vs-col>
               <vs-row justity="space-around">
@@ -304,6 +305,10 @@ canvas:hover {
   text-align: center;
   text-shadow: 3px 4px 7px rgba(81, 67, 21, 0.8);
 }
+.access-code {
+  text-align: center;
+  padding: 5px;
+}
 
 .info-second {
   text-align: right;
@@ -439,5 +444,18 @@ canvas:hover {
   50% {
     background-position: 100% 92%;
   }
+}
+.event-code {
+  cursor: pointer;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.event-code span {
+  background-color: rgb(24, 24, 24);
+  opacity: 0.5;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: white;
 }
 </style>
