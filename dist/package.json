@@ -1,0 +1,10 @@
+{
+  "name": "demando-frontend",
+  "version": "1.0.0",
+  "description": "Demando",
+  "author": "pykulytsky",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install express"
+  }
+}
