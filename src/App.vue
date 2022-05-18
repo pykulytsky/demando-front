@@ -121,6 +121,11 @@ export default {
       }
       this.emitToggleTheme();
     },
+    error() {
+      if (this.error !== null) {
+        console.log(this.error);
+      }
+    },
   },
   methods: {
     ...mapActions([
@@ -143,13 +148,6 @@ export default {
       } else {
         document.body.classList.remove("darken", "dark-color");
         document.body.classList.add("light-color");
-      }
-    },
-  },
-  watch: {
-    error() {
-      if (this.error !== null) {
-        console.log(this.error);
       }
     },
   },
