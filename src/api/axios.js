@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-    baseURL: process.env.VUE_APP_BASE_URL,
+    baseURL: "https://demando-backend.herokuapp.com",
     headers: {
         "Content-Type": "application/json"
     }

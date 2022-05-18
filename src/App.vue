@@ -2,35 +2,35 @@
   <div id="app">
     <loading v-if="isLoading" />
     <div class="hidden">
-      <vs-sidebar absolute  :open.sync="sidebar">
+      <vs-sidebar absolute v-model="sidebarActive"  :open.sync="sidebar">
         <template #logo>
           <img src="./assets/logo1-d.png" alt="" />
         </template>
-        <vs-sidebar-item id="explore">
+        <vs-sidebar-item to="/" id="explore">
           <template #icon>
             <unicon name="search" fill="royalblue" width="30" height="30" />
           </template>
           Explore
         </vs-sidebar-item>
-        <vs-sidebar-item id="home">
+        <vs-sidebar-item to="/" id="home">
           <template #icon>
             <unicon name="estate" fill="royalblue" width="30" height="30" />
           </template>
           Home
         </vs-sidebar-item>
-        <vs-sidebar-item id="qna">
+        <vs-sidebar-item to="/qa" id="qna">
           <template #icon>
             <unicon name="question" fill="royalblue" width="50" height="50" />
           </template>
           Q&A
         </vs-sidebar-item>
-        <vs-sidebar-item id="polls">
+        <vs-sidebar-item to="/polls" id="polls">
           <template #icon>
             <unicon name="thumbs-up" fill="royalblue" width="30" height="30" />
           </template>
           Polls
         </vs-sidebar-item>
-        <vs-sidebar-item id="quizzes">
+        <vs-sidebar-item to="/quizzes" id="quizzes">
           <template #icon>
             <unicon name="comment-question" fill="royalblue" width="30" height="30" />
           </template>
@@ -41,8 +41,23 @@
         <vs-avatar>
           <img src="/avatars/avatar-5.png" alt="" />
         </vs-avatar>
-
-        <vs-switch></vs-switch>
+      <vs-switch
+        @mouseover="isSwitchHovered = true"
+        @mouseleave="isSwitchHovered = false"
+        v-model="theme"
+      >
+        <template #circle>
+          <unicon
+            ref="moon"
+            :class="{ unicon__moon: true, unicon__hover: isSwitchHovered }"
+            v-if="theme"
+            name="moon"
+            height="18"
+            width="18"
+          />
+          <unicon v-else ref="sun" name="brightness" />
+        </template>
+      </vs-switch>
       </vs-row>
     </template>
       </vs-sidebar>
@@ -84,6 +99,9 @@ export default {
     return {
       sidebar: false,
       active: true,
+      sidebarActive: "explore",
+      theme: false,
+      isSwitchHovered: true,
       footerNotRequiredPages: ["Login", "Register", "Logout"],
     };
   },
@@ -92,6 +110,17 @@ export default {
     activeRoute() {
       return this.$route.name
     }
+  },
+  watch: {
+    theme: function (val) {
+      this.theme = val;
+      if (this.theme) {
+        this.setTheme("dark");
+      } else {
+        this.setTheme("light");
+      }
+      this.emitToggleTheme();
+    },
   },
   methods: {
     ...mapActions([

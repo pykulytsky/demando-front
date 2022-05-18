@@ -287,7 +287,7 @@ export default {
     connectToWebsocket() {
       if(!this.newUserToken) {
         this.connection = new WebSocket(
-          "ws://localhost:8000/ws/quiz/" +
+          "wss://" + "demando-backend.herokuapp.com" + "/ws/quiz/" +
             this.quiz.enter_code +
             "/" +
             localStorage.getItem("token")
@@ -295,7 +295,7 @@ export default {
       }
       else {
         this.connection = new WebSocket(
-          "ws://localhost:8000/ws/quiz/" +
+          "wss://" + "demando-backend.herokuapp.com" + "/ws/quiz/" +
             this.quiz.enter_code +
             "/" +
             this.newUserToken

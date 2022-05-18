@@ -147,7 +147,7 @@ export default {
     },
     connectToWebsocket() {
       this.connection = new WebSocket(
-        "ws://localhost:8000/ws/vote/" + this.pollId
+        "wss://" + "demando-backend.herokuapp.com" + "/" + this.pollId
       );
       this.connection.onmessage = (event) => {
         this.setLoading(true);
