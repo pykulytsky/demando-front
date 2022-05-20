@@ -27,7 +27,7 @@
             ></vs-radio>
             <vs-checkbox v-else v-model="votes" :val="option.pk"> </vs-checkbox>
           </vs-col>
-          <vs-col :w="voted ? 10 : 9" v-responsive.lg.xl>
+          <vs-col :w="voted ? 11 : 10" v-responsive.lg.xl>
             <progress-bar
               v-if="voted"
               class="option"
@@ -65,7 +65,7 @@
               {{ option.name }}
             </h2>
           </vs-col>
-          <vs-col w="2" v-responsive.lg.xl>
+          <vs-col w="1" v-responsive.lg.xl>
             <h4 v-if="voted" class="option-percent">
               {{ option.votes.length }} votes
             </h4>
@@ -84,6 +84,16 @@
         >Vote</vs-button
       >
     </div>
+    <counter
+      v-if="poll.limited_time && !!dueToDate"
+      :year="dueToDate.year"
+      :month="dueToDate.month"
+      :day="dueToDate.day"
+      :hour="dueToDate.hour"
+      :minute="dueToDate.minute"
+      :second="dueToDate.second"
+      :millisecond="dueToDate.millisecond"
+    />
   </div>
 </template>
 
@@ -92,10 +102,12 @@ import { mapGetters, mapActions } from "vuex";
 import ProgressBar from "vue-simple-progress";
 import jwt_decode from "jwt-decode";
 import QrcodeVue from "qrcode.vue";
+import Counter from "../components/core/Counter.vue";
 export default {
   components: {
     ProgressBar,
     QrcodeVue,
+    Counter
   },
   data: () => {
     return {
@@ -108,6 +120,7 @@ export default {
       pollLoaded: false,
       link: "",
       votes: [],
+      dueToDate: null
     };
   },
   watch: {
@@ -169,18 +182,8 @@ export default {
       }
     },
     handleVote(optionID) {
-      if (this.isLogined) {
-        this.sendWithWebsocket(optionID);
-        this.voted = true;
-      } else {
-        this.$vs.notification({
-          color: "warn",
-          icon: '<unicon name="exclamation-triangle" fill="white"/>',
-          position: "bottom-center",
-          title: "Authorization is required",
-          text: "In order to make any votes, you should log in or create a new account if you don't have it yet!",
-        });
-      }
+      this.sendWithWebsocket(optionID);
+      this.voted = true;
     },
     getPercent(option) {
       let percent = (
@@ -204,18 +207,49 @@ export default {
       this.connection.onmessage = (event) => {
         this.setLoading(true);
         this.poll = JSON.parse(event.data);
-        console.log(this.poll);
+        if(this.poll.limited_time) {
+          let date = new Date(Date.parse(this.poll.time_to_vote))
+          this.dueToDate = {
+            year: date.getFullYear(),
+            month: date.getMonth(),
+            day: date.getDay(),
+            hour: date.getHours(),
+            minute: date.getMinutes(),
+            second: date.getSeconds(),
+            millisecond: date.getMilliseconds()
+          }
+          console.log(this.dueToDate)
+        }
         try {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;
-          this.voted =
-            this.poll.votes.filter((vote) => vote.owner.pk == userPk).length >
-            0;
-        } catch {
-          this.voted =
-            this.poll.votes.filter(
-              (vote) => vote.owner_host == window.location.hostname
-            ).length > 0;
+          this.voted = this.poll.votes.filter((vote) => vote.owner.pk == userPk).length > 0
         }
+        catch {
+          this.voted = this.poll.votes.filter((vote) => vote.owner_host == window.location.hostname).length > 0
+        }
+        // this.poll.votes.forEach(vote => {
+        //   if(vote.owner) {
+        //     if(vote.owner.pk == userPk) {
+        //       this.voted = true
+        //     }
+        //   }
+        //   if(vote.owner_host) {
+        //     if(vote.owner_host == window.location.hostname) {
+        //       this.voted = true
+        //     }
+        //   }
+        // })
+          // this.voted =
+          //   this.poll.votes.filter((vote) => vote.owner.pk == userPk).length >
+          //   0;
+        // } catch {
+        //   if(!jwt_decode(localStorage.getItem("token"))) {
+        //     this.voted =
+        //       this.poll.votes.filter(
+        //         (vote) => vote.owner_host == window.location.hostname
+        //       ).length > 0;
+        //   }
+        // }
         this.setLoading(false);
       };
       this.connection.onopen = () => {};
@@ -243,16 +277,12 @@ export default {
 <style scoped>
 .poll {
   margin-top: 50px;
-  width: 75%;
-}
-
-.vote-item {
-  padding: 10px 0;
+  width: 85%;
 }
 
 .option-percent {
-  margin-left: 10px;
   color: rgb(90, 90, 90);
+  text-align: right;
 }
 .poll-header h1 {
   text-align: center;
