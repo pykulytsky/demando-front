@@ -1,18 +1,18 @@
 <template>
   <div class="poll" v-if="!isLoading && poll">
     <div class="poll-header">
-      <h1>{{ poll.name }}</h1>
+      <div class="poll-data">
+        <h1>{{ poll.name }}</h1>
+        <p>Allowed votes: {{ poll.allowed_votes }}</p>
+      </div>
       <div class="poll-info">
-       <h1 class="event-code"><span>#{{poll.pk}}</span></h1>
+        <h1 class="event-code">
+          <span>#{{ poll.pk }}</span>
+        </h1>
 
         <qrcode-vue class="qr-code" :value="link" :size="100" level="H" />
       </div>
     </div>
-    <vs-alert gradient v-if="!isLogined">
-      <template #title> Authorization is require </template>
-      In order to make any votes, you should log in or create a new account if
-      you don't have it yet!
-    </vs-alert>
     <div class="vote-item-wrap" v-for="option in poll.options" :key="option.pk">
       <div class="vote-item">
         <h2 v-responsive.lg.xl v-if="voted">{{ option.name }}</h2>
@@ -20,10 +20,12 @@
         <vs-row align="center">
           <vs-col w="1" v-if="!voted">
             <vs-radio
+              v-if="!poll.multiply_votes"
               @input="handleVote(option.pk)"
               v-model="vote"
               :val="option.pk"
             ></vs-radio>
+            <vs-checkbox v-else v-model="votes" :val="option.pk"> </vs-checkbox>
           </vs-col>
           <vs-col :w="voted ? 10 : 9" v-responsive.lg.xl>
             <progress-bar
@@ -71,6 +73,17 @@
         </vs-row>
       </div>
     </div>
+    <div class="multiply-vote-btn">
+      <vs-button
+        size="xl"
+        flat
+        @click="multiplyVote"
+        v-if="
+          poll.multiply_votes && !voted && votes.length == poll.allowed_votes
+        "
+        >Vote</vs-button
+      >
+    </div>
   </div>
 </template>
 
@@ -82,7 +95,7 @@ import QrcodeVue from "qrcode.vue";
 export default {
   components: {
     ProgressBar,
-    QrcodeVue
+    QrcodeVue,
   },
   data: () => {
     return {
@@ -93,8 +106,16 @@ export default {
       voted: false,
       vote: -1,
       pollLoaded: false,
-      link: ""
+      link: "",
+      votes: [],
     };
+  },
+  watch: {
+    votes() {
+      if (this.votes.length > this.poll.allowed_votes) {
+        this.votes = this.votes.slice(this.poll.allowed_votes);
+      }
+    },
   },
   computed: {
     ...mapGetters([
@@ -108,13 +129,44 @@ export default {
   methods: {
     ...mapActions(["setLoading"]),
     sendWithWebsocket(optionId) {
-      this.connection.send(
-        JSON.stringify({
-          token: localStorage.getItem("token"),
-          poll_id: this.pollId,
-          option_id: optionId,
-        })
-      );
+      if (this.isLogined) {
+        this.connection.send(
+          JSON.stringify({
+            token: localStorage.getItem("token"),
+            poll_id: this.pollId,
+            option_id: optionId,
+          })
+        );
+      } else {
+        this.connection.send(
+          JSON.stringify({
+            ip_address: window.location.hostname,
+            poll_id: this.pollId,
+            option_id: optionId,
+          })
+        );
+      }
+    },
+    multiplyVote() {
+      if (this.isLogined) {
+        this.connection.send(
+          JSON.stringify({
+            token: localStorage.getItem("token"),
+            poll_id: this.pollId,
+            options: this.votes,
+            multiply: true,
+          })
+        );
+      } else {
+        this.connection.send(
+          JSON.stringify({
+            ip_address: window.location.hostname,
+            poll_id: this.pollId,
+            options: this.votes,
+            multiply: true,
+          })
+        );
+      }
     },
     handleVote(optionID) {
       if (this.isLogined) {
@@ -147,18 +199,22 @@ export default {
     },
     connectToWebsocket() {
       this.connection = new WebSocket(
-        "wss://" + "demando-backend.herokuapp.com" + "/" + this.pollId
+        "ws://" + "localhost:8000" + "/ws/vote/" + this.pollId
       );
       this.connection.onmessage = (event) => {
         this.setLoading(true);
         this.poll = JSON.parse(event.data);
+        console.log(this.poll);
         try {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;
           this.voted =
             this.poll.votes.filter((vote) => vote.owner.pk == userPk).length >
             0;
         } catch {
-          this.voted = false;
+          this.voted =
+            this.poll.votes.filter(
+              (vote) => vote.owner_host == window.location.hostname
+            ).length > 0;
         }
         this.setLoading(false);
       };
@@ -175,7 +231,7 @@ export default {
     this.setLoading(true);
     this.pollId = this.$route.params.pk;
     this.connectToWebsocket();
-    this.link = "localhost:8080" + this.$route.fullPath;
+    this.link = new URL(this.$route.fullPath, window.location.href).href;
     this.setLoading(false);
   },
   destroyed() {
@@ -221,6 +277,8 @@ export default {
   font-weight: 700;
   color: white;
 }
-.poll-info {
+.multiply-vote-btn {
+  display: flex;
+  flex-direction: row-reverse;
 }
 </style>

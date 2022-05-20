@@ -55,7 +55,7 @@ export default {
     flex-direction: column;;
     margin-top: 150px;
     padding: 100px;
-    width: 1000px;
+    width: 70%;
 }
 
 .list-item {

@@ -41,7 +41,9 @@ import {
   uniEstate,
   uniQuestion,
   uniCommentQuestion,
-  uniSearch
+  uniSearch,
+  uniCommentChartLine,
+  uniDialpadAlt
 } from "vue-unicons/dist/icons";
 import VueScrollTo from "vue-scrollto";
 import VueMeta from "vue-meta";
@@ -103,7 +105,9 @@ Unicon.add([
   uniEstate,
   uniQuestion,
   uniCommentQuestion,
-  uniSearch
+  uniSearch,
+  uniCommentChartLine,
+  uniDialpadAlt
 ]);
 Vue.use(Unicon, {
   fill: "#0ec4a6"

@@ -95,7 +95,6 @@
     </div>
 
     <vs-dialog
-      width="300px"
       blur
       not-close
       prevent-close
@@ -208,7 +207,6 @@ export default {
               }
             });
           }
-          console.log(this.currentAnswer);
           this.connection.send(
             JSON.stringify({
               action: "answer",
@@ -243,7 +241,6 @@ export default {
         if (value > 0 && this.answerTimerEnabled) {
           setTimeout(() => {
             this.answerTimer--;
-            console.log(this.rightAnswer);
           }, 1000);
         } else if (this.answerTimerEnabled) {
           if (this.isOwner) {
@@ -264,20 +261,32 @@ export default {
         }
       },
     },
+    finalResults(value) {
+      if(value !== null) {
+        document.removeEventListener('beforeunload', this.preventWindowClose)
+        window.removeEventListener('beforeunload', this.preventWindowClose)
+      }
+    }
   },
   computed: {
     ...mapGetters(["currentUser", "isLoading", "currentTheme"]),
     rightAnswer() {
+      let correntAnswer = "";
       this.currentStepData.options.forEach((option) => {
         if (option.is_right) {
-          return option.title;
+          console.log(option.title)
+          correntAnswer = option.title;
         }
       });
-      return null;
+      return correntAnswer;
     },
   },
   methods: {
     ...mapActions(["setLoading"]),
+    preventWindowClose(e) {
+      e.preventDefault()
+      e.returnValue = '';
+    },
     startTimer() {
       this.timerEnabled = true;
     },
@@ -287,7 +296,7 @@ export default {
     connectToWebsocket() {
       if(!this.newUserToken) {
         this.connection = new WebSocket(
-          "wss://" + "demando-backend.herokuapp.com" + "/ws/quiz/" +
+          "ws://" + "localhost:8000" + "/ws/quiz/" +
             this.quiz.enter_code +
             "/" +
             localStorage.getItem("token")
@@ -295,7 +304,7 @@ export default {
       }
       else {
         this.connection = new WebSocket(
-          "wss://" + "demando-backend.herokuapp.com" + "/ws/quiz/" +
+          "ws://" + "localhost:8000" + "/ws/quiz/" +
             this.quiz.enter_code +
             "/" +
             this.newUserToken
@@ -311,20 +320,27 @@ export default {
           this.currentStepData = data.step;
           this.startTimer();
         } else if (data.results) {
-          console.log("results - ", data.results);
           this.currentResults = data.results;
         } else if (data.action == "finish") {
           this.finalResults = data.final_results;
-          console.log(this.finalResults);
         }
         this.setLoading(false);
       };
       this.connection.onopen = () => {};
-      this.connection.onclose = (e) => {
-        console.log(e);
+      this.connection.onclose = () => {
+        this.connection = null;
+        document.removeEventListener('beforeunload', this.preventWindowClose)
+        window.removeEventListener('beforeunload', this.preventWindowClose)
       };
-      this.connection.onerror = (err) => {
-        console.log(err);
+      this.connection.onerror = () => {
+        this.connection = null;
+        this.$vs.notification({
+          color: "danger",
+          icon: '<unicon name="exclamation-triangle" fill="white"/>',
+          position: "bottom-center",
+          title: "Critical error",
+          text: "Error occured when receiving data from server",
+        });
       };
     },
     isYourAnswerRight() {
@@ -373,16 +389,21 @@ export default {
   },
   destroyed() {
     document.body.classList.remove("gradient-background");
+    document.removeEventListener('beforeunload', this.preventWindowClose)
+    window.removeEventListener('beforeunload', this.preventWindowClose)
+
   },
   created() {
     this.setLoading(true);
+    document.addEventListener('beforeunload', this.preventWindowClose)
+    window.addEventListener('beforeunload', this.preventWindowClose)
+
     this.quizId = this.$route.params.quizId;
     getQuiz(this.quizId)
       .then((response) => {
         this.quiz = response.data;
         this.timer = this.quiz.seconds_per_answer;
-        this.link = "localhost:8080" + this.$route.fullPath;
-
+        this.link = new URL(this.$route.fullPath, window.location.href).href
         if (localStorage.getItem("token") !== null) {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;
           if (userPk == this.quiz.owner.pk) {
@@ -396,7 +417,7 @@ export default {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error)
         this.$router.push("/404");
       });
 

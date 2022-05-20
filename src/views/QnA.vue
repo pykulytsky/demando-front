@@ -1,6 +1,6 @@
 <template>
   <div class="qa-main">
-    <div class="qa-header">
+    <div class="qa-header" v-responsive.lg.xl>
       <h1 class="qa-title-header">Create events, where other people can ask questions to you, or join to events witch was created by other users!</h1>
       <vs-button
         size="xl"
@@ -180,7 +180,7 @@ export default {
   border-radius: 50px;
 }
 .qa-header {
-  background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
+  background: linear-gradient(124deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
   animation: gradient 15s ease infinite;
   text-align: center;
   display: flex;

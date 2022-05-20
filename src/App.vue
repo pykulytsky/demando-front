@@ -8,31 +8,31 @@
         </template>
         <vs-sidebar-item to="/" id="explore">
           <template #icon>
-            <unicon name="search" fill="royalblue" width="30" height="30" />
+            <unicon name="search" width="30" height="30" />
           </template>
           Explore
         </vs-sidebar-item>
         <vs-sidebar-item to="/" id="home">
           <template #icon>
-            <unicon name="estate" fill="royalblue" width="30" height="30" />
+            <unicon name="estate" width="30" height="30" />
           </template>
           Home
         </vs-sidebar-item>
         <vs-sidebar-item to="/qa" id="qna">
           <template #icon>
-            <unicon name="question" fill="royalblue" width="50" height="50" />
+            <unicon name="comment-chart-line" width="30" height="30" />
           </template>
           Q&A
         </vs-sidebar-item>
         <vs-sidebar-item to="/polls" id="polls">
           <template #icon>
-            <unicon name="thumbs-up" fill="royalblue" width="30" height="30" />
+            <unicon name="thumbs-up" width="30" height="30" />
           </template>
           Polls
         </vs-sidebar-item>
         <vs-sidebar-item to="/quizzes" id="quizzes">
           <template #icon>
-            <unicon name="comment-question" fill="royalblue" width="30" height="30" />
+            <unicon name="comment-question" width="30" height="30" />
           </template>
           Quizzes
         </vs-sidebar-item>
@@ -120,11 +120,6 @@ export default {
         this.setTheme("light");
       }
       this.emitToggleTheme();
-    },
-    error() {
-      if (this.error !== null) {
-        console.log(this.error);
-      }
     },
   },
   methods: {
