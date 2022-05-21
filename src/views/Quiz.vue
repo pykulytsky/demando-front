@@ -49,20 +49,21 @@
         @answer="handleAnswer"
       />
     </transition>
+    <div class="progress">
     <transition name="component-fade" mode="out-in">
       <progress-bar
         v-if="timerEnabled"
-        class="option"
         text-position="inside"
         size="30"
         :bar-color="timer > 5 ? '#0ec4a6' : 'red'"
-        :bg-color="currentTheme == 'dark' ? '#18191c' : 'white'"
+        :bg-color="'none'"
         text-align="right"
         :font-size="25"
         :bar-border-radius="50"
         :val="(timer * 100) / quiz.seconds_per_answer"
       ></progress-bar>
     </transition>
+    </div>
     <transition name="component-fade" mode="out-in">
       <div class="current-results" v-if="answerTimerEnabled">
         <h1 v-if="currentAnswer.option.is_right">Your answer is correct!</h1>
@@ -117,18 +118,22 @@
         </div>
       </template>
     </vs-dialog>
+    <div class="volume-control" @click="volumeEnabled = !volumeEnabled">
+      <unicon v-if="volumeEnabled" name="volume" fill="white" />
+      <unicon v-else name="volume-mute" fill="white" />
+    </div>
   </div>
 </template>
 
 <script>
 import { getQuiz } from "../api/items/quizzes.api";
+import {getAnonUsers} from "../api/items/anon.api"
 import { mapGetters, mapActions } from "vuex";
 import jwt_decode from "jwt-decode";
 import QrcodeVue from "qrcode.vue";
 import QuizStep from "../components/quizzes/QuizStep.vue";
 import ProgressBar from "vue-simple-progress";
 import ResultsTable from "../components/quizzes/ResultsTable.vue";
-import { register } from "../api/auth.api";
 export default {
   components: {
     QrcodeVue,
@@ -162,15 +167,33 @@ export default {
       createUserDialog: false,
       isUserCreated: false,
       newUserNickname: '',
-      newUserToken: null
+      newUserToken: null,
+
+      pickSound: new Audio(require("../assets/one-popping-sound-96661.mp3")),
+      timerSound: new Audio(require("../assets/wemida-heartbeat-voting-quizzing-voting-background-music-16574.mp3")),
+      volumeEnabled: true,
+      anonUsers: null
     };
   },
   watch: {
+    volumeEnabled(value) {
+      if(value) {
+        this.timerSound.volume = 0.2
+        this.pickSound = 1
+      } else {
+        this.timerSound.volume = 0
+        this.pickSound = 0
+      }
+    },
     timerEnabled(value) {
       if (value) {
+        this.timerSound.play()
         setTimeout(() => {
           this.timer--;
         }, 1000);
+      }
+      else {
+        this.timerSound.pause()
       }
     },
     testTimerEnabled(value) {
@@ -294,7 +317,7 @@ export default {
       this.timerEnabled = false;
     },
     connectToWebsocket() {
-      if(!this.newUserToken) {
+      if(this.newUserNickname == "") {
         this.connection = new WebSocket(
           "ws://" + "localhost:8000" + "/ws/quiz/" +
             this.quiz.enter_code +
@@ -306,8 +329,8 @@ export default {
         this.connection = new WebSocket(
           "ws://" + "localhost:8000" + "/ws/quiz/" +
             this.quiz.enter_code +
-            "/" +
-            this.newUserToken
+            "/username:" +
+            this.newUserNickname
         );
       }
       this.connection.onmessage = (message) => {
@@ -323,6 +346,15 @@ export default {
           this.currentResults = data.results;
         } else if (data.action == "finish") {
           this.finalResults = data.final_results;
+        } else if (data.type == "username") {
+          this.createUserDialog = true
+          this.$vs.notification({
+            color: "danger",
+            icon: '<unicon name="exclamation-triangle" fill="white"/>',
+            position: "bottom-center",
+            title: "Nickname is alreay taken",
+            text: "This email is already taken, please take another one",
+          });
         }
         this.setLoading(false);
       };
@@ -356,6 +388,7 @@ export default {
       return colors[Math.floor(colors.length * Math.random())];
     },
     handleAnswer(option) {
+      this.pickSound.play()
       this.currentAnswer = {
         option: option,
         time: this.timer,
@@ -373,12 +406,20 @@ export default {
       this.sendActionToWebsocket("start");
     },
     createTempUser() {
-      register(this.newUserNickname, "temp.email.quiz@temp.quiz", "UNSECURE_PASSWORD")
-      .then(response => {
-        this.newUserToken = response.data.token
+      let isNicknameUsed = this.anonUsers.filter(user => user.username == this.newUserNickname).length > 0
+      if(!isNicknameUsed) {
         this.connectToWebsocket()
         this.createUserDialog = false;
-      })
+      }
+      else {
+        this.$vs.notification({
+          color: "danger",
+          icon: '<unicon name="exclamation-triangle" fill="white"/>',
+          position: "bottom-center",
+          title: "Nickname is alreay taken",
+          text: "This email is already taken, please take another one",
+        });
+      }
     },
     cancelTempUser() {
         this.$router.push("/quizzes");
@@ -391,10 +432,11 @@ export default {
     document.body.classList.remove("gradient-background");
     document.removeEventListener('beforeunload', this.preventWindowClose)
     window.removeEventListener('beforeunload', this.preventWindowClose)
-
+    this.timerSound.pause()
   },
   created() {
     this.setLoading(true);
+    this.timerSound.volume = 0.1;
     document.addEventListener('beforeunload', this.preventWindowClose)
     window.addEventListener('beforeunload', this.preventWindowClose)
 
@@ -420,7 +462,9 @@ export default {
         console.log(error)
         this.$router.push("/404");
       });
-
+    getAnonUsers().then(response => {
+      this.anonUsers = response.data
+    })
     this.setLoading(false);
   },
 };
@@ -440,6 +484,8 @@ export default {
 .quiz {
   color: white;
   overflow-wrap: break-word;
+  width: 100%;
+  height: 100%;
 }
 .quiz-start-page h3 {
   text-align: center;
@@ -515,5 +561,22 @@ export default {
 }
 .con-content-nickname .vs-input__label {
   font-size : 32px;
+}
+.progress {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+}
+.vue-simple-progress {
+  background: none;
+}
+.volume-control {
+  background-color: rgb(24, 24, 24);
+  opacity: 0.5;
+  border-radius: 5px;
+  padding: 5px;
+  position: fixed;
+  right: 1%;
+  top: 1%;
 }
 </style>

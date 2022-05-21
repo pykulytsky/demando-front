@@ -256,7 +256,7 @@ export default {
     this.setLoading(true);
     this.eventId = this.$route.params.pk;
     await this.updateQuestions();
-    this.link = "localhost:8080" + this.$route.fullPath;
+    this.link = new URL(this.$route.fullPath, window.location.href).href;
     this.setLoading(false);
   },
 };

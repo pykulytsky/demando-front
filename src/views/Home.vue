@@ -1,11 +1,11 @@
 <template>
   <div class="explore">
     <div class="explore-header" v-responsive.lg.xl>
-      <h1 class="explore-title-header">
+      <h1 class="explore-title-header" v-motion-fade>
         Create or participate in polls, quizzes or events where you can ask
         question. Explore events to find out one you are interested in.
       </h1>
-      <div class="header-buttons">
+      <div class="header-buttons" v-motion-fade>
         <vs-button
           size="xl"
           flat
@@ -40,9 +40,9 @@
     </div>
     <div class="events explore-items">
       <div class="explore-events">
-        <h1 id="events">Events</h1>
+        <h1 class="explore-head" id="events">Events</h1>
         <div class="explore-item">
-          <div class="explore-caption">
+          <div class="explore-caption" v-motion-fade-visible>
             <h1>Q&A Events</h1>
             <h2>
               Create events, where other people can ask questions to you, or
@@ -51,6 +51,7 @@
           </div>
 
           <img
+            v-motion-slide-visible-right
             class="explore-image"
             src="../assets/bruce-mars-FWVMhUa_wbY-unsplash.jpg"
             width="550"
@@ -59,18 +60,20 @@
         </div>
         <div class="explore-item">
           <img
-          class="explore-image"
+            v-motion-slide-visible-left
+            class="explore-image"
             src="../assets/karsten-winegeart-60GsdOMRFGc-unsplash.jpg"
             width="550"
             alt=""
           />
-          <div class="explore-caption-right">
+          <div class="explore-caption-right" v-motion-fade-visible>
             <h1>Express your own opinion</h1>
             <h2>
               You can not only ask your own questions, but also mark the questions you like and raise them up.
             </h2>
           </div>
         </div>
+        <vs-button circle v-motion-pop-visible-once class="create-event-btn" size="xl">Create your first Q&A event</vs-button>
       </div>
       <vs-card-group>
         <vs-card
@@ -98,9 +101,9 @@
     </div>
     <div class="quizzes explore-items">
       <div class="explore-events">
-        <h1 id="quizzes">Quizzes</h1>
+        <h1 class="explore-head" id="quizzes">Quizzes</h1>
         <div class="explore-item">
-          <div class="explore-caption">
+          <div class="explore-caption" v-motion-fade-visible>
             <h1>Live Quizzes</h1>
             <h2>
               Create your live online quiz and let your participants vote from any device using a link or QR code. You can join quiz without account, or login to save your results.
@@ -108,6 +111,7 @@
           </div>
 
           <img
+            v-motion-slide-visible-right
             class="explore-image"
             src="../assets/jeshoots-com-5EKw8Z7CgE4-unsplash.jpg"
             width="550"
@@ -116,12 +120,13 @@
         </div>
         <div class="explore-item">
           <img
-          class="explore-image"
+            v-motion-slide-visible-left
+            class="explore-image"
             src="../assets/chris-montgomery-smgTvepind4-unsplash.jpg"
             width="550"
             alt=""
           />
-          <div class="explore-caption-right">
+          <div class="explore-caption-right" v-motion-fade-visible>
             <h1>Make your learning process fun and interactive</h1>
             <h2>
               Design a quiz with questions that fit the topic of your presentation or training. Add options and mark the correct answers.
@@ -129,7 +134,7 @@
           </div>
         </div>
         <div class="explore-item">
-          <div class="explore-caption">
+          <div class="explore-caption" v-motion-fade-visible>
             <h1>Useful tool</h1>
             <h2>
               Use our quizzes for online lessons, meetings, lectures and trainings. With it, your learning will never be boring again.
@@ -137,6 +142,7 @@
           </div>
 
           <img
+            v-motion-slide-visible-right
             class="explore-image"
             src="../assets/priscilla-du-preez-XkKCui44iM0-unsplash.jpg"
             width="550"
@@ -177,7 +183,7 @@
       </vs-card-group>
     </div>
     <div class="polls explore-items">
-      <h1 id="polls">Polls</h1>
+      <h1 class="explore-head" id="polls">Polls</h1>
       <vs-card-group>
         <vs-card
           v-for="event in polls"
@@ -301,6 +307,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 15%;
 }
 .explore-item {
   display: flex;
@@ -316,5 +323,11 @@ export default {
 }
 .explore-image {
   border-radius: 10px;
+}
+.create-event-btn {
+  margin-bottom: 25%;
+}
+.explore-head {
+  font-size: 3rem;
 }
 </style>

@@ -59,10 +59,12 @@ export default {
 </script>
 
 <style>
+.quiz-step {
+  width: 100%;
+}
 .step-title {
   margin-top: 50px;
   margin-bottom: 250px;
-  max-width: 600px;
   text-align: center;
 }
 
@@ -90,5 +92,12 @@ export default {
 .option-text {
   text-align: center;
   color: white;
+}
+.options {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, 0);
 }
 </style>

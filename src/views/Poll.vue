@@ -194,7 +194,7 @@ export default {
       return !isNaN(percent) ? percent : 0;
     },
     getPercentTextColor(option) {
-      if (this.getPercent(option) === 0 && this.currentTheme == "light") {
+      if (this.getPercent(option) == 0 && this.currentTheme == "light") {
         return "black";
       } else {
         return "white";

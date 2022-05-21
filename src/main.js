@@ -43,13 +43,16 @@ import {
   uniCommentQuestion,
   uniSearch,
   uniCommentChartLine,
-  uniDialpadAlt
+  uniDialpadAlt,
+  uniVolume,
+  uniVolumeMute
 } from "vue-unicons/dist/icons";
 import VueScrollTo from "vue-scrollto";
 import VueMeta from "vue-meta";
 import GAuth from "vue-google-oauth2";
 import VueNumber from 'vue-number-animation'
 import responsive from 'vue-responsive'
+import { MotionPlugin } from '@vueuse/motion'
 
 
 const gauthOption = {
@@ -107,7 +110,9 @@ Unicon.add([
   uniCommentQuestion,
   uniSearch,
   uniCommentChartLine,
-  uniDialpadAlt
+  uniDialpadAlt,
+  uniVolume,
+  uniVolumeMute
 ]);
 Vue.use(Unicon, {
   fill: "#0ec4a6"
@@ -117,6 +122,7 @@ Vue.use(VueMeta);
 Vue.use(GAuth, gauthOption);
 Vue.use(VueNumber);
 Vue.use(responsive)
+Vue.use(MotionPlugin)
 
 new Vue({
   router,

@@ -16,7 +16,7 @@
           <unicon  name="arrow-down" />
       </vs-button>
     </div>
-    <div class="event-search">
+    <div class="event-search" v-motion-pop-visible>
       <vs-row align="center" justify="center">
         <h1>Enter identifier of event</h1>
       </vs-row>
