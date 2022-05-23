@@ -1,6 +1,6 @@
 <template>
   <div class="qa-main">
-    <div class="qa-header" v-responsive.lg.xl>
+    <div :class=" currentTheme == 'light' ? 'qa-header': 'qa-header-dark'" v-responsive.lg.xl>
       <h1 class="qa-title-header">Create events, where other people can ask questions to you, or join to events witch was created by other users!</h1>
       <vs-button
         size="xl"
@@ -106,7 +106,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["isLogined"]),
+    ...mapGetters(["isLogined", "currentTheme"]),
   },
 
   methods: {
@@ -179,24 +179,36 @@ export default {
   border-radius: 50px;
 }
 .qa-header {
-  background: linear-gradient(124deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-  animation: gradient 15s ease infinite;
-  text-align: center;
   display: flex;
-  padding-left: 12.5%;
-  margin-left: -12.5%;
-  padding-right: 12.5%;
-  margin-right: 0;
-  flex-direction: column;
-  padding-top: 15%;
-  padding-bottom: 15%;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  min-height: 650px;
+  padding: 0 10vw;
+  padding-bottom: 100px;
+  position: relative;
+  background: url("../assets/polls-background-light3.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+.qa-header-dark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 650px;
+  padding: 0 10vw;
+  padding-bottom: 100px;
+  position: relative;
+  background: url("../assets/polls-background-dark3.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
 }
 .qa-title-header {
   font-size: 50px;
-  margin: 5%;
-  margin-left: 20%;
+  color: white;
 }
 .qa-header .vs-button {
   width: 50px;

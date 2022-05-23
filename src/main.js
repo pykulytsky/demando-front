@@ -54,6 +54,8 @@ import VueNumber from 'vue-number-animation'
 import responsive from 'vue-responsive'
 import { MotionPlugin } from '@vueuse/motion'
 import checkView from 'vue-check-view'
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
 
 
 const gauthOption = {
@@ -125,6 +127,7 @@ Vue.use(VueNumber);
 Vue.use(responsive)
 Vue.use(MotionPlugin)
 Vue.use(checkView)
+Vue.use(Datetime)
 
 new Vue({
   router,

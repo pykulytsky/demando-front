@@ -1,6 +1,6 @@
 <template>
   <div class="explore">
-    <div class="explore-header" v-responsive.lg.xl>
+    <div :class="currentTheme == 'light' ? 'explore-header': 'explore-header-dark'" v-responsive.lg.xl>
       <kinesis-container>
         <kinesis-element
           type="depth_inv"
@@ -30,8 +30,8 @@
 
       <div class="header-buttons" v-motion-fade>
         <vs-button
-          size="xl"
           flat
+          size="xl"
           v-scroll-to="{
             el: '#events',
             easing: 'ease-in-out',
@@ -174,6 +174,7 @@
           v-motion-pop-visible-once
           class="create-event-btn waypoint"
           size="xl"
+          to="/polls"
           >Create your first live poll</vs-button
         >
       </div>
@@ -340,7 +341,7 @@
     </div>
     <div class="events explore-items">
       <div class="explore-events">
-        <h1 class="explore-head" id="events">Events</h1>
+        <h1 class="explore-head" id="events">Q&A Events</h1>
         <div
           class="explore-item"
           id="events-typer"
@@ -548,15 +549,25 @@ export default {
 
 <style>
 .explore-header {
-  background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
-  animation: gradient 15s ease infinite;
+  background: url("../assets/polls-background-light2.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
   text-align: center;
   display: flex;
 
-  /* padding-left: 12.5%;
-  margin-left: -12.5%;
-  padding-right: 12.5%;
-  margin-right: 0; */
+  flex-direction: column;
+  padding-top: 15%;
+  padding-bottom: 15%;
+  justify-content: center;
+  align-items: center;
+}
+.explore-header-dark {
+  background: url("../assets/polls-background-dark2.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  display: flex;
+
   flex-direction: column;
   padding-top: 15%;
   padding-bottom: 15%;
@@ -565,7 +576,7 @@ export default {
 }
 .explore-title-header {
   font-size: 50px;
-  /* margin-left: 20%; */
+  color: white;
 }
 
 .explore .vs-card__group-cards {
@@ -575,13 +586,11 @@ export default {
   background-size: cover;
   padding: 5% 0;
 }
-.explore .vs-card__group::before {
-
-}
 .header-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 75px;
 }
 .explore-items {
   padding: 10px 0;
