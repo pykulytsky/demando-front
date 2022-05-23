@@ -30,7 +30,7 @@ export default {
       isComplete: false,
       quizzes: null,
       enterCode: null,
-      notFound: false
+      notFound: false,
     };
   },
   components: {
@@ -43,18 +43,30 @@ export default {
           if (quiz.enter_code == this.enterCode) {
             if (!quiz.done) {
               this.$router.push("/quizzes/quiz/" + quiz.pk);
+            } else {
+              this.notFound = true;
+              this.$vs.notification({
+                icon: "<unicon name='share' fill='white' />",
+                position: "bottom-right",
+                color: "danger",
+                duration: 2000,
+                title: "No quiz was found",
+                text: "Probably, this quiz was already played",
+              });
             }
           }
         });
-        this.notFound = true
-        this.$vs.notification({
-          icon: "<unicon name='share' fill='white' />",
-          position: "bottom-right",
-          color: "danger",
-          duration: 2000,
-          title: "No quiz was found",
-          text: "Enter code that you just puted, don't match any quiz. Probably, you made any mistake. Please, try again.",
-        });
+        if(this.notFound) {
+          this.notFound = true;
+          this.$vs.notification({
+            icon: "<unicon name='share' fill='white' />",
+            position: "bottom-right",
+            color: "danger",
+            duration: 2000,
+            title: "No quiz was found",
+            text: "Enter code that you just puted, don't match any quiz. Probably, you made any mistake. Please, try again.",
+          });
+        }
       }
     },
     onComplete(v) {

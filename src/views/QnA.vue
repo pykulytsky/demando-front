@@ -88,7 +88,6 @@ import EventTable from "../components/events/EventTable.vue";
 import NewEventDialog from "../components/events/NewEventDialog.vue";
 import { getEvent, getEvents } from "../api/items/events.api";
 import { mapActions, mapGetters } from "vuex";
-
 export default {
   name: "QnA",
   metaInfo: {

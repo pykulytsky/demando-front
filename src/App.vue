@@ -167,13 +167,13 @@ h1 {
 }
 
 .dark-color {
-  background-color: #18191c;
+  background-color: #1E2023;
   color: aliceblue;
 }
 
 .light-color {
   background-color: #ffff;
-  color: #18191c;
+  color: #1E2023;
 }
 
 .vs-input {

@@ -83,7 +83,7 @@
           height="150"
           src="../assets/icons8-close.svg"
         />
-        <number tag="h1" :from="0" :to="currentResults" :duration="3" />
+        <number tag="h1" :from="0" :to="currentResults !== null ? currentResults: 0" :duration="3" />
         <h1 v-if="!currentAnswer.option.is_right || isNoAnswer">
           Corrent answer: {{ rightAnswer }}
         </h1>
@@ -92,7 +92,7 @@
       </div>
     </transition>
     <div class="final-results" v-if="finalResults">
-      <results-table :results="finalResults"></results-table>
+      <results-table :results="finalResults" :nickname="newUserNickname"></results-table>
     </div>
 
     <vs-dialog
@@ -406,20 +406,9 @@ export default {
       this.sendActionToWebsocket("start");
     },
     createTempUser() {
-      let isNicknameUsed = this.anonUsers.filter(user => user.username == this.newUserNickname).length > 0
-      if(!isNicknameUsed) {
-        this.connectToWebsocket()
-        this.createUserDialog = false;
-      }
-      else {
-        this.$vs.notification({
-          color: "danger",
-          icon: '<unicon name="exclamation-triangle" fill="white"/>',
-          position: "bottom-center",
-          title: "Nickname is alreay taken",
-          text: "This email is already taken, please take another one",
-        });
-      }
+      this.connectToWebsocket()
+      this.createUserDialog = false;
+
     },
     cancelTempUser() {
         this.$router.push("/quizzes");

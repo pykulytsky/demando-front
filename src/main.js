@@ -53,6 +53,7 @@ import GAuth from "vue-google-oauth2";
 import VueNumber from 'vue-number-animation'
 import responsive from 'vue-responsive'
 import { MotionPlugin } from '@vueuse/motion'
+import checkView from 'vue-check-view'
 
 
 const gauthOption = {
@@ -123,6 +124,7 @@ Vue.use(GAuth, gauthOption);
 Vue.use(VueNumber);
 Vue.use(responsive)
 Vue.use(MotionPlugin)
+Vue.use(checkView)
 
 new Vue({
   router,

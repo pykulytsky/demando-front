@@ -22,4 +22,14 @@ export default {
 </script>
 
 <style>
+.blob-light {
+  background: url("../assets/blob-light.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.blob-dark {
+  background: url("../assets/blob-dark.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 </style>

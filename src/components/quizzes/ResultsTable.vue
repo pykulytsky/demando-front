@@ -1,6 +1,6 @@
 <template>
   <div class="results-table">
-    <h1>Congratulations! You are on {{place}} place!</h1>
+    <h1>Congratulations! You are on {{ place }} place!</h1>
 
     <table-item
       v-for="([key, value], i) in Object.entries(results)"
@@ -10,44 +10,57 @@
       :index="i"
     ></table-item>
 
-    <vs-button @click="$router.push('/quizzes')" size="xl" flat class="exit-quiz-btn">Exit</vs-button>
+    <vs-button
+      @click="$router.push('/quizzes')"
+      size="xl"
+      flat
+      class="exit-quiz-btn"
+      >Exit</vs-button
+    >
   </div>
 </template>
 <script>
 import TableItem from "./TableItem.vue";
-import {mapGetters} from "vuex"
+import { mapGetters } from "vuex";
 export default {
   data: () => {
     return {
-      place: -1
+      place: -1,
     };
   },
   components: {
     TableItem,
   },
   computed: {
-    ...mapGetters(["currentUser"])
+    ...mapGetters(["currentUser"]),
   },
   props: {
     results: Object,
+    nickname: String,
   },
   methods: {
     filterResults() {
       const sortable = Object.entries(this.results)
-        .sort(([, a], [, b]) => a - b).reverse()
+        .sort(([, a], [, b]) => a - b)
+        .reverse()
         .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
 
       return sortable;
     },
   },
   created() {
-    this.results = this.filterResults()
-    console.log(this.currentUser.username)
+    this.results = this.filterResults();
     Object.keys(this.results).forEach((result, index) => {
-      if (this.currentUser.username == result) {
-        this.place = index+1
+      if (this.nickname !== "") {
+        if (result == this.nickname) {
+          this.place = index + 1;
+        }
+      } else {
+        if (this.currentUser.username == result) {
+          this.place = index + 1;
+        }
       }
-    })
+    });
   },
 };
 </script>
@@ -65,7 +78,8 @@ export default {
   display: inline-block;
   margin-right: 10px;
 }
-.list-enter-active, .list-leave-active {
+.list-enter-active,
+.list-leave-active {
   transition: all 1s;
 }
 .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
