@@ -30,7 +30,8 @@ export default {
       isComplete: false,
       quizzes: null,
       enterCode: null,
-      notFound: false,
+      notFound: true,
+      played: false
     };
   },
   components: {
@@ -41,10 +42,11 @@ export default {
       if (this.isComplete) {
         this.quizzes.forEach((quiz) => {
           if (quiz.enter_code == this.enterCode) {
+            this.notFound = false;
             if (!quiz.done) {
               this.$router.push("/quizzes/quiz/" + quiz.pk);
             } else {
-              this.notFound = true;
+              this.played = true
               this.$vs.notification({
                 icon: "<unicon name='share' fill='white' />",
                 position: "bottom-right",
@@ -56,7 +58,7 @@ export default {
             }
           }
         });
-        if(this.notFound) {
+        if(this.notFound && !this.played) {
           this.notFound = true;
           this.$vs.notification({
             icon: "<unicon name='share' fill='white' />",

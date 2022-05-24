@@ -327,7 +327,7 @@ export default {
       }
       else {
         this.connection = new WebSocket(
-          "ws://" + "localhost:8000" + "/ws/quiz/" +
+          "ws://" + "/localhost:8000" + "/ws/quiz/" +
             this.quiz.enter_code +
             "/username:" +
             this.newUserNickname
@@ -460,15 +460,11 @@ export default {
 </script>
 
 <style>
-/* html {
-  background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-} */
 .gradient-background {
   background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
+  /* background: url("../assets/quiz-background4.jpg"); */
 }
 .quiz {
   color: white;

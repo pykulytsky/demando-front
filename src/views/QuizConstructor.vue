@@ -1,18 +1,51 @@
 <template>
   <div class="constructor">
     <div class="constructor-head" v-if="!startDialog">
-      <h1 class="quiz-name">{{ quiz.name }}</h1>
-      <div class="quiz-details"></div>
+      <div class="quiz-info">
+        <h1 class="quiz-name">{{ quiz.name }}</h1>
+        <div class="quiz-detail-info">
+          <div class="quiz-detail-info-sec">
+
+            <span><unicon name="dialpad-alt" /> <h2 class="quiz-caption">{{ quiz.enter_code }}</h2></span>
+
+            <span><unicon name="clock-five" /> <h2 class="quiz-caption">{{ quiz.seconds_per_answer }}s</h2></span>
+          </div>
+          <div class="quiz-detail-info-sec">
+            <vs-switch v-model="quiz.is_private" disabled>
+              <template #off> Public </template>
+              <template #on> Private </template>
+            </vs-switch>
+            <vs-switch v-model="quiz.delete_after_finish" disabled>
+              <template #off> Delete after finish </template>
+              <template #on> Delete after finish </template>
+            </vs-switch>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-details">
+        <vue-select-image
+          :h="'100'"
+          :w="'100'"
+          :dataImages="quizCovers"
+          @onselectimage="onSelectCover"
+          :useLabel="true"
+          :selectedImages="defaultCover"
+        >
+        </vue-select-image>
+      </div>
     </div>
-    <h3>Next you have to add some questions to your quiz...</h3>
+    <h2 class="steps-caption">Next you have to add some questions to your quiz...</h2>
     <div class="steps-constructor">
       <div :class="'step-con-item'" v-for="(step, i) in steps" :key="i">
         <vs-input
-          placeholder="Start putting name..."
+          placeholder="Start putting question..."
           @input="handleInput(i)"
           v-model="steps[i].name"
         >
-          <template v-if="steps[i].name == '' && i !== steps.length - 1" #message-danger>
+          <template
+            v-if="steps[i].name == '' && i !== steps.length - 1"
+            #message-danger
+          >
             Required
           </template>
         </vs-input>
@@ -52,7 +85,6 @@
         </div>
       </div>
     </div>
-
 
     <vs-dialog
       not-close
@@ -99,32 +131,41 @@
       </template>
     </vs-dialog>
 
-
     <vs-dialog blur v-model="successDialog">
-        <template #header>
-          <h4 class="not-margin">
-            Quiz was successfully created
-          </h4>
-        </template>
+      <template #header>
+        <h4 class="not-margin">Quiz was successfully created</h4>
+      </template>
 
+      <div class="con-content">
+        <p>
+          Now you can start this quiz, you will be redirected t oquiz page where
+          you can find QR-code or PIN code and other users can join the game.
+          Have fun!
+        </p>
+      </div>
 
-        <div class="con-content">
-          <p>
-            Now you can start this quiz, you will be redirected t oquiz page where you can find QR-code or PIN code and other users can join the game. Have fun!
-          </p>
+      <template #footer>
+        <div class="con-footer">
+          <vs-button
+            @click="$router.push('/quizzes/quiz/' + quiz.pk)"
+            transparent
+          >
+            Start quiz
+          </vs-button>
+          <vs-button @click="successDialog = false" transparent
+            >Close</vs-button
+          >
         </div>
+      </template>
+    </vs-dialog>
 
-        <template #footer>
-          <div class="con-footer">
-            <vs-button @click="$router.push('/quizzes/quiz/' + quiz.pk)" transparent>
-              Start quiz
-            </vs-button>
-            <vs-button @click="successDialog = false" transparent>Close</vs-button>
-          </div>
-        </template>
-      </vs-dialog>
-
-    <vs-button size="xl" class="add-steps-btn" @click="createSteps" v-if="steps.length > 1">Create</vs-button>
+    <vs-button
+      size="xl"
+      class="add-steps-btn"
+      @click="createSteps"
+      v-if="steps.length > 1"
+      >Create</vs-button
+    >
   </div>
 </template>
 <script>
@@ -161,6 +202,39 @@ export default {
         rightAnswer: null,
         isShown: true,
       },
+      quizCovers: [
+        {
+          id: "1",
+          src: require("../assets/default-background.png"),
+        },
+        {
+          id: "2",
+          src: require("../assets/quiz-background1.jpg"),
+        },
+        {
+          id: "3",
+          src: require("../assets/quiz-background2.jpg"),
+        },
+        {
+          id: "4",
+          src: require("../assets/quiz-background3.jpg"),
+        },
+        {
+          id: "5",
+          src: require("../assets/quiz-background4.jpg"),
+        },
+        {
+          id: "6",
+          src: require("../assets/quiz-background5.jpg"),
+        },
+      ],
+      defaultCover: [
+        {
+          id: "1",
+          src: require("../assets/default-background.png"),
+          alt: "Default",
+        },
+      ],
     };
   },
   computed: {
@@ -221,47 +295,45 @@ export default {
         // if(this.steps[currentIndex].options.every(option => {
         //   return option !== ""
         // }) && this.steps[currentIndex].rightAnswer) {
-          this.steps.push({
-            name: "",
-            options: [],
-            rightAnswer: null,
-            isShown: true,
-          });
+        this.steps.push({
+          name: "",
+          options: [],
+          rightAnswer: null,
+          isShown: true,
+        });
         // }
       }
     },
     createSteps() {
-      let valid = true
-      let steps = this.steps.slice(0, -1)
-      console.log(steps)
-      steps.forEach(step => {
-        if(step.name == "") {
-          valid = false
+      let valid = true;
+      let steps = this.steps.slice(0, -1);
+      console.log(steps);
+      steps.forEach((step) => {
+        if (step.name == "") {
+          valid = false;
         }
-        if(step.rightAnswer == null) {
-          valid = false
+        if (step.rightAnswer == null) {
+          valid = false;
         }
-        step.options.forEach(option => {
+        step.options.forEach((option) => {
           if (option == "") {
-            valid = false
+            valid = false;
           }
-        })
-      })
-      if(valid) {
-        this.setLoading(true)
-        steps.forEach(step => {
-          createStep(step.name, this.quiz.pk)
-          .then(response => {
-            step.options.forEach(option => {
-              let isRight = step.options.indexOf(option) == step.rightAnswer
-              createOption(option, isRight, response.data.pk)
-            })
-            this.successDialog = true
-          })
-        })
-        this.setLoading(false)
-      }
-      else {
+        });
+      });
+      if (valid) {
+        this.setLoading(true);
+        steps.forEach((step) => {
+          createStep(step.name, this.quiz.pk).then((response) => {
+            step.options.forEach((option) => {
+              let isRight = step.options.indexOf(option) == step.rightAnswer;
+              createOption(option, isRight, response.data.pk);
+            });
+            this.successDialog = true;
+          });
+        });
+        this.setLoading(false);
+      } else {
         this.$vs.notification({
           color: "danger",
           icon: '<unicon name="exclamation-triangle" fill="white"/>',
@@ -296,12 +368,13 @@ export default {
 </script>
 <style>
 .constructor {
-  width: 75%;
+  width: 100%;
   margin-top: 25px;
 }
 .quiz-name {
   text-align: center;
   font-size: 60px;
+  color: white;
 }
 .steps-constructor {
   display: flex;
@@ -326,5 +399,45 @@ export default {
   position: fixed;
   right: 0;
   bottom: 0;
+}
+.constructor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 25px;
+  background-color: rgb(83, 97, 97);
+}
+.quiz-details {
+  padding: 25px 50px;
+  max-width: 35%;
+}
+.quiz-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.constructor hr {
+  color: black;
+}
+.quiz-detail-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.quiz-detail-info-sec {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.quiz-caption {
+  display: inline;
+  color: white;
+}
+.steps-caption {
+  text-align: center;
+  padding: 25px;
 }
 </style>

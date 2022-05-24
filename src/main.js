@@ -58,6 +58,7 @@ import { MotionPlugin } from '@vueuse/motion'
 import checkView from 'vue-check-view'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
+import VueSelectImage from 'vue-select-image'
 
 
 const gauthOption = {
@@ -132,6 +133,9 @@ Vue.use(responsive)
 Vue.use(MotionPlugin)
 Vue.use(checkView)
 Vue.use(Datetime)
+Vue.use(VueSelectImage)
+
+require('vue-select-image/dist/vue-select-image.css')
 
 new Vue({
   router,

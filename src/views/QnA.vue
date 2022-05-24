@@ -1,6 +1,6 @@
 <template>
   <div class="qa-main">
-    <div :class=" currentTheme == 'light' ? 'qa-header': 'qa-header-dark'" v-responsive.lg.xl>
+    <div :class=" currentTheme == 'light' ? 'qa-header': 'qa-header-dark'" >
       <h1 class="qa-title-header">Create events, where other people can ask questions to you, or join to events witch was created by other users!</h1>
       <vs-button
         size="xl"

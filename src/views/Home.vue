@@ -1,6 +1,6 @@
 <template>
   <div class="explore">
-    <div :class="currentTheme == 'light' ? 'explore-header': 'explore-header-dark'" v-responsive.lg.xl>
+    <div :class="currentTheme == 'light' ? 'explore-header': 'explore-header-dark'">
       <kinesis-container>
         <kinesis-element
           type="depth_inv"
