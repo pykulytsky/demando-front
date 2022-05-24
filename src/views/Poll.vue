@@ -34,7 +34,7 @@
               text-position="inside"
               size="30"
               bar-color="#0ec4a6"
-              :bg-color="currentTheme == 'dark' ? '#18191c' : 'white'"
+              :bg-color="currentTheme == 'dark' ? '#1e2023' : 'white'"
               text-align="right"
               :text-fg-color="getPercentTextColor(option)"
               :text="getPercent(option).toString() + '%'"
@@ -53,7 +53,7 @@
               text-position="inside"
               size="14"
               bar-color="#0ec4a6"
-              :bg-color="currentTheme == 'dark' ? '#18191c' : 'white'"
+              :bg-color="currentTheme == 'dark' ? '#1e2023' : 'white'"
               text-align="right"
               :text-fg-color="getPercentTextColor(option)"
               :text="getPercent(option).toString() + '%'"
@@ -219,6 +219,9 @@ export default {
             millisecond: date.getMilliseconds()
           }
           console.log(this.dueToDate)
+          if(date < new Date()) {
+            this.voted = true
+          }
         }
         try {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;

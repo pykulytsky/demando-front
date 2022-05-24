@@ -8,7 +8,7 @@
 export default {
   props: {
       member: String,
-      result: String,
+      result: Number,
       index: Number
   },
 };

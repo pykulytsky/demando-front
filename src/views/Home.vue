@@ -84,7 +84,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -122,7 +122,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -148,7 +148,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -223,7 +223,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -261,7 +261,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -284,7 +284,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -306,6 +306,14 @@
             alt=""
           />
         </div>
+        <vs-button
+          circle
+          v-motion-pop-visible-once
+          class="create-event-btn waypoint"
+          size="xl"
+          to="/quizzes"
+          >Create your first live quiz</vs-button
+        >
       </div>
       <vs-card-group>
         <vs-card
@@ -362,7 +370,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -403,7 +411,7 @@
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
-              :pre-type-delay="2500"
+              :pre-type-delay="1500"
               :type-delay="70"
               :pre-erase-delay="2000"
               :erase-delay="250"
@@ -422,6 +430,7 @@
           v-motion-pop-visible-once
           class="create-event-btn waypoint"
           size="xl"
+          to="/qa"
           >Create your first Q&A event</vs-button
         >
       </div>
@@ -631,6 +640,10 @@ export default {
 .vue-typer {
   font-size: 32px;
 }
+.vue-typer-dark {
+  font-size: 32px;
+  color: white;
+}
 .blob-light {
   background: url("../assets/blob-light.svg");
   background-repeat: no-repeat;
@@ -640,5 +653,13 @@ export default {
   background: url("../assets/blob-dark.svg");
   background-repeat: no-repeat;
   background-size: cover;
+}
+.vue-typer .custom.caret {
+  width: 15px;
+  height: 35px;
+  color: inherit;
+}
+.vue-typer .typed {
+  color: inherit;
 }
 </style>

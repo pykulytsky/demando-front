@@ -1,13 +1,59 @@
 <template>
   <div class="constructor">
     <div class="constructor-head" v-if="!startDialog">
-      <h1 class="quiz-name">{{quiz.name}}</h1>
-      <div class="quiz-details">
-
-      </div>
+      <h1 class="quiz-name">{{ quiz.name }}</h1>
+      <div class="quiz-details"></div>
     </div>
     <h3>Next you have to add some questions to your quiz...</h3>
-    <step-constructor v-if="!startDialog" :quiz="quiz"></step-constructor>
+    <div class="steps-constructor">
+      <div :class="'step-con-item'" v-for="(step, i) in steps" :key="i">
+        <vs-input
+          placeholder="Start putting name..."
+          @input="handleInput(i)"
+          v-model="steps[i].name"
+        >
+          <template v-if="steps[i].name == '' && i !== steps.length - 1" #message-danger>
+            Required
+          </template>
+        </vs-input>
+
+        <unicon
+          @click="steps[i].isShown = !steps[i].isShown"
+          v-if="i !== steps.length - 1 && steps[i].isShown"
+          name="angle-up"
+        />
+        <unicon
+          @click="steps[i].isShown = !steps[i].isShown"
+          v-if="i !== steps.length - 1 && !steps[i].isShown"
+          name="angle-down"
+        />
+        <unicon
+          v-if="i !== steps.length - 1"
+          name="times"
+          @click="removeStep(step)"
+        />
+        <div
+          class="options-con"
+          v-if="
+            steps[i].name !== '' && i !== steps.length - 1 && steps[i].isShown
+          "
+        >
+          <vs-radio
+            :val="j"
+            v-model="steps[i].rightAnswer"
+            v-for="(option, j) in steps[i].options"
+            :key="j"
+          >
+            <vs-input
+              placeholder="Option..."
+              v-model="steps[i].options[j]"
+            ></vs-input>
+          </vs-radio>
+        </div>
+      </div>
+    </div>
+
+
     <vs-dialog
       not-close
       prevent-close
@@ -52,27 +98,69 @@
         </div>
       </template>
     </vs-dialog>
+
+
+    <vs-dialog blur v-model="successDialog">
+        <template #header>
+          <h4 class="not-margin">
+            Quiz was successfully created
+          </h4>
+        </template>
+
+
+        <div class="con-content">
+          <p>
+            Now you can start this quiz, you will be redirected t oquiz page where you can find QR-code or PIN code and other users can join the game. Have fun!
+          </p>
+        </div>
+
+        <template #footer>
+          <div class="con-footer">
+            <vs-button @click="$router.push('/quizzes/quiz/' + quiz.pk)" transparent>
+              Start quiz
+            </vs-button>
+            <vs-button @click="successDialog = false" transparent>Close</vs-button>
+          </div>
+        </template>
+      </vs-dialog>
+
+    <vs-button size="xl" class="add-steps-btn" @click="createSteps" v-if="steps.length > 1">Create</vs-button>
   </div>
 </template>
 <script>
-import StepConstructor from "../components/quizzes/quizConstructor/StepConstructor.vue";
 import { createQuiz, getQuizzes } from "../api/items/quizzes.api";
 import CodeInput from "vue-verification-code-input";
-import {mapGetters} from "vuex"
+import { mapGetters, mapActions } from "vuex";
+import { createStep } from "../api/items/steps.api";
+import { createOption } from "../api/items/options.api";
 export default {
   components: {
-    StepConstructor,
     CodeInput,
   },
   data: () => {
     return {
       startDialog: true,
+      successDialog: false,
       quizName: "",
       enterCode: "",
       seconds: 30,
       isPrivate: false,
       deleteAfterFinish: false,
       quiz: null,
+      steps: [
+        {
+          name: "",
+          options: [],
+          rightAnswer: null,
+          isShown: true,
+        },
+      ],
+      currentStep: {
+        name: "",
+        options: [],
+        rightAnswer: null,
+        isShown: true,
+      },
     };
   },
   computed: {
@@ -84,14 +172,15 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["setLoading"]),
     handleCreateQuiz() {
       if (!this.nameValid && this.quizName != "") {
         let enterCodeIsUsed = false;
-        this.quizzes.forEach(quiz => {
-          if(quiz.enter_code == this.enterCode) {
-            enterCodeIsUsed = true
+        this.quizzes.forEach((quiz) => {
+          if (quiz.enter_code == this.enterCode) {
+            enterCodeIsUsed = true;
           }
-        })
+        });
         if (!enterCodeIsUsed) {
           createQuiz(
             this.quizName,
@@ -123,13 +212,81 @@ export default {
         });
       }
     },
+    handleInput(currentIndex) {
+      if (currentIndex == this.steps.length - 1) {
+        this.steps[currentIndex].options.push("");
+        this.steps[currentIndex].options.push("");
+        this.steps[currentIndex].options.push("");
+        this.steps[currentIndex].options.push("");
+        // if(this.steps[currentIndex].options.every(option => {
+        //   return option !== ""
+        // }) && this.steps[currentIndex].rightAnswer) {
+          this.steps.push({
+            name: "",
+            options: [],
+            rightAnswer: null,
+            isShown: true,
+          });
+        // }
+      }
+    },
+    createSteps() {
+      let valid = true
+      let steps = this.steps.slice(0, -1)
+      console.log(steps)
+      steps.forEach(step => {
+        if(step.name == "") {
+          valid = false
+        }
+        if(step.rightAnswer == null) {
+          valid = false
+        }
+        step.options.forEach(option => {
+          if (option == "") {
+            valid = false
+          }
+        })
+      })
+      if(valid) {
+        this.setLoading(true)
+        steps.forEach(step => {
+          createStep(step.name, this.quiz.pk)
+          .then(response => {
+            step.options.forEach(option => {
+              let isRight = step.options.indexOf(option) == step.rightAnswer
+              createOption(option, isRight, response.data.pk)
+            })
+            this.successDialog = true
+          })
+        })
+        this.setLoading(false)
+      }
+      else {
+        this.$vs.notification({
+          color: "danger",
+          icon: '<unicon name="exclamation-triangle" fill="white"/>',
+          position: "bottom-center",
+          duration: 2000,
+          title: "Some fields are incorrect",
+          text: "Check all the fields, some of them are incorrect, are you shure you filled them?",
+        });
+      }
+    },
     onPINInput(v) {
       this.enterCode = v;
     },
+    addStep() {
+      this.options.push(this.currentOption);
+      this.currentOption = "";
+    },
+    removeStep(step) {
+      this.steps.splice(this.steps.indexOf(step), 1);
+    },
   },
+
   created() {
-    if(!localStorage.getItem("token")) {
-      this.$router.push("/login")
+    if (!localStorage.getItem("token")) {
+      this.$router.push("/login");
     }
     getQuizzes().then((response) => {
       this.quizzes = response.data;
@@ -145,5 +302,29 @@ export default {
 .quiz-name {
   text-align: center;
   font-size: 60px;
+}
+.steps-constructor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.step-con-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.step-con-item .unicon {
+  display: flex;
+  margin-top: 10px;
+}
+.steps-constructor .vs-input {
+  width: 350px;
+}
+.constructor .add-steps-btn {
+  position: fixed;
+  right: 0;
+  bottom: 0;
 }
 </style>

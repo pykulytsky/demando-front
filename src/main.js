@@ -45,7 +45,9 @@ import {
   uniCommentChartLine,
   uniDialpadAlt,
   uniVolume,
-  uniVolumeMute
+  uniVolumeMute,
+  uniAngleDown,
+  uniAngleUp
 } from "vue-unicons/dist/icons";
 import VueScrollTo from "vue-scrollto";
 import VueMeta from "vue-meta";
@@ -115,7 +117,9 @@ Unicon.add([
   uniCommentChartLine,
   uniDialpadAlt,
   uniVolume,
-  uniVolumeMute
+  uniVolumeMute,
+  uniAngleDown,
+  uniAngleUp
 ]);
 Vue.use(Unicon, {
   fill: "#0ec4a6"
