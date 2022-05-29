@@ -27,6 +27,7 @@ const createPoll = (name, timeLimit, allowedVotes) => {
             allowed_votes: allowedVotes,
         })
     }
+    console.log(data)
     return httpClient.post(ENDPOINT, data)
 }
 

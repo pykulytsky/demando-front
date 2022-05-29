@@ -232,7 +232,7 @@ export default {
         },
         async registerUserUsingOauth() {
             const googleUser = await this.$gAuth.signIn()
-            console.log(googleUser.getAuthResponse())
+            console.log(googleUser)
         }
     },
     async created() {

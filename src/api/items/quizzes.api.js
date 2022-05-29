@@ -22,5 +22,9 @@ const createQuiz = (name, enter_code, isPrivate, deleteAfterFinish) => {
   });
 };
 
+const patchQuizCover = (quizID ,coverSrc) => httpClient.patch(ENDPOINT + quizID, {
+  cover: coverSrc
+})
 
-export { getQuiz, getQuizzes, createQuiz };
+
+export { getQuiz, getQuizzes, createQuiz, patchQuizCover };

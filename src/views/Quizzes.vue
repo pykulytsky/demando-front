@@ -14,6 +14,10 @@
 import CodeInputForm from "../components/quizzes/CodeInputForm.vue";
 import CreateQuizAlert from "../components/quizzes/CreateQuizAlert.vue";
 export default {
+  name: "Quizzes",
+  metaInfo: {
+    title: "Quizzes",
+  },
   components: {
     CodeInputForm,
     CreateQuizAlert

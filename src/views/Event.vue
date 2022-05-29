@@ -2,9 +2,9 @@
   <div class="event-main" v-if="!!event">
     <div class="event-header">
       <vs-row justify="space-around">
-        <vs-col w="3" justify="center" align="center">
+        <vs-col w="3" justify="center" align="center" v-if="$mq !== 'mobile'">
           <vs-row>
-            <vs-col>
+            <vs-col v-if="$mq !== 'mobile'">
               <qrcode-vue class="qr-code" :value="link" :size="150" level="H" />
             </vs-col>
             <vs-col>
@@ -39,7 +39,7 @@
             </vs-col>
           </vs-row>
         </vs-col>
-        <vs-col w="6" justify="center">
+        <vs-col :w="$mq == 'mobile'? 12: 6" justify="center">
           <vs-row>
             <vs-col vs-justify="flex-end">
               <h1 class="event-name">{{ event.name }}</h1>

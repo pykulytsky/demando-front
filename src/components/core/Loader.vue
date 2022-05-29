@@ -35,6 +35,16 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 999;
+  background-size: 1000% 1000%;
+  padding: 1000%;
+  backdrop-filter: blur(112px);
+  background-color: black;
+  opacity: 0.5;
+  -webkit-backdrop-filter: blur(5px);
+  -moz-backdrop-filter: blur(5px);
+  -o-backdrop-filter: blur(5px);
+  -ms-backdrop-filter: blur(5px);
 }
 .lds-dual-ring-dark {
   display: inline-block;
@@ -44,6 +54,16 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 999;
+  background-size: 1000% 1000%;
+  padding: 1000%;
+  backdrop-filter: blur(112px);
+  background-color: black;
+  opacity: 0.5;
+  -webkit-backdrop-filter: blur(5px);
+  -moz-backdrop-filter: blur(5px);
+  -o-backdrop-filter: blur(5px);
+  -ms-backdrop-filter: blur(5px);
 }
 .lds-dual-ring:after {
   content: " ";

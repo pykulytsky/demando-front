@@ -87,7 +87,7 @@ export default {
         console.log("isLogined: ", this.isLogined);
         console.log("currentUser: ", this.currentUser);
         if (this.isLogined) {
-          this.$router.push("/qa");
+          this.$router.push("/");
         } else {
           this.$vs.notification({
             color: "danger",

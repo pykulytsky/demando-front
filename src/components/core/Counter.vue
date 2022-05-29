@@ -62,7 +62,6 @@ export default {
   },
   mounted() {
     this.showRemaining()
-    console.log(this.end)
   }
 };
 </script>

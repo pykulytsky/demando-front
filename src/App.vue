@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <loading v-if="isLoading" />
+    <transition name="fade">
+      <loading v-if="isLoading" />
+    </transition>
     <div class="hidden">
       <vs-sidebar absolute v-model="sidebarActive"  :open.sync="sidebar">
         <template #logo>
@@ -121,6 +123,13 @@ export default {
       }
       this.emitToggleTheme();
     },
+    isLoading(val) {
+      if (val) {
+        document.documentElement.style.overflow = 'hidden'
+      } else {
+        document.documentElement.style.overflow = 'auto'
+      }
+    }
   },
   methods: {
     ...mapActions([
@@ -176,8 +185,6 @@ h1 {
   color: #1E2023;
 }
 
-.vs-input {
-}
 .navb {
   margin-bottom: 150px;
 }
@@ -196,6 +203,12 @@ h1 {
 }
 .component-fade-enter, .component-fade-leave-to
 /* .component-fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
 </style>

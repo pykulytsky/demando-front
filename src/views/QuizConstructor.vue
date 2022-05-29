@@ -5,10 +5,15 @@
         <h1 class="quiz-name">{{ quiz.name }}</h1>
         <div class="quiz-detail-info">
           <div class="quiz-detail-info-sec">
+            <span
+              ><unicon name="dialpad-alt" />
+              <h2 class="quiz-caption">{{ quiz.enter_code }}</h2></span
+            >
 
-            <span><unicon name="dialpad-alt" /> <h2 class="quiz-caption">{{ quiz.enter_code }}</h2></span>
-
-            <span><unicon name="clock-five" /> <h2 class="quiz-caption">{{ quiz.seconds_per_answer }}s</h2></span>
+            <span
+              ><unicon name="clock-five" />
+              <h2 class="quiz-caption">{{ quiz.seconds_per_answer }}s</h2></span
+            >
           </div>
           <div class="quiz-detail-info-sec">
             <vs-switch v-model="quiz.is_private" disabled>
@@ -34,7 +39,9 @@
         </vue-select-image>
       </div>
     </div>
-    <h2 class="steps-caption">Next you have to add some questions to your quiz...</h2>
+    <h2 class="steps-caption">
+      Next you have to add some questions to your quiz...
+    </h2>
     <div class="steps-constructor">
       <div :class="'step-con-item'" v-for="(step, i) in steps" :key="i">
         <vs-input
@@ -169,7 +176,11 @@
   </div>
 </template>
 <script>
-import { createQuiz, getQuizzes } from "../api/items/quizzes.api";
+import {
+  createQuiz,
+  getQuizzes,
+  patchQuizCover,
+} from "../api/items/quizzes.api";
 import CodeInput from "vue-verification-code-input";
 import { mapGetters, mapActions } from "vuex";
 import { createStep } from "../api/items/steps.api";
@@ -346,6 +357,34 @@ export default {
     },
     onPINInput(v) {
       this.enterCode = v;
+    },
+    onSelectCover(data) {
+      if (data !== this.defaultCover) {
+        patchQuizCover(this.quiz.pk, data.src).then((response) => {
+          console.log(response);
+          this.$vs.notification({
+            color: "success",
+            icon: '<unicon name="exclamation-triangle" fill="white"/>',
+            position: "bottom-center",
+            duration: 2000,
+            title: "Cover was successfully changed",
+            text: "You've just changed the cover of quiz, it will be visible when you will start your quiz.",
+          });
+        });
+      } else {
+        patchQuizCover(this.quiz.pk, "").then((response) => {
+          console.log(response);
+          this.$vs.notification({
+            color: "success",
+            icon: '<unicon name="exclamation-triangle" fill="white"/>',
+            position: "bottom-center",
+            duration: 2000,
+            title: "Cover was successfully changed",
+            text: "You've just changed the cover of quiz, it will be visible when you will start your quiz.",
+          });
+        });
+      }
+      console.log(data);
     },
     addStep() {
       this.options.push(this.currentOption);

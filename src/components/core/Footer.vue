@@ -31,23 +31,23 @@ export default {
     return {
       links: [
         {
-          title: "Vuesax",
+          title: "Demando",
           items: [
             {
-              text: "What is Vuesax?",
-              link: "/docs/guide/#whats-is-vuesax",
+              text: "What is Demando?",
+              link: "/",
             },
             {
-              text: "Why Vuesax?",
-              link: "/docs/guide/#why-vuesax",
+              text: "Polls",
+              link: "/polls",
             },
             {
-              text: "What's new in v4",
-              link: "/docs/guide/#features",
+              text: "Quizzes",
+              link: "/quizzes",
             },
             {
-              text: "FAQ",
-              link: "/license/#faq",
+              text: "Q&A Events",
+              link: "/qa",
             },
           ],
         },
@@ -59,12 +59,16 @@ export default {
             //   link: '/'
             // },
             {
-              text: "Documentation",
-              link: "/docs/",
+              text: "Contribute to frontend",
+              link: "https://github.com/pykulytsky/demando-front",
+            },
+            {
+              text: "Contribute to backend",
+              link: "https://github.com/pykulytsky/demando",
             },
             {
               text: "Github",
-              link: "https://github.com/lusaxweb/vuesax-next",
+              link: "https://github.com/pykulytsky/",
             },
             {
               text: "Privacy Policy",
@@ -77,28 +81,25 @@ export default {
           items: [
             {
               text: "Github Issues",
-              link: "https://github.com/lusaxweb/vuesax-next/issues",
+              link: "https://github.com/pykulytsky/demando-front/issues",
             },
-            // {
-            //   text: 'Latest Releases',
-            //   link: '/'
-            // },
             {
-              text: "FAQ",
-              link: "/license/#faq",
+              text: "Github Issues(Backend)",
+              link: "https://github.com/pykulytsky/demando/issues",
             },
+
           ],
         },
         {
           title: "Community",
           items: [
             {
-              text: "Discord",
+              text: "Telegram",
               link: "https://discord.gg/6AZNXEa",
             },
             {
               text: "Github",
-              link: "https://github.com/lusaxweb/vuesax-next/",
+              link: "https://github.com/pykulytsky/",
             },
           ],
         },

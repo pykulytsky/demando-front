@@ -15,8 +15,7 @@
     </div>
     <div class="vote-item-wrap" v-for="option in poll.options" :key="option.pk">
       <div class="vote-item">
-        <h2 v-responsive.lg.xl v-if="voted">{{ option.name }}</h2>
-        <p v-responsive.sm.xs v-if="voted">{{ option.name }}</p>
+        <h2 v-if="voted">{{ option.name }}</h2>
         <vs-row align="center">
           <vs-col w="1" v-if="!voted">
             <vs-radio
@@ -46,7 +45,7 @@
               {{ option.name }}
             </h2>
           </vs-col>
-          <vs-col w="12" v-responsive.sm.xs>
+          <vs-col :w="voted ? 12: 11" v-responsive.sm.xs>
             <progress-bar
               v-if="voted"
               class="option"
@@ -209,19 +208,18 @@ export default {
         this.poll = JSON.parse(event.data);
         if(this.poll.limited_time) {
           let date = new Date(Date.parse(this.poll.time_to_vote))
+          console.log(date)
+          console.log(date < new Date())
           this.dueToDate = {
             year: date.getFullYear(),
-            month: date.getMonth(),
-            day: date.getDay(),
+            month: date.getMonth()+1,
+            day: date.getDay()-2,
             hour: date.getHours(),
             minute: date.getMinutes(),
             second: date.getSeconds(),
             millisecond: date.getMilliseconds()
           }
-          console.log(this.dueToDate)
-          if(date < new Date()) {
-            this.voted = true
-          }
+
         }
         try {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;
@@ -230,29 +228,9 @@ export default {
         catch {
           this.voted = this.poll.votes.filter((vote) => vote.owner_host == window.location.hostname).length > 0
         }
-        // this.poll.votes.forEach(vote => {
-        //   if(vote.owner) {
-        //     if(vote.owner.pk == userPk) {
-        //       this.voted = true
-        //     }
-        //   }
-        //   if(vote.owner_host) {
-        //     if(vote.owner_host == window.location.hostname) {
-        //       this.voted = true
-        //     }
-        //   }
-        // })
-          // this.voted =
-          //   this.poll.votes.filter((vote) => vote.owner.pk == userPk).length >
-          //   0;
-        // } catch {
-        //   if(!jwt_decode(localStorage.getItem("token"))) {
-        //     this.voted =
-        //       this.poll.votes.filter(
-        //         (vote) => vote.owner_host == window.location.hostname
-        //       ).length > 0;
-        //   }
-        // }
+        if(new Date(Date.parse(this.poll.time_to_vote)) < new Date()) {
+          this.voted = true
+        }
         this.setLoading(false);
       };
       this.connection.onopen = () => {};

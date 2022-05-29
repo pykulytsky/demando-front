@@ -327,7 +327,7 @@ export default {
       }
       else {
         this.connection = new WebSocket(
-          "ws://" + "/localhost:8000" + "/ws/quiz/" +
+          "ws://" + "localhost:8000" + "/ws/quiz/" +
             this.quiz.enter_code +
             "/username:" +
             this.newUserNickname

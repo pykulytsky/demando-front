@@ -17,11 +17,9 @@
       </vs-button>
     </div>
     <div class="event-search" v-motion-pop-visible>
+      <h1>Enter identifier of event</h1>
       <vs-row align="center" justify="center">
-        <h1>Enter identifier of event</h1>
-      </vs-row>
-      <vs-row align="center" justify="center">
-        <vs-col w="11">
+        <vs-col w="9">
           <vs-input
             id="event-search"
             placeholder="Enter id of event..."
@@ -145,6 +143,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 .vs-button {
   margin-top: 12px;
@@ -229,5 +228,10 @@ export default {
     margin-right: 0;
   }
 }
-
+.vs-input-parent--shadow .vs-input-content .vs-input {
+    background: transparent;
+    border-radius: 0px;
+    border: 2px solid transparent;
+    width: 100%;
+}
 </style>

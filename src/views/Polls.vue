@@ -10,7 +10,7 @@
       </h1>
     </div>
     <div class="polls-content">
-      <vs-button success size="xl" @click="createPollDialog = true"
+      <vs-button v-if="isLogined" success size="xl" @click="createPollDialog = true"
         >Create poll</vs-button
       >
     </div>
@@ -119,7 +119,7 @@ export default {
       }
       else {
         if(this.dueTo) {
-          createPoll(this.pollName, this.dueTo.toDateString, this.choices)
+          createPoll(this.pollName, this.dueTo, this.choices)
           .then(response => {
             this.options.forEach(option => {
               if(option !== "") {
@@ -149,7 +149,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["currentTheme"]),
+    ...mapGetters(["currentTheme", "isLogined"]),
   },
 };
 </script>

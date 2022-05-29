@@ -1,7 +1,7 @@
 <template>
   <div class="explore">
     <div :class="currentTheme == 'light' ? 'explore-header': 'explore-header-dark'">
-      <kinesis-container>
+      <kinesis-container v-if="['desktop', 'laptop', 'tablet'].includes($mq)">
         <kinesis-element
           type="depth_inv"
           :strength="30"
@@ -27,6 +27,9 @@
           Explore events to find out one you are interested in.
         </kinesis-element>
       </kinesis-container>
+      <h1 v-else class="explore-title-header">
+       Create or participate in polls, quizzes or events where you can ask question. Explore events to find out one you are interested in.
+      </h1>
 
       <div class="header-buttons" v-motion-fade>
         <vs-button
@@ -65,7 +68,7 @@
       <div class="explore-events">
         <h1 class="explore-head" id="polls">Polls</h1>
         <div
-          class="explore-item"
+          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
           id="polls-typer"
           v-view.once="typerViewHandler"
         >
@@ -103,16 +106,25 @@
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/christin-hume-Hcfwew744z4-unsplash.jpg"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
         </div>
-        <div :class="currentTheme == 'light'? 'explore-item blob-light': 'explore-item blob-dark'" id="device" v-view.once="typerViewHandler">
+        <div
+          :class="{
+            'blob-light': currentTheme == 'light',
+            'blob-dark': currentTheme == 'dark',
+            'explore-item-small': $mq == 'mobile',
+            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq)
+          }"
+          id="device"
+          v-view.once="typerViewHandler"
+        >
           <img
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/brett-jordan--qUp3bejuzs-unsplash.jpg"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
           <div class="explore-caption-right" v-motion-fade-visible>
@@ -137,7 +149,7 @@
           </div>
         </div>
         <div
-          class="explore-item"
+          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
           id="poll-features"
           v-view.once="typerViewHandler"
         >
@@ -165,7 +177,7 @@
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/poll-example.png"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
         </div>
@@ -178,7 +190,7 @@
           >Create your first live poll</vs-button
         >
       </div>
-      <vs-card-group>
+      <vs-card-group v-if="$mq !== 'mobile'">
         <vs-card
           v-for="event in polls"
           :key="event.pk"
@@ -212,7 +224,7 @@
       <div class="explore-events">
         <h1 class="explore-head" id="quizzes">Quizzes</h1>
         <div
-          class="explore-item"
+          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
           id="quiz-typer"
           v-view.once="typerViewHandler"
         >
@@ -242,16 +254,25 @@
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/jeshoots-com-5EKw8Z7CgE4-unsplash.jpg"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
         </div>
-        <div :class="currentTheme == 'light'? 'explore-item blob-light': 'explore-item blob-dark'" id="learn" v-view.once="typerViewHandler">
+        <div
+          :class="{
+            'blob-light': currentTheme == 'light',
+            'blob-dark': currentTheme == 'dark',
+            'explore-item-small': $mq == 'mobile',
+            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq)
+          }"
+          id="learn"
+          v-view.once="typerViewHandler"
+        >
           <img
             v-motion-slide-visible-once-left
             class="explore-image"
             src="../assets/chris-montgomery-smgTvepind4-unsplash.jpg"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
           <div class="explore-caption-right" v-motion-fade-visible>
@@ -276,7 +297,11 @@
             </h2>
           </div>
         </div>
-        <div class="explore-item" id="fun" v-view.once="typerViewHandler">
+        <div
+          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
+          id="fun"
+          v-view.once="typerViewHandler"
+        >
           <div class="explore-caption" v-motion-fade-visible>
             <vue-typer
               v-if="funIsVisible"
@@ -302,7 +327,7 @@
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/priscilla-du-preez-XkKCui44iM0-unsplash.jpg"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
         </div>
@@ -315,7 +340,7 @@
           >Create your first live quiz</vs-button
         >
       </div>
-      <vs-card-group>
+      <vs-card-group v-if="$mq !== 'mobile'">
         <vs-card
           v-for="event in quizzes"
           :key="event.pk"
@@ -351,7 +376,7 @@
       <div class="explore-events">
         <h1 class="explore-head" id="events">Q&A Events</h1>
         <div
-          class="explore-item"
+          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
           id="events-typer"
           v-view.once="typerViewHandler"
         >
@@ -388,12 +413,17 @@
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/bruce-mars-FWVMhUa_wbY-unsplash.jpg"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
         </div>
         <div
-          :class="currentTheme == 'light'? 'explore-item blob-light': 'explore-item blob-dark'"
+          :class="{
+            'blob-light': currentTheme == 'light',
+            'blob-dark': currentTheme == 'dark',
+            'explore-item-small': $mq == 'mobile',
+            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq)
+          }"
           id="opinion-typer"
           v-view.once="typerViewHandler"
         >
@@ -401,7 +431,7 @@
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/karsten-winegeart-60GsdOMRFGc-unsplash.jpg"
-            width="550"
+            :width="$mq == 'mobile'? '100%': '50%'"
             alt=""
           />
           <div class="explore-caption-right" v-motion-fade-visible>
@@ -434,7 +464,7 @@
           >Create your first Q&A event</vs-button
         >
       </div>
-      <vs-card-group>
+      <vs-card-group v-if="$mq !== 'mobile'">
         <vs-card
           v-for="event in events"
           :key="event.pk"
@@ -566,7 +596,7 @@ export default {
 
   flex-direction: column;
   padding-top: 15%;
-  padding-bottom: 15%;
+  padding-bottom: 20%;
   justify-content: center;
   align-items: center;
 }
@@ -579,7 +609,7 @@ export default {
 
   flex-direction: column;
   padding-top: 15%;
-  padding-bottom: 15%;
+  padding-bottom: 20%;
   justify-content: center;
   align-items: center;
 }
@@ -589,11 +619,14 @@ export default {
 }
 
 .explore .vs-card__group-cards {
-  max-width: 1300px;
 }
 .explore .vs-card__group {
   background-size: cover;
   padding: 5% 0;
+  width: 90vw;
+}
+.explore .vs-card__img {
+  width: 100%;
 }
 .header-buttons {
   display: flex;
@@ -616,6 +649,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 75px;
+  padding: 10vw;
+  padding-right: 10vw;
+}
+.explore-item-small {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
   margin-bottom: 75px;
   padding: 10vw;
   padding-right: 10vw;

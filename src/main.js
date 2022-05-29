@@ -59,6 +59,7 @@ import checkView from 'vue-check-view'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import VueSelectImage from 'vue-select-image'
+import VueMq from 'vue-mq'
 
 
 const gauthOption = {
@@ -134,6 +135,14 @@ Vue.use(MotionPlugin)
 Vue.use(checkView)
 Vue.use(Datetime)
 Vue.use(VueSelectImage)
+Vue.use(VueMq, {
+  breakpoints: {
+    mobile: 450,
+    tablet: 900,
+    laptop: 1250,
+    desktop: Infinity,
+  }
+})
 
 require('vue-select-image/dist/vue-select-image.css')
 
