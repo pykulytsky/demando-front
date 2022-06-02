@@ -10,7 +10,7 @@
         <template #tooltip> Click here copy the code </template>
       </vs-tooltip>
       <h4>or join the game using QR-code bellow</h4>
-      <qrcode-vue class="qr-code" :value="link" :size="200" level="H" />
+      <qrcode-vue class="qr-code" :value="link" :size="150" level="H" />
       <h3>Waiting for other users to join...</h3>
       <div class="members">
         <vs-tooltip v-for="member in members" :key="member">
@@ -33,7 +33,6 @@
       >
         Start Game
       </vs-button>
-      <h3 v-else>Please, wait when game owner starts the game...</h3>
       <img
         v-if="!isOwner"
         src="../assets/spinner3.gif"
@@ -85,7 +84,7 @@
         />
         <number tag="h1" :from="0" :to="currentResults !== null ? currentResults: 0" :duration="3" />
         <h1 v-if="!currentAnswer.option.is_right || isNoAnswer">
-          Corrent answer: {{ rightAnswer }}
+          Correct answer: {{ rightAnswer }}
         </h1>
         <h3>Waiting for the next question...</h3>
         <img src="../assets/spinner3.gif" width="150" height="150" />
@@ -495,8 +494,11 @@ export default {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 100px;
   text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -30%);
 }
 .final-results {
   display: flex;
@@ -504,7 +506,7 @@ export default {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 150px;
+  margin-top: 5%;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -538,11 +540,11 @@ export default {
 }
 .con-content-nickname .vs-input {
   font-size: 32px;
-  min-width: 350px;
+  min-width: 100%;
 }
 .con-content-nickname .vs-input-content {
   font-size: 32px;
-  min-width: 300px;
+  min-width: 100%;
 }
 .con-content-nickname .vs-input__label {
   font-size : 32px;

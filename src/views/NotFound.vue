@@ -1,11 +1,23 @@
 <template>
     <div class="error-block">
-        <h1 class="error-message">404</h1>
+              <lottie-animation
+        ref="anim"
+        :animationData="require('@/assets/lottie/84178-404-error.json')"
+        :loop="true"
+        width="500px"
+      />
         <i>Requested page was not found!  </i>
         <router-link to="/qa">Go to main</router-link>
     </div>
 </template>
-
+<script>
+import LottieAnimation from "lottie-web-vue";
+export default {
+  components: {
+    LottieAnimation,
+  },
+}
+</script>
 <style>
 .error-block {
     position: absolute;

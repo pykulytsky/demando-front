@@ -3,10 +3,18 @@
     <transition name="fade">
       <loading v-if="isLoading" />
     </transition>
+    <!-- <lottie-animation
+      v-if="isLoading"
+      id="load"
+      ref="anim"
+      :animationData="require('@/assets/lottie/73991-30th-anniversary-of-ukraines-independence.json')"
+      :loop="true"
+      :width="$mq == 'mobile' ? '150%' : '50%'"
+    /> -->
     <div class="hidden">
       <vs-sidebar absolute v-model="sidebarActive"  :open.sync="sidebar">
         <template #logo>
-          <img src="./assets/logo1-d.png" alt="" />
+          <img height="200" src="./assets/logo1-d.png" alt="" />
         </template>
         <vs-sidebar-item to="/" id="explore">
           <template #icon>
@@ -85,7 +93,6 @@ import { mapActions, mapGetters } from "vuex";
 import Navbar from "./components/core/Navbar.vue";
 import Footer from "./components/core/Footer.vue";
 import Loader from "./components/core/Loader.vue";
-
 export default {
   name: "App",
   metaInfo: {
@@ -210,5 +217,11 @@ h1 {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
+}
+#load {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

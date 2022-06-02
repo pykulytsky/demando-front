@@ -271,7 +271,8 @@ export default {
             this.quizName,
             this.enterCode,
             this.isPrivate,
-            this.deleteAfterFinish
+            this.deleteAfterFinish,
+            this.seconds
           ).then((response) => {
             this.quiz = response.data;
             this.startDialog = false;

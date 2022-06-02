@@ -98,12 +98,16 @@
                 <router-link class="register-link" to="/login">Already have an account? Login here</router-link>
             </vs-row>
         </div>
-        <vs-alert v-else gradient>
-            <template #title>
-                Email verification needed
-            </template>
-            Thanks for joining our service, next you have to verify your email. Check your inbox and follow the instruction.
-        </vs-alert>
+        <div v-else class="email-verification">
+
+            <vs-alert gradient>
+                <template #title>
+                    Email verification needed
+                </template>
+                Thanks for joining our service, next you have to verify your email. Check your inbox and follow the instruction.
+            </vs-alert>
+        </div>
+
     </div>
 </template>
 

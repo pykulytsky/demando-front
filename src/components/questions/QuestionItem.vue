@@ -49,16 +49,16 @@
       <h2>{{ question.body }}</h2>
     </vs-row>
     <vs-row justify="flex-end" align="center">
-      <unicon class="hvr-bob" @click="updateLikes(-1)" name="thumbs-down" :fill="iconColor" />
+      <unicon class="hvr-bob like" @click="updateLikes(-1)" name="thumbs-down" :fill="iconColor" />
       {{ question.likes_count }}
-      <unicon class="hvr-bob" @click="updateLikes(1)" name="thumbs-up" :fill="iconColor" />
+      <unicon class="hvr-bob like" @click="updateLikes(1)" name="thumbs-up" :fill="iconColor" />
     </vs-row>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { patchQuestion, deleteQuestion } from "../../api/items/questions.api";
+import { deleteQuestion, likeQuestion } from "../../api/items/questions.api";
 
 export default {
   props: {
@@ -83,14 +83,21 @@ export default {
   },
 
   methods: {
-    async updateLikes(step) {
-      console.log(this.question)
-      await patchQuestion(
-        {
-          likes_count: this.question.likes_count + step,
-        },
-        this.question.pk
-      );
+    async updateLikes() {
+      likeQuestion(this.question.pk)
+      .then(() => {
+        this.$emit("updateQuestions");
+      })
+      .catch(() => {
+        this.$vs.notification({
+          color: "danger",
+          icon: '<unicon name="exclamation-triangle" fill="white"/>',
+          position: "bottom-center",
+          duration: 2000,
+          title: "You have already liked this question",
+          text: "Check all the fields, some of them are incorrect, are you shure you filled them?",
+        });
+      })
       this.$emit("updateQuestions");
     },
     async handleDeleteQuestion() {
@@ -203,5 +210,8 @@ export default {
   animation-fill-mode: forwards;
   -webkit-animation-direction: normal, alternate;
   animation-direction: normal, alternate;
+}
+.like {
+  margin: 0 5px;
 }
 </style>

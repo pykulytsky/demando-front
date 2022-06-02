@@ -1,6 +1,10 @@
 <template>
   <div class="explore">
-    <div :class="currentTheme == 'light' ? 'explore-header': 'explore-header-dark'">
+    <div
+      :class="
+        currentTheme == 'light' ? 'explore-header' : 'explore-header-dark'
+      "
+    >
       <kinesis-container v-if="['desktop', 'laptop', 'tablet'].includes($mq)">
         <kinesis-element
           type="depth_inv"
@@ -28,7 +32,8 @@
         </kinesis-element>
       </kinesis-container>
       <h1 v-else class="explore-title-header">
-       Create or participate in polls, quizzes or events where you can ask question. Explore events to find out one you are interested in.
+        Create or participate in polls, quizzes or events where you can ask
+        question. Explore events to find out one you are interested in.
       </h1>
 
       <div class="header-buttons" v-motion-fade>
@@ -64,16 +69,39 @@
         </vs-button>
       </div>
     </div>
+    <div
+      :class="
+        currentTheme == 'light'
+          ? 'explore-desc blob-light'
+          : 'explore-desc blob-dark'
+      "
+    >
+      <h1 :class="$mq == 'mobile'? 'sm-caption': ''">
+        Demando is the platform that you can use for learning. Doesn't matter
+        are you a student or a teacher, you can participate in live quizzes,
+        polls or create Q&A Events.
+      </h1>
+      <lottie-animation
+        ref="anim"
+        :animationData="
+          require('@/assets/lottie/101381-orange-t-shirt-coder.json')
+        "
+        :loop="true"
+        width="500px"
+      />
+    </div>
     <div class="polls explore-items">
       <div class="explore-events">
         <h1 class="explore-head" id="polls">Polls</h1>
         <div
-          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
+          :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="polls-typer"
           v-view.once="typerViewHandler"
         >
           <div
-            class="explore-caption"
+            :class="
+              $mq !== 'mobile' ? 'explore-caption' : 'explore-caption-small'
+            "
             v-motion-fade-visible
             :enter="{
               transition: {
@@ -102,32 +130,68 @@
             </h2>
           </div>
 
-          <img
+          <!-- <img
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/christin-hume-Hcfwew744z4-unsplash.jpg"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="
+              require('@/assets/lottie/100842-user-interface-website-design-animations.json')
+            "
+            :loop="true"
+            width="500px"
           />
         </div>
+        <!-- <vs-row>
+          <vs-col w="10">
+      <lottie-animation
+        ref="anim"
+        :animationData="require('@/assets/lottie/101045-human-move.json')"
+        :loop="true"
+        width="500px"
+      />
+          </vs-col>
+          <vs-col w="2">
+            <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda, dolorum!</h1>
+          </vs-col>
+        </vs-row> -->
         <div
           :class="{
             'blob-light': currentTheme == 'light',
             'blob-dark': currentTheme == 'dark',
             'explore-item-small': $mq == 'mobile',
-            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq)
+            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq),
           }"
           id="device"
           v-view.once="typerViewHandler"
         >
-          <img
+          <!-- <img
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/brett-jordan--qUp3bejuzs-unsplash.jpg"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="
+              require('@/assets/lottie/105761-verification-code-otp-v2.json')
+            "
+            :loop="true"
+            width="500px"
           />
-          <div class="explore-caption-right" v-motion-fade-visible>
+          <div
+            :class="
+              $mq !== 'mobile'
+                ? 'explore-caption-right'
+                : 'explore-caption-right-small'
+            "
+            v-motion-fade-visible
+          >
             <vue-typer
               v-if="deviceIsVisible"
               text="Any device"
@@ -149,7 +213,7 @@
           </div>
         </div>
         <div
-          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
+          :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="poll-features"
           v-view.once="typerViewHandler"
         >
@@ -177,7 +241,7 @@
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/poll-example.png"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
           />
         </div>
@@ -190,7 +254,7 @@
           >Create your first live poll</vs-button
         >
       </div>
-      <vs-card-group v-if="$mq !== 'mobile'">
+      <vs-card-group v-if="$mq !== 'mobile' && useCardGroups">
         <vs-card
           v-for="event in polls"
           :key="event.pk"
@@ -218,17 +282,122 @@
           </template>
         </vs-card>
       </vs-card-group>
+      <div v-if="!useCardGroups && $mq !== 'mobile'" class="cards">
+        <vs-row v-if="polls.length > 4">
+          <vs-col w="4" v-for="event in polls.slice(0, 3)" :key="event.pk">
+            <vs-card
+              type="3"
+              :key="event.pk"
+              @click="$router.push('/polls/' + event.pk)"
+            >
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomPollImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4" v-for="event in polls.slice(3, 5)" :key="event.pk">
+            <vs-card
+              type="3"
+              :key="event.pk"
+              @click="$router.push('/polls/' + event.pk)"
+            >
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomPollImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4">
+            <div class="invite">
+              <p>Explore all the polls ></p>
+            </div>
+          </vs-col>
+        </vs-row>
+        <vs-row v-else>
+          <vs-col w="4" v-for="event in polls" :key="event.pk">
+            <vs-card
+              type="3"
+              :key="event.pk"
+              @click="$router.push('/polls/' + event.pk)"
+            >
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomPollImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4">
+            <div class="invite">
+              <p>Explore all the polls ></p>
+            </div>
+          </vs-col>
+        </vs-row>
+      </div>
     </div>
 
     <div class="quizzes explore-items">
       <div class="explore-events">
         <h1 class="explore-head" id="quizzes">Quizzes</h1>
         <div
-          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
+          :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="quiz-typer"
           v-view.once="typerViewHandler"
         >
-          <div class="explore-caption" v-motion-fade-visible>
+          <div
+            :class="
+              $mq !== 'mobile' ? 'explore-caption' : 'explore-caption-small'
+            "
+            v-motion-fade-visible
+          >
             <vue-typer
               v-if="quizzesIsVisible"
               text="Live Quizzes"
@@ -250,12 +419,20 @@
             </h2>
           </div>
 
-          <img
+          <!-- <img
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/jeshoots-com-5EKw8Z7CgE4-unsplash.jpg"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="
+              require('@/assets/lottie/69395-man-working-on-system.json')
+            "
+            :loop="true"
+            width="500px"
           />
         </div>
         <div
@@ -263,22 +440,37 @@
             'blob-light': currentTheme == 'light',
             'blob-dark': currentTheme == 'dark',
             'explore-item-small': $mq == 'mobile',
-            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq)
+            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq),
           }"
           id="learn"
           v-view.once="typerViewHandler"
         >
-          <img
+          <!-- <img
             v-motion-slide-visible-once-left
             class="explore-image"
             src="../assets/chris-montgomery-smgTvepind4-unsplash.jpg"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="
+              require('@/assets/lottie/69837-grmmarly-animation-1.json')
+            "
+            :loop="true"
+            width="500px"
           />
-          <div class="explore-caption-right" v-motion-fade-visible>
+          <div
+            :class="
+              $mq !== 'mobile'
+                ? 'explore-caption-right'
+                : 'explore-caption-right-small'
+            "
+            v-motion-fade-visible
+          >
             <vue-typer
               v-if="learnIsVisible"
-              text="Make your learning process interactive"
+              text="Make your learning process  interactive"
               :repeat="0"
               :shuffle="false"
               initial-action="typing"
@@ -298,11 +490,16 @@
           </div>
         </div>
         <div
-          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
+          :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="fun"
           v-view.once="typerViewHandler"
         >
-          <div class="explore-caption" v-motion-fade-visible>
+          <div
+            :class="
+              $mq !== 'mobile' ? 'explore-caption' : 'explore-caption-small'
+            "
+            v-motion-fade-visible
+          >
             <vue-typer
               v-if="funIsVisible"
               text="Useful tool"
@@ -323,12 +520,20 @@
             </h2>
           </div>
 
-          <img
+          <!-- <img
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/priscilla-du-preez-XkKCui44iM0-unsplash.jpg"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="
+              require('@/assets/lottie/72178-man-working-under-lamp-light.json')
+            "
+            :loop="true"
+            width="500px"
           />
         </div>
         <vs-button
@@ -340,7 +545,7 @@
           >Create your first live quiz</vs-button
         >
       </div>
-      <vs-card-group v-if="$mq !== 'mobile'">
+      <vs-card-group v-if="$mq !== 'mobile' && useCardGroups">
         <vs-card
           v-for="event in quizzes"
           :key="event.pk"
@@ -371,17 +576,140 @@
           </template>
         </vs-card>
       </vs-card-group>
+      <div v-if="!useCardGroups && $mq !== 'mobile'" class="cards">
+        <vs-row v-if="quizzes.length > 4">
+          <vs-col w="4" v-for="event in quizzes.slice(0, 3)" :key="event.pk">
+            <vs-card
+              type="3"
+              @click="$router.push('/quizzes/quiz/' + event.pk)"
+            >
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+                <vs-button class="btn-chat" shadow primary>
+                  <unicon width="15" height="15" name="question" />
+                  <span class="span"> {{ event.steps.length }} </span>
+                </vs-button>
+                <vs-button class="btn-chat" shadow primary>
+                  <unicon width="15" height="15" name="dialpad-alt" />
+                  <span class="span"> {{ event.enter_code }} </span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4" v-for="event in quizzes.slice(3, 5)" :key="event.pk">
+            <vs-card
+              type="3"
+              @click="$router.push('/quizzes/quiz/' + event.pk)"
+            >
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+                <vs-button class="btn-chat" shadow primary>
+                  <unicon width="15" height="15" name="question" />
+                  <span class="span"> {{ event.steps.length }} </span>
+                </vs-button>
+                <vs-button class="btn-chat" shadow primary>
+                  <unicon width="15" height="15" name="dialpad-alt" />
+                  <span class="span"> {{ event.enter_code }} </span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4">
+            <div class="invite">
+              <p>Explore all the quizzes ></p>
+            </div>
+          </vs-col>
+        </vs-row>
+        <vs-row v-else>
+          <vs-col w="4" v-for="event in quizzes" :key="event.pk">
+            <vs-card
+              type="3"
+              @click="$router.push('/quizzes/quiz/' + event.pk)"
+            >
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+                <vs-button class="btn-chat" shadow primary>
+                  <unicon width="15" height="15" name="question" />
+                  <span class="span"> {{ event.steps.length }} </span>
+                </vs-button>
+                <vs-button class="btn-chat" shadow primary>
+                  <unicon width="15" height="15" name="dialpad-alt" />
+                  <span class="span"> {{ event.enter_code }} </span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4">
+            <div class="invite">
+              <p>Explore all the polls ></p>
+            </div>
+          </vs-col>
+        </vs-row>
+      </div>
     </div>
     <div class="events explore-items">
       <div class="explore-events">
         <h1 class="explore-head" id="events">Q&A Events</h1>
         <div
-          :class="$mq == 'mobile'?  'explore-item-small': 'explore-item'"
+          :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="events-typer"
           v-view.once="typerViewHandler"
         >
           <div
-            class="explore-caption"
+            :class="
+              $mq !== 'mobile' ? 'explore-caption' : 'explore-caption-small'
+            "
             v-motion-fade-visible
             :enter="{
               transition: {
@@ -409,12 +737,17 @@
             </h2>
           </div>
 
-          <img
+          <!-- <img
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/bruce-mars-FWVMhUa_wbY-unsplash.jpg"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="require('@/assets/lottie/80600-social-123.json')"
+            :loop="true"
           />
         </div>
         <div
@@ -422,19 +755,32 @@
             'blob-light': currentTheme == 'light',
             'blob-dark': currentTheme == 'dark',
             'explore-item-small': $mq == 'mobile',
-            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq)
+            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq),
           }"
           id="opinion-typer"
           v-view.once="typerViewHandler"
         >
-          <img
+          <!-- <img
             v-motion-slide-visible-once-right
             class="explore-image"
             src="../assets/karsten-winegeart-60GsdOMRFGc-unsplash.jpg"
-            :width="$mq == 'mobile'? '100%': '50%'"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="require('@/assets/lottie/67908-duck.json')"
+            :loop="true"
+            :width="$mq == 'mobile' ? '150%' : '50%'"
           />
-          <div class="explore-caption-right" v-motion-fade-visible>
+          <div
+            :class="
+              $mq !== 'mobile'
+                ? 'explore-caption-right'
+                : 'explore-caption-right-small'
+            "
+            v-motion-fade-visible
+          >
             <vue-typer
               v-if="opinionIsVisible"
               text="Express your opinion"
@@ -464,7 +810,7 @@
           >Create your first Q&A event</vs-button
         >
       </div>
-      <vs-card-group v-if="$mq !== 'mobile'">
+      <vs-card-group v-if="$mq !== 'mobile' && useCardGroups">
         <vs-card
           v-for="event in events"
           :key="event.pk"
@@ -487,6 +833,100 @@
           </template>
         </vs-card>
       </vs-card-group>
+      <div v-if="!useCardGroups && $mq !== 'mobile'" class="cards">
+        <vs-row v-if="events.length > 4">
+          <vs-col w="4" v-for="event in events.slice(0, 3)" :key="event.pk">
+            <vs-card @click="$router.push('/qa/events/' + event.pk)">
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4" v-for="event in events.slice(3, 5)" :key="event.pk">
+            <vs-card @click="$router.push('/qa/events/' + event.pk)">
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4">
+            <div class="invite">
+              <p>Explore all the quizzes ></p>
+            </div>
+          </vs-col>
+        </vs-row>
+        <vs-row v-else>
+          <vs-col w="4" v-for="event in events" :key="event.pk">
+            <vs-card @click="$router.push('/qa/events/' + event.pk)">
+              <template #title>
+                <h3>{{ event.name }}</h3>
+              </template>
+              <template #img>
+                <img
+                  width="200"
+                  height="200"
+                  :src="randomImage(event.pk)"
+                  alt=""
+                />
+              </template>
+              <template #text>
+                <p>#{{ event.pk }}</p>
+              </template>
+              <template #interactions>
+                <vs-button shadow primary>
+                  <unicon name="user" width="15" height="15" />
+                  <span> {{ event.owner.username }}</span>
+                </vs-button>
+              </template>
+            </vs-card>
+          </vs-col>
+          <vs-col w="4">
+            <div class="invite">
+              <p>Explore all the polls ></p>
+            </div>
+          </vs-col>
+        </vs-row>
+      </div>
+    </div>
+    <div class="login-invite">
+      <h1>Enjoy your lectures, online meatings and parties with Demando</h1>
+      <vs-button size="xl" warn @click="$router.push('/register')"
+        >Start for free</vs-button
+      >
     </div>
   </div>
 </template>
@@ -497,7 +937,8 @@ import { getEvents } from "../api/items/events.api";
 import { getPolls } from "../api/items/polls.api";
 import { VueTyper } from "vue-typer";
 import { KinesisContainer, KinesisElement } from "vue-kinesis";
-import {mapGetters} from "vuex"
+import { mapGetters } from "vuex";
+import LottieAnimation from "lottie-web-vue";
 export default {
   name: "Home",
   metaInfo: {
@@ -507,6 +948,7 @@ export default {
     VueTyper,
     KinesisContainer,
     KinesisElement,
+    LottieAnimation,
   },
   data: () => {
     return {
@@ -522,10 +964,11 @@ export default {
       pollsIsVisible: false,
       deviceIsVisible: false,
       featuresIsVisible: false,
+      useCardGroups: false,
     };
   },
   computed: {
-    ...mapGetters(["currentTheme"])
+    ...mapGetters(["currentTheme"]),
   },
   methods: {
     randomPollImage(index) {
@@ -643,7 +1086,6 @@ export default {
   justify-content: center;
   align-items: center;
   margin-bottom: 15%;
-
 }
 .explore-item {
   display: flex;
@@ -665,8 +1107,18 @@ export default {
 .explore-caption {
   text-align: left;
   margin-right: 10%;
+  width: 40%;
 }
 .explore-caption-right {
+  text-align: right;
+  margin-left: 10%;
+  width: 40%;
+}
+.explore-caption-small {
+  text-align: left;
+  margin-right: 10%;
+}
+.explore-caption-right-small {
   text-align: right;
   margin-left: 10%;
 }
@@ -703,5 +1155,55 @@ export default {
 }
 .vue-typer .typed {
   color: inherit;
+}
+.cards {
+  padding-left: 5%;
+}
+.invite {
+  height: 100%;
+  padding-top: 20%;
+  padding-left: 20%;
+}
+.invite p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.cards .vs-card-content {
+  margin-bottom: 5%;
+}
+.login-invite {
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5% 15%;
+  background: url("../assets/priscilla-du-preez-XkKCui44iM0-unsplash.jpg");
+  background-size: cover;
+}
+.login-invite h1 {
+  text-align: center;
+  font-size: 3rem;
+}
+.login-invite .vs-button--size-xl .vs-button__content {
+  color: black;
+}
+.explore-events svg {
+  width: 500px;
+  height: 500px;
+}
+.explore-desc {
+  display: flex;
+  padding: 5% 10%;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.explore-desc h1 {
+  font-size: 3rem;
+}
+.explore-desc .sm-caption {
+  font-size: 2rem;
 }
 </style>

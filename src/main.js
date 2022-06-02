@@ -60,6 +60,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import VueSelectImage from 'vue-select-image'
 import VueMq from 'vue-mq'
+import LottieAnimation from 'lottie-web-vue'
 
 
 const gauthOption = {
@@ -143,6 +144,7 @@ Vue.use(VueMq, {
     desktop: Infinity,
   }
 })
+Vue.use(LottieAnimation);
 
 require('vue-select-image/dist/vue-select-image.css')
 

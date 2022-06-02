@@ -19,10 +19,13 @@ const patchQuestion = (args, questionId) => httpClient.patch(ENDPOINT + question
 
 const deleteQuestion = (questionId) => httpClient.delete(ENDPOINT + questionId)
 
+const likeQuestion = (questionId) => httpClient.patch(ENDPOINT + questionId + '/like/' )
+
 export {
     getQuestions,
     getQuestion,
     patchQuestion,
     createQuestion,
-    deleteQuestion
+    deleteQuestion,
+    likeQuestion
 }
