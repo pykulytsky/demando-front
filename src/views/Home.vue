@@ -1,11 +1,19 @@
 <template>
   <div class="explore">
     <div
+      v-rellax="{
+        speed: -1,
+      }"
       :class="
         currentTheme == 'light' ? 'explore-header' : 'explore-header-dark'
       "
     >
-      <kinesis-container v-if="['desktop', 'laptop', 'tablet'].includes($mq)">
+      <kinesis-container
+        v-rellax="{
+          speed: 8,
+        }"
+        v-if="['desktop', 'laptop', 'tablet'].includes($mq)"
+      >
         <kinesis-element
           type="depth_inv"
           :strength="30"
@@ -31,12 +39,25 @@
           Explore events to find out one you are interested in.
         </kinesis-element>
       </kinesis-container>
-      <h1 v-else class="explore-title-header">
+      <h2
+        v-else
+        class="explore-title-header-small"
+        v-rellax="{
+          speed: 8,
+        }"
+      >
         Create or participate in polls, quizzes or events where you can ask
         question. Explore events to find out one you are interested in.
-      </h1>
+      </h2>
 
-      <div class="header-buttons" v-motion-fade>
+      <div
+        class="header-buttons"
+        v-motion-fade
+        v-rellax="{
+          speed: 4,
+          'z-index': -999
+        }"
+      >
         <vs-button
           flat
           size="xl"
@@ -76,24 +97,60 @@
           : 'explore-desc blob-dark'
       "
     >
-      <h1 :class="$mq == 'mobile'? 'sm-caption': ''">
-        Demando is the platform that you can use for learning. Doesn't matter
-        are you a student or a teacher, you can participate in live quizzes,
-        polls or create Q&A Events.
-      </h1>
-      <lottie-animation
-        ref="anim"
-        :animationData="
-          require('@/assets/lottie/101381-orange-t-shirt-coder.json')
-        "
-        :loop="true"
-        width="500px"
-      />
+      <h2
+        :class="$mq == 'mobile' ? 'sm-caption' : 'lg-caption'"
+        v-rellax="{
+          speed: 4,
+        }"
+      >
+        <span>Demando</span> is the platform that you can use for <span>learning</span>. Doesn't matter
+        are you a student or a teacher, you can participate in <span>live quizzes,
+        polls or create Q&A Events.</span>
+      </h2>
+      <div
+        id="invite-section"
+        v-view="inviteHandler"
+        :class="$mq !== 'mobile'? 'sign-in-invite': 'sign-in-invite-small' "
+      >
+        <div
+          :class="$mq == 'mobile' ? 'sign-in-inv-small' : 'sign-in-inv'"
+
+        >
+          <lottie-animation
+            id="sign-in-inv"
+            :animationData="
+              require('@/assets/lottie/107444-business-meetings-in-the-metaverse.json')
+            "
+            :loop="true"
+            width="500px"
+          />
+        </div>
+        <div
+          class="sign-in-invite-section"
+          v-rellax="{
+            speed: 4,
+          }"
+          data-rellax-percentage="0.5"
+        >
+          <vs-button size="xl">Register for free</vs-button>
+          <p>or</p>
+          <vs-button size="xl">Sign in</vs-button>
+        </div>
+      </div>
     </div>
     <div class="polls explore-items">
       <div class="explore-events">
-        <h1 class="explore-head" id="polls">Polls</h1>
+        <h1
+          class="explore-head"
+          id="polls"
+          v-rellax="{
+            speed: $mq !== 'mobile'? -1: 0,
+          }"
+        >
+          Polls
+        </h1>
         <div
+
           :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="polls-typer"
           v-view.once="typerViewHandler"
@@ -108,6 +165,7 @@
                 delay: 2000,
               },
             }"
+
           >
             <vue-typer
               v-if="pollsIsVisible"
@@ -138,6 +196,7 @@
             alt=""
           /> -->
           <lottie-animation
+
             ref="anim"
             :animationData="
               require('@/assets/lottie/100842-user-interface-website-design-animations.json')
@@ -177,9 +236,10 @@
             alt=""
           /> -->
           <lottie-animation
+
             ref="anim"
             :animationData="
-              require('@/assets/lottie/105761-verification-code-otp-v2.json')
+              require('@/assets/lottie/25992-hand-scrolls-the-messages-on-the-phone.json')
             "
             :loop="true"
             width="500px"
@@ -193,6 +253,7 @@
             v-motion-fade-visible
           >
             <vue-typer
+
               v-if="deviceIsVisible"
               text="Any device"
               :repeat="0"
@@ -207,8 +268,9 @@
               caret-animation="phase"
             ></vue-typer>
             <h2>
-              Participants can vote using QR-code from any device and display
-              the results in real-time. No login is needed as well.
+              Participate anywhere! Participants can vote using QR-code from any
+              device and display the results in real-time. No login is needed as
+              well.
             </h2>
           </div>
         </div>
@@ -217,7 +279,12 @@
           id="poll-features"
           v-view.once="typerViewHandler"
         >
-          <div class="explore-caption-left" v-motion-fade-visible>
+          <div
+            :class="
+              $mq !== 'mobile' ? 'explore-caption' : 'explore-caption-small'
+            "
+            v-motion-fade-visible
+          >
             <vue-typer
               v-if="featuresIsVisible"
               text="Key features"
@@ -233,14 +300,14 @@
               caret-animation="phase"
             ></vue-typer>
             <h2>
-              You can create polls with time limit, with multiple choice and
-              other key features to diversify polling process.
+              Set your own conditions! You can create polls with time limit,
+              with multiple choice and other key features to diversify polling
+              process.
             </h2>
           </div>
           <img
-            v-motion-slide-visible-once-right
             class="explore-image"
-            src="../assets/poll-example.png"
+            src="../assets/poll.gif"
             :width="$mq == 'mobile' ? '100%' : '50%'"
             alt=""
           />
@@ -254,7 +321,7 @@
           >Create your first live poll</vs-button
         >
       </div>
-      <vs-card-group v-if="$mq !== 'mobile' && useCardGroups">
+      <vs-card-group v-if="$mq !== 'mobile' && useCardGroups && polls !== null">
         <vs-card
           v-for="event in polls"
           :key="event.pk"
@@ -282,7 +349,10 @@
           </template>
         </vs-card>
       </vs-card-group>
-      <div v-if="!useCardGroups && $mq !== 'mobile'" class="cards">
+      <div
+        v-if="!useCardGroups && $mq !== 'mobile' && polls !== null"
+        class="cards"
+      >
         <vs-row v-if="polls.length > 4">
           <vs-col w="4" v-for="event in polls.slice(0, 3)" :key="event.pk">
             <vs-card
@@ -386,7 +456,15 @@
 
     <div class="quizzes explore-items">
       <div class="explore-events">
-        <h1 class="explore-head" id="quizzes">Quizzes</h1>
+        <h1
+          class="explore-head"
+          id="quizzes"
+          v-rellax="{
+            speed: $mq !== 'mobile'? -0.2: 0,
+          }"
+        >
+          Quizzes
+        </h1>
         <div
           :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="quiz-typer"
@@ -545,7 +623,9 @@
           >Create your first live quiz</vs-button
         >
       </div>
-      <vs-card-group v-if="$mq !== 'mobile' && useCardGroups">
+      <vs-card-group
+        v-if="$mq !== 'mobile' && useCardGroups && quizzes !== null"
+      >
         <vs-card
           v-for="event in quizzes"
           :key="event.pk"
@@ -576,7 +656,10 @@
           </template>
         </vs-card>
       </vs-card-group>
-      <div v-if="!useCardGroups && $mq !== 'mobile'" class="cards">
+      <div
+        v-if="!useCardGroups && $mq !== 'mobile' && quizzes !== null"
+        class="cards"
+      >
         <vs-row v-if="quizzes.length > 4">
           <vs-col w="4" v-for="event in quizzes.slice(0, 3)" :key="event.pk">
             <vs-card
@@ -700,7 +783,15 @@
     </div>
     <div class="events explore-items">
       <div class="explore-events">
-        <h1 class="explore-head" id="events">Q&A Events</h1>
+        <h1
+          class="explore-head"
+          id="events"
+          v-rellax="{
+            speed: $mq !== 'mobile'? -0.2: 0,
+          }"
+        >
+          Q&A Events
+        </h1>
         <div
           :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
           id="events-typer"
@@ -810,7 +901,9 @@
           >Create your first Q&A event</vs-button
         >
       </div>
-      <vs-card-group v-if="$mq !== 'mobile' && useCardGroups">
+      <vs-card-group
+        v-if="$mq !== 'mobile' && useCardGroups && events !== null"
+      >
         <vs-card
           v-for="event in events"
           :key="event.pk"
@@ -833,7 +926,10 @@
           </template>
         </vs-card>
       </vs-card-group>
-      <div v-if="!useCardGroups && $mq !== 'mobile'" class="cards">
+      <div
+        v-if="!useCardGroups && $mq !== 'mobile' && events !== null"
+        class="cards"
+      >
         <vs-row v-if="events.length > 4">
           <vs-col w="4" v-for="event in events.slice(0, 3)" :key="event.pk">
             <vs-card @click="$router.push('/qa/events/' + event.pk)">
@@ -965,6 +1061,10 @@ export default {
       deviceIsVisible: false,
       featuresIsVisible: false,
       useCardGroups: false,
+
+      inviteParallax: {
+        speed: 1,
+      },
     };
   },
   computed: {
@@ -1010,6 +1110,18 @@ export default {
         case "poll-features":
           this.featuresIsVisible = true;
           break;
+      }
+    },
+    inviteHandler(e) {
+      if (e.percentCenter < 0.7) {
+        this.inviteParallax = {
+          speed: 4,
+        };
+      }
+      else {
+        this.inviteParallax = {
+          speed: 0
+        }
       }
     },
   },
@@ -1060,6 +1172,11 @@ export default {
   font-size: 50px;
   color: white;
 }
+.explore-title-header-small {
+  font-size: 35px;
+  color: white;
+  margin-bottom: 20vw;
+}
 
 .explore .vs-card__group-cards {
 }
@@ -1075,7 +1192,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 75px;
+  margin-top: 20%;
 }
 .explore-items {
   padding: 10px 0;
@@ -1093,34 +1210,30 @@ export default {
   align-items: center;
   margin-bottom: 75px;
   padding: 10vw;
-  padding-right: 10vw;
 }
 .explore-item-small {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 75px;
-  padding: 10vw;
-  padding-right: 10vw;
+  margin-bottom: 50px;
+  padding: 5vw;
 }
 .explore-caption {
   text-align: left;
-  margin-right: 10%;
-  width: 40%;
+  margin-right: 5%;
+  width: 50%;
 }
 .explore-caption-right {
   text-align: right;
-  margin-left: 10%;
-  width: 40%;
+  margin-left: 5%;
+  width: 50%;
 }
 .explore-caption-small {
   text-align: left;
-  margin-right: 10%;
 }
 .explore-caption-right-small {
   text-align: right;
-  margin-left: 10%;
 }
 .explore-image {
   border-radius: 10px;
@@ -1133,6 +1246,7 @@ export default {
 }
 .vue-typer {
   font-size: 32px;
+  color: #3d4852;
 }
 .vue-typer-dark {
   font-size: 32px;
@@ -1184,6 +1298,8 @@ export default {
 .login-invite h1 {
   text-align: center;
   font-size: 3rem;
+  filter: none;
+  z-index: 2;
 }
 .login-invite .vs-button--size-xl .vs-button__content {
   color: black;
@@ -1205,5 +1321,39 @@ export default {
 }
 .explore-desc .sm-caption {
   font-size: 2rem;
+}
+.sign-in-invite {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.sign-in-invite-small {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+.sign-in-inv {
+  width: 60%;
+}
+.sign-in-invite-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 10%;
+box-shadow: rgb(38, 57, 77) 0px 10px 20px -10px;
+  border-radius: 5px;
+}
+.lg-caption span {
+  color: #0ec4a6;
+}
+.sm-caption span {
+  color: #0ec4a6;
+}
+#celery {
+  width: 150px;
+  height: 150px;
 }
 </style>

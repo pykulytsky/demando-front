@@ -1,7 +1,17 @@
 <template>
   <div class="qa-main">
-    <div :class=" currentTheme == 'light' ? 'qa-header': 'qa-header-dark'" >
-      <h1 class="qa-title-header">Create events, where other people can ask questions to you, or join to events witch was created by other users!</h1>
+    <div
+      :class=" currentTheme == 'light' ? 'qa-header': 'qa-header-dark'"
+        v-rellax="{
+          speed: -6,
+        }"
+    >
+      <h1
+        class="qa-title-header"
+        v-rellax="{
+          speed: 4,
+        }"
+      >Create events, where other people can ask questions to you, or join to events witch was created by other users!</h1>
       <vs-button
         size="xl"
         flat
@@ -16,7 +26,10 @@
           <unicon  name="arrow-down" />
       </vs-button>
     </div>
-    <div class="event-search" v-motion-pop-visible>
+    <div
+      class="event-search"
+      v-motion-pop-visible
+    >
       <h1>Enter identifier of event</h1>
       <vs-row align="center" justify="center">
         <vs-col w="9">
@@ -62,7 +75,128 @@
         </template>
       </vs-alert>
     </div>
-    <event-table :events="events"></event-table>
+    <event-table v-if="$mq !== 'mobile'" :events="events"></event-table>
+<div class="events explore-items">
+      <div class="explore-events">
+        <h1
+          class="explore-head"
+          id="events"
+          v-rellax="{
+            speed: $mq !== 'mobile'? -0.2: 0,
+          }"
+        >
+          Q&A Events
+        </h1>
+        <div
+          :class="$mq == 'mobile' ? 'explore-item-small' : 'explore-item'"
+          id="events-typer"
+          v-view.once="typerViewHandler"
+        >
+          <div
+            :class="
+              $mq !== 'mobile' ? 'explore-caption' : 'explore-caption-small'
+            "
+            v-motion-fade-visible
+            :enter="{
+              transition: {
+                delay: 2000,
+              },
+            }"
+          >
+            <vue-typer
+              v-if="eventsIsVisible"
+              text="Q&A Events"
+              :repeat="0"
+              :shuffle="false"
+              initial-action="typing"
+              :pre-type-delay="1500"
+              :type-delay="70"
+              :pre-erase-delay="2000"
+              :erase-delay="250"
+              erase-style="select-all"
+              :erase-on-complete="false"
+              caret-animation="phase"
+            ></vue-typer>
+            <h2>
+              Create events, where other people can ask questions to you, or
+              join to events witch was created by other users!
+            </h2>
+          </div>
+
+          <!-- <img
+            v-motion-slide-visible-once-right
+            class="explore-image"
+            src="../assets/bruce-mars-FWVMhUa_wbY-unsplash.jpg"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
+            alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="require('@/assets/lottie/80600-social-123.json')"
+            :loop="true"
+          />
+        </div>
+        <div
+          :class="{
+            'blob-light': currentTheme == 'light',
+            'blob-dark': currentTheme == 'dark',
+            'explore-item-small': $mq == 'mobile',
+            'explore-item': ['tablet', 'laptop', 'desktop'].includes($mq),
+          }"
+          id="opinion-typer"
+          v-view.once="typerViewHandler"
+        >
+          <!-- <img
+            v-motion-slide-visible-once-right
+            class="explore-image"
+            src="../assets/karsten-winegeart-60GsdOMRFGc-unsplash.jpg"
+            :width="$mq == 'mobile' ? '100%' : '50%'"
+            alt=""
+          /> -->
+          <lottie-animation
+            ref="anim"
+            :animationData="require('@/assets/lottie/67908-duck.json')"
+            :loop="true"
+            :width="$mq == 'mobile' ? '150%' : '50%'"
+          />
+          <div
+            :class="
+              $mq !== 'mobile'
+                ? 'explore-caption-right'
+                : 'explore-caption-right-small'
+            "
+            v-motion-fade-visible
+          >
+            <vue-typer
+              v-if="opinionIsVisible"
+              text="Express your opinion"
+              :repeat="0"
+              :shuffle="false"
+              initial-action="typing"
+              :pre-type-delay="1500"
+              :type-delay="70"
+              :pre-erase-delay="2000"
+              :erase-delay="250"
+              erase-style="select-all"
+              :erase-on-complete="false"
+              caret-animation="phase"
+            ></vue-typer>
+            <h2>
+              You can not only ask your own questions, but also mark the
+              questions you like and raise them up.
+            </h2>
+          </div>
+        </div>
+        <vs-button
+          circle
+          v-motion-pop-visible-once
+          class="create-event-btn waypoint"
+          size="xl"
+          to="/qa"
+          >Create your first Q&A event</vs-button
+        >
+      </div>
+    </div>
     <vs-button
       v-if="isLogined"
       class="add-event-btn"
@@ -86,6 +220,8 @@ import EventTable from "../components/events/EventTable.vue";
 import NewEventDialog from "../components/events/NewEventDialog.vue";
 import { getEvent, getEvents } from "../api/items/events.api";
 import { mapActions, mapGetters } from "vuex";
+import LottieAnimation from "lottie-web-vue";
+import { VueTyper } from "vue-typer";
 export default {
   name: "QnA",
   metaInfo: {
@@ -96,11 +232,16 @@ export default {
       events: [],
       eventId: null,
       newEventIsShown: false,
+
+      eventsIsVisible: false,
+      opinionIsVisible: false,
     };
   },
   components: {
     EventTable,
     NewEventDialog,
+    LottieAnimation,
+    VueTyper
   },
 
   computed: {
@@ -131,6 +272,16 @@ export default {
     async fetchEvents() {
       this.events = await (await getEvents(5, "created", true)).data;
     },
+    typerViewHandler(e) {
+      switch (e.target.element.id) {
+        case "events-typer":
+          this.eventsIsVisible = true;
+          break;
+        case "opinion-typer":
+          this.opinionIsVisible = true;
+          break;
+      }
+    },
   },
   async created() {
     await this.fetchEvents();
@@ -143,7 +294,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 }
 .vs-button {
   margin-top: 12px;
@@ -155,10 +305,6 @@ export default {
 .event-search .vs-input-content {
   font-size: 24px;
 }
-.arrow-btn {
-  margin-left: 3px;
-  margin-right: 3px;
-}
 
 .alert {
   margin-top: 100px;
@@ -166,7 +312,6 @@ export default {
 
 .alert .vs-alert {
   max-width: 850px;
-  padding: 15px 15px;
   height: 120px;
   font-family: "Poppins", sans-serif;
 }
@@ -183,7 +328,6 @@ export default {
   align-items: center;
   flex-direction: column;
   min-height: 650px;
-  padding: 0 10vw;
   padding-bottom: 100px;
   position: relative;
   background: url("../assets/polls-background-light3.svg");
@@ -197,7 +341,6 @@ export default {
   align-items: center;
   flex-direction: column;
   min-height: 650px;
-  padding: 0 10vw;
   padding-bottom: 100px;
   position: relative;
   background: url("../assets/polls-background-dark3.svg");
@@ -211,12 +354,11 @@ export default {
 }
 .qa-header .vs-button {
   width: 50px;
-  margin-left: 15%;
 }
 .qa-header .vs-button__content {
   font-size: 40px;
 }
-@media screen and (max-width: 400px) {
+/* @media screen and (max-width: 400px) {
   .event-search .vs-input__content {
     font-size: 24px;
     max-width: 45%;
@@ -233,5 +375,5 @@ export default {
     border-radius: 0px;
     border: 2px solid transparent;
     width: 100%;
-}
+} */
 </style>

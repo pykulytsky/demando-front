@@ -1,15 +1,23 @@
 <template>
-  <div :class="klass"></div>
+  <div :class="klass">
+    <lottie-animation
+      :animationData="require('@/assets/lottie/94324-loader.json')"
+      :loop="true"
+    />
+  </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-
+import LottieAnimation from "lottie-web-vue";
 export default {
   data: () => {
     return {
       klass: "lds-dual-ring",
     };
+  },
+  components: {
+    LottieAnimation,
   },
   computed: {
     ...mapGetters(["currentTheme"]),
@@ -28,81 +36,37 @@ export default {
 
 <style>
 .lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
   position: fixed;
   left: 50%;
   top: 50%;
+  width: 200px;
+  height: 200px;
   transform: translate(-50%, -50%);
   z-index: 999;
   background-size: 1000% 1000%;
   padding: 1000%;
   backdrop-filter: blur(112px);
-  background-color: black;
-  opacity: 0.5;
+  background-color: rgba(24, 24, 24, 0.5);
   -webkit-backdrop-filter: blur(5px);
   -moz-backdrop-filter: blur(5px);
   -o-backdrop-filter: blur(5px);
   -ms-backdrop-filter: blur(5px);
 }
 .lds-dual-ring-dark {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
   position: fixed;
   left: 50%;
   top: 50%;
+  width: 200px;
+  height: 200px;
   transform: translate(-50%, -50%);
   z-index: 999;
   background-size: 1000% 1000%;
   padding: 1000%;
   backdrop-filter: blur(112px);
-  background-color: black;
-  opacity: 0.5;
+  background-color: rgba(24, 24, 24, 0.5);
   -webkit-backdrop-filter: blur(5px);
   -moz-backdrop-filter: blur(5px);
   -o-backdrop-filter: blur(5px);
   -ms-backdrop-filter: blur(5px);
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  position: fixed;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px solid #fff;
-  border-color: #fff transparent #fff transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-.lds-dual-ring-dark:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  position: fixed;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px solid #000;
-  border-color: #000 transparent #000 transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@keyframes lds-dual-ring-dark {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
 </style>

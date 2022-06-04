@@ -189,7 +189,7 @@ h1 {
 
 .light-color {
   background-color: #ffff;
-  color: #1E2023;
+  color: #3d4852;
 }
 
 .navb {

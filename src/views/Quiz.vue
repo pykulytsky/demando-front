@@ -33,12 +33,14 @@
       >
         Start Game
       </vs-button>
-      <img
-        v-if="!isOwner"
-        src="../assets/spinner3.gif"
-        width="100"
-        height="100"
-      />
+
+      <div class="quiz-loader">
+        <lottie-animation
+          :animationData="require('@/assets/lottie/94324-loader.json')"
+          :loop="true"
+          width="150"
+        />
+      </div>
     </div>
 
     <transition name="component-fade" mode="out-in">
@@ -49,19 +51,19 @@
       />
     </transition>
     <div class="progress">
-    <transition name="component-fade" mode="out-in">
-      <progress-bar
-        v-if="timerEnabled"
-        text-position="inside"
-        size="30"
-        :bar-color="timer > 5 ? '#0ec4a6' : 'red'"
-        :bg-color="'none'"
-        text-align="right"
-        :font-size="25"
-        :bar-border-radius="50"
-        :val="(timer * 100) / quiz.seconds_per_answer"
-      ></progress-bar>
-    </transition>
+      <transition name="component-fade" mode="out-in">
+        <progress-bar
+          v-if="timerEnabled"
+          text-position="inside"
+          size="30"
+          :bar-color="timer > 5 ? '#0ec4a6' : 'red'"
+          :bg-color="'none'"
+          text-align="right"
+          :font-size="25"
+          :bar-border-radius="50"
+          :val="(timer * 100) / quiz.seconds_per_answer"
+        ></progress-bar>
+      </transition>
     </div>
     <transition name="component-fade" mode="out-in">
       <div class="current-results" v-if="answerTimerEnabled">
@@ -70,36 +72,55 @@
           Your answer is wrong!
         </h1>
         <h1 v-if="isNoAnswer">There was no answer</h1>
-        <img
+
+        <div
+          class="quiz-result-img"
           v-if="currentAnswer.option.is_right"
-          width="150"
-          height="150"
-          src="../assets/check.png"
-        />
-        <img
+        >
+          <lottie-animation
+            :animationData="require('@/assets/lottie/89101-confirmed-tick.json')"
+            :loop="false"
+            width="150"
+          />
+        </div>
+
+        <div
+          class="quiz-result-img"
           v-if="!currentAnswer.option.is_right || isNoAnswer"
-          width="150"
-          height="150"
-          src="../assets/icons8-close.svg"
+        >
+          <lottie-animation
+            :animationData="require('@/assets/lottie/58412-cross-close-cancel-icon-animation.json')"
+            :loop="false"
+            width="150"
+          />
+        </div>
+        <number
+          tag="h1"
+          :from="0"
+          :to="currentResults !== null ? currentResults : 0"
+          :duration="3"
         />
-        <number tag="h1" :from="0" :to="currentResults !== null ? currentResults: 0" :duration="3" />
         <h1 v-if="!currentAnswer.option.is_right || isNoAnswer">
           Correct answer: {{ rightAnswer }}
         </h1>
         <h3>Waiting for the next question...</h3>
-        <img src="../assets/spinner3.gif" width="150" height="150" />
+        <div class="quiz-loader">
+          <lottie-animation
+            :animationData="require('@/assets/lottie/94324-loader.json')"
+            :loop="true"
+            width="150"
+          />
+        </div>
       </div>
     </transition>
     <div class="final-results" v-if="finalResults">
-      <results-table :results="finalResults" :nickname="newUserNickname"></results-table>
+      <results-table
+        :results="finalResults"
+        :nickname="newUserNickname"
+      ></results-table>
     </div>
 
-    <vs-dialog
-      blur
-      not-close
-      prevent-close
-      v-model="createUserDialog"
-    >
+    <vs-dialog blur not-close prevent-close v-model="createUserDialog">
       <template #header>
         <h3 class="not-margin">Welcome, pick up your nickname</h3>
       </template>
@@ -126,19 +147,21 @@
 
 <script>
 import { getQuiz } from "../api/items/quizzes.api";
-import {getAnonUsers} from "../api/items/anon.api"
+import { getAnonUsers } from "../api/items/anon.api";
 import { mapGetters, mapActions } from "vuex";
 import jwt_decode from "jwt-decode";
 import QrcodeVue from "qrcode.vue";
 import QuizStep from "../components/quizzes/QuizStep.vue";
 import ProgressBar from "vue-simple-progress";
 import ResultsTable from "../components/quizzes/ResultsTable.vue";
+import LottieAnimation from "lottie-web-vue";
 export default {
   components: {
     QrcodeVue,
     QuizStep,
     ProgressBar,
     ResultsTable,
+    LottieAnimation,
   },
   data: () => {
     return {
@@ -165,34 +188,35 @@ export default {
 
       createUserDialog: false,
       isUserCreated: false,
-      newUserNickname: '',
+      newUserNickname: "",
       newUserToken: null,
 
       pickSound: new Audio(require("../assets/one-popping-sound-96661.mp3")),
-      timerSound: new Audio(require("../assets/wemida-heartbeat-voting-quizzing-voting-background-music-16574.mp3")),
+      timerSound: new Audio(
+        require("../assets/wemida-heartbeat-voting-quizzing-voting-background-music-16574.mp3")
+      ),
       volumeEnabled: true,
-      anonUsers: null
+      anonUsers: null,
     };
   },
   watch: {
     volumeEnabled(value) {
-      if(value) {
-        this.timerSound.volume = 0.2
-        this.pickSound = 1
+      if (value) {
+        this.timerSound.volume = 0.2;
+        this.pickSound = 1;
       } else {
-        this.timerSound.volume = 0
-        this.pickSound = 0
+        this.timerSound.volume = 0;
+        this.pickSound = 0;
       }
     },
     timerEnabled(value) {
       if (value) {
-        this.timerSound.play()
+        this.timerSound.play();
         setTimeout(() => {
           this.timer--;
         }, 1000);
-      }
-      else {
-        this.timerSound.pause()
+      } else {
+        this.timerSound.pause();
       }
     },
     testTimerEnabled(value) {
@@ -284,11 +308,11 @@ export default {
       },
     },
     finalResults(value) {
-      if(value !== null) {
-        document.removeEventListener('beforeunload', this.preventWindowClose)
-        window.removeEventListener('beforeunload', this.preventWindowClose)
+      if (value !== null) {
+        document.removeEventListener("beforeunload", this.preventWindowClose);
+        window.removeEventListener("beforeunload", this.preventWindowClose);
       }
-    }
+    },
   },
   computed: {
     ...mapGetters(["currentUser", "isLoading", "currentTheme"]),
@@ -296,7 +320,7 @@ export default {
       let correntAnswer = "";
       this.currentStepData.options.forEach((option) => {
         if (option.is_right) {
-          console.log(option.title)
+          console.log(option.title);
           correntAnswer = option.title;
         }
       });
@@ -306,8 +330,8 @@ export default {
   methods: {
     ...mapActions(["setLoading"]),
     preventWindowClose(e) {
-      e.preventDefault()
-      e.returnValue = '';
+      e.preventDefault();
+      e.returnValue = "";
     },
     startTimer() {
       this.timerEnabled = true;
@@ -316,17 +340,20 @@ export default {
       this.timerEnabled = false;
     },
     connectToWebsocket() {
-      if(this.newUserNickname == "") {
+      if (this.newUserNickname == "") {
         this.connection = new WebSocket(
-          "ws://" + "localhost:8000" + "/ws/quiz/" +
+          "ws://" +
+            "localhost:8000" +
+            "/ws/quiz/" +
             this.quiz.enter_code +
             "/" +
             localStorage.getItem("token")
         );
-      }
-      else {
+      } else {
         this.connection = new WebSocket(
-          "ws://" + "localhost:8000" + "/ws/quiz/" +
+          "ws://" +
+            "localhost:8000" +
+            "/ws/quiz/" +
             this.quiz.enter_code +
             "/username:" +
             this.newUserNickname
@@ -346,7 +373,7 @@ export default {
         } else if (data.action == "finish") {
           this.finalResults = data.final_results;
         } else if (data.type == "username") {
-          this.createUserDialog = true
+          this.createUserDialog = true;
           this.$vs.notification({
             color: "danger",
             icon: '<unicon name="exclamation-triangle" fill="white"/>',
@@ -360,8 +387,8 @@ export default {
       this.connection.onopen = () => {};
       this.connection.onclose = () => {
         this.connection = null;
-        document.removeEventListener('beforeunload', this.preventWindowClose)
-        window.removeEventListener('beforeunload', this.preventWindowClose)
+        document.removeEventListener("beforeunload", this.preventWindowClose);
+        window.removeEventListener("beforeunload", this.preventWindowClose);
       };
       this.connection.onerror = () => {
         this.connection = null;
@@ -387,7 +414,7 @@ export default {
       return colors[Math.floor(colors.length * Math.random())];
     },
     handleAnswer(option) {
-      this.pickSound.play()
+      this.pickSound.play();
       this.currentAnswer = {
         option: option,
         time: this.timer,
@@ -405,35 +432,34 @@ export default {
       this.sendActionToWebsocket("start");
     },
     createTempUser() {
-      this.connectToWebsocket()
+      this.connectToWebsocket();
       this.createUserDialog = false;
-
     },
     cancelTempUser() {
-        this.$router.push("/quizzes");
-    }
+      this.$router.push("/quizzes");
+    },
   },
   beforeCreate() {
     document.body.classList.add("gradient-background");
   },
   destroyed() {
     document.body.classList.remove("gradient-background");
-    document.removeEventListener('beforeunload', this.preventWindowClose)
-    window.removeEventListener('beforeunload', this.preventWindowClose)
-    this.timerSound.pause()
+    document.removeEventListener("beforeunload", this.preventWindowClose);
+    window.removeEventListener("beforeunload", this.preventWindowClose);
+    this.timerSound.pause();
   },
   created() {
     this.setLoading(true);
     this.timerSound.volume = 0.1;
-    document.addEventListener('beforeunload', this.preventWindowClose)
-    window.addEventListener('beforeunload', this.preventWindowClose)
+    document.addEventListener("beforeunload", this.preventWindowClose);
+    window.addEventListener("beforeunload", this.preventWindowClose);
 
     this.quizId = this.$route.params.quizId;
     getQuiz(this.quizId)
       .then((response) => {
         this.quiz = response.data;
         this.timer = this.quiz.seconds_per_answer;
-        this.link = new URL(this.$route.fullPath, window.location.href).href
+        this.link = new URL(this.$route.fullPath, window.location.href).href;
         if (localStorage.getItem("token") !== null) {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;
           if (userPk == this.quiz.owner.pk) {
@@ -447,12 +473,12 @@ export default {
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         this.$router.push("/404");
       });
-    getAnonUsers().then(response => {
-      this.anonUsers = response.data
-    })
+    getAnonUsers().then((response) => {
+      this.anonUsers = response.data;
+    });
     this.setLoading(false);
   },
 };
@@ -547,7 +573,7 @@ export default {
   min-width: 100%;
 }
 .con-content-nickname .vs-input__label {
-  font-size : 32px;
+  font-size: 32px;
 }
 .progress {
   position: absolute;
@@ -565,5 +591,13 @@ export default {
   position: fixed;
   right: 1%;
   top: 1%;
+}
+.quiz-loader {
+  width: 75px;
+  height: 75px;
+}
+.quiz-result-img {
+  width: 250px;
+  height: 250px;
 }
 </style>

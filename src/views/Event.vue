@@ -1,6 +1,11 @@
 <template>
   <div class="event-main" v-if="!!event">
-    <div class="event-header">
+    <div
+      class="event-header"
+          v-rellax="{
+            speed: 4,
+          }"
+    >
       <vs-row justify="space-around">
         <vs-col w="3" justify="center" align="center" v-if="$mq !== 'mobile'">
           <vs-row>
