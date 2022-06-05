@@ -2,7 +2,7 @@
   <div class="polls-main">
     <div
       v-rellax="{
-        speed: -10,
+        speed: -6
       }"
       :class="currentTheme == 'light' ? 'polls-header' : 'polls-header-dark'"
     >

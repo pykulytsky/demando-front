@@ -1033,7 +1033,7 @@ import { getEvents } from "../api/items/events.api";
 import { getPolls } from "../api/items/polls.api";
 import { VueTyper } from "vue-typer";
 import { KinesisContainer, KinesisElement } from "vue-kinesis";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import LottieAnimation from "lottie-web-vue";
 export default {
   name: "Home",
@@ -1071,6 +1071,7 @@ export default {
     ...mapGetters(["currentTheme"]),
   },
   methods: {
+    ...mapActions(["setLoading"]),
     randomPollImage(index) {
       let min = Math.ceil(index * 0 + 1);
       let max = Math.floor(6);
@@ -1126,6 +1127,7 @@ export default {
     },
   },
   created() {
+    this.setLoading(true)
     getQuizzes().then((response) => {
       this.quizzes = response.data.filter(
         (quiz) => !quiz.is_private && !quiz.done
@@ -1137,6 +1139,7 @@ export default {
     getPolls().then((response) => {
       this.polls = response.data;
     });
+    this.setLoading(false)
   },
 };
 </script>
@@ -1344,7 +1347,7 @@ export default {
   -webkit-backdrop-filter: blur(12px);
   padding: 10%;
 box-shadow: rgb(38, 57, 77) 0px 10px 20px -10px;
-  border-radius: 5px;
+  border-radius: 25px;
 }
 .lg-caption span {
   color: #0ec4a6;

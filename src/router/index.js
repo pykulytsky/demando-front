@@ -6,6 +6,7 @@ import Polls from '../views/Polls.vue'
 import Poll from '../views/Poll.vue'
 import Event from '../views/Event.vue'
 import Quiz from '../views/Quiz.vue'
+import Profile from '../views/Profile.vue'
 import Quizzes from '../views/Quizzes.vue'
 import QuizConstructor from '../views/QuizConstructor.vue'
 import NotFound from '../views/NotFound.vue'
@@ -78,6 +79,11 @@ const routes = [
     path: "/quizzes/quiz/:quizId",
     component: Quiz,
     name: "Quiz"
+  },
+  {
+    path: "/profile",
+    component: Profile,
+    name: "Profile"
   },
   {
     path: '*',

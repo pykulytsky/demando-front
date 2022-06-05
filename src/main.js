@@ -47,7 +47,9 @@ import {
   uniVolume,
   uniVolumeMute,
   uniAngleDown,
-  uniAngleUp
+  uniAngleUp,
+  uniAlignLeft,
+  uniGameStructure
 } from "vue-unicons/dist/icons";
 import VueScrollTo from "vue-scrollto";
 import VueMeta from "vue-meta";
@@ -123,7 +125,9 @@ Unicon.add([
   uniVolume,
   uniVolumeMute,
   uniAngleDown,
-  uniAngleUp
+  uniAngleUp,
+  uniAlignLeft,
+  uniGameStructure
 ]);
 Vue.use(Unicon, {
   fill: "#0ec4a6"
@@ -155,3 +159,6 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+
+

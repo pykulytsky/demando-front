@@ -1,5 +1,6 @@
 <template>
   <vs-navbar
+    id="navbar"
     class="custom-navbar"
     target-scroll
     center-collapsed
@@ -17,7 +18,7 @@
     <vs-navbar-item :active="active == 'quiz'" to="/quizzes" id="quiz"> Quizzes </vs-navbar-item>
     <vs-navbar-item :active="active == 'explore'" to="/" id="explore"> Explore </vs-navbar-item>
     <template #right>
-      <vs-switch
+      <!-- <vs-switch
         @mouseover="isSwitchHovered = true"
         @mouseleave="isSwitchHovered = false"
         v-model="theme"
@@ -33,7 +34,28 @@
           />
           <unicon v-else ref="sun" name="brightness" />
         </template>
-      </vs-switch>
+      </vs-switch> -->
+      <vs-tooltip bottom v-if="currentUser" not-hover v-model="activeProfileTooltip">
+        <vs-avatar circle primary @click="activeProfileTooltip = !activeProfileTooltip">
+          <template #text >
+            {{currentUser.username}}
+          </template>
+        </vs-avatar>
+        <template #tooltip>
+          <p @click="$router.push('/profile')" class="tooltip-item">Profile</p>
+          <p class="tooltip-item">Log out</p>
+        </template>
+      </vs-tooltip>
+
+      <vs-tooltip bottom v-else not-hover v-model="activeProfileTooltip">
+        <vs-avatar circle primary @click="activeProfileTooltip = !activeProfileTooltip">
+          <unicon  name="user" />
+        </vs-avatar>
+        <template #tooltip>
+          <p class="tooltip-item">Profile</p>
+          <p class="tooltip-item">Log out</p>
+        </template>
+      </vs-tooltip>
       <vs-button to="/login" v-if="!isLogined" flat>Login</vs-button>
       <vs-button to="/register" v-if="!isLogined" flat>Get Started</vs-button>
       <div class="sign-out-btn">
@@ -54,11 +76,12 @@ export default {
     return {
       theme: false,
       isSwitchHovered: true,
-      active: ''
+      active: '',
+      activeProfileTooltip: false
     };
   },
   computed: {
-    ...mapGetters(["currentTheme", "isLogined"]),
+    ...mapGetters(["currentTheme", "isLogined", "currentUser"]),
   },
   methods: {
     ...mapActions(["setTheme"]),
@@ -122,5 +145,20 @@ export default {
 
 .unicon__hover {
   transform: rotate(30deg);
+}
+#navbar {
+  padding: 10px;
+}
+#navbar .vs-avatar {
+  cursor: pointer;
+}
+.tooltip-item {
+  padding: 5px 15px;
+  margin: 0;
+  margin-bottom: 5px;
+}
+.tooltip-item:hover {
+  cursor: pointer;
+  background-color: aqua;
 }
 </style>

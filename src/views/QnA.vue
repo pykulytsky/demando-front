@@ -28,7 +28,7 @@
     </div>
     <div
       class="event-search"
-      v-motion-pop-visible
+      v-motion-pop-visible-once
     >
       <h1>Enter identifier of event</h1>
       <vs-row align="center" justify="center">
@@ -301,9 +301,12 @@ export default {
 
 .event-search .vs-input {
   font-size: 24px;
+  width: 25vw;
 }
 .event-search .vs-input-content {
   font-size: 24px;
+  background-color: #1e2023;
+  width: 28vw;
 }
 
 .alert {
@@ -376,4 +379,7 @@ export default {
     border: 2px solid transparent;
     width: 100%;
 } */
+.event-search h1 {
+  text-align: center;
+}
 </style>

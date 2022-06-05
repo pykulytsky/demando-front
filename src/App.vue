@@ -12,7 +12,7 @@
       :width="$mq == 'mobile' ? '150%' : '50%'"
     /> -->
     <div class="hidden">
-      <vs-sidebar absolute v-model="sidebarActive"  :open.sync="sidebar">
+      <vs-sidebar absolute v-model="sidebarActive" :open.sync="sidebar">
         <template #logo>
           <img height="200" src="./assets/logo1-d.png" alt="" />
         </template>
@@ -46,30 +46,33 @@
           </template>
           Quizzes
         </vs-sidebar-item>
-    <template #footer>
-      <vs-row justify="space-between">
-        <vs-avatar>
-          <img src="/avatars/avatar-5.png" alt="" />
-        </vs-avatar>
-      <vs-switch
-        @mouseover="isSwitchHovered = true"
-        @mouseleave="isSwitchHovered = false"
-        v-model="theme"
-      >
-        <template #circle>
-          <unicon
-            ref="moon"
-            :class="{ unicon__moon: true, unicon__hover: isSwitchHovered }"
-            v-if="theme"
-            name="moon"
-            height="18"
-            width="18"
-          />
-          <unicon v-else ref="sun" name="brightness" />
+        <template #footer>
+          <vs-row justify="space-between">
+            <vs-avatar>
+              <img src="/avatars/avatar-5.png" alt="" />
+            </vs-avatar>
+            <vs-switch
+              @mouseover="isSwitchHovered = true"
+              @mouseleave="isSwitchHovered = false"
+              v-model="theme"
+            >
+              <template #circle>
+                <unicon
+                  ref="moon"
+                  :class="{
+                    unicon__moon: true,
+                    unicon__hover: isSwitchHovered,
+                  }"
+                  v-if="theme"
+                  name="moon"
+                  height="18"
+                  width="18"
+                />
+                <unicon v-else ref="sun" name="brightness" />
+              </template>
+            </vs-switch>
+          </vs-row>
         </template>
-      </vs-switch>
-      </vs-row>
-    </template>
       </vs-sidebar>
     </div>
     <nav-bar
@@ -117,8 +120,8 @@ export default {
   computed: {
     ...mapGetters(["currentTheme", "isLoading", "error", "currentUser"]),
     activeRoute() {
-      return this.$route.name
-    }
+      return this.$route.name;
+    },
   },
   watch: {
     theme: function (val) {
@@ -128,15 +131,15 @@ export default {
       } else {
         this.setTheme("light");
       }
-      this.emitToggleTheme();
+      this.toggleTheme();
     },
     isLoading(val) {
       if (val) {
-        document.documentElement.style.overflow = 'hidden'
+        document.documentElement.style.overflow = "hidden";
       } else {
-        document.documentElement.style.overflow = 'auto'
+        document.documentElement.style.overflow = "auto";
       }
-    }
+    },
   },
   methods: {
     ...mapActions([
@@ -166,11 +169,45 @@ export default {
   async created() {
     this.setDefaultTheme();
     await this.loadCurrentUser();
+
+    if (this.currentTheme) {
+      if (this.currentTheme == "light") {
+        this.theme = false;
+      } else {
+        this.theme = true;
+      }
+    } else {
+      this.theme = false;
+    }
+
+
+    var docWidth = document.documentElement.offsetWidth;
+    [].forEach.call(document.querySelectorAll("*"), function (el) {
+      if (el.offsetWidth > docWidth) {
+        return null
+      }
+    });
+
+    this.$router.beforeEach((to, from, next) => {
+      this.setLoading(true)
+      next()
+    })
+    this.$router.afterEach(() => {
+      setTimeout(() => {
+        this.setLoading(false)
+      }, 500)
+    })
   },
 };
 </script>
 
 <style>
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 * {
   font-family: "Work Sans", sans-serif;
   font-weight: 400;
@@ -183,7 +220,7 @@ h1 {
 }
 
 .dark-color {
-  background-color: #1E2023;
+  background-color: #1e2023;
   color: aliceblue;
 }
 
@@ -212,8 +249,9 @@ h1 {
 /* .component-fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
