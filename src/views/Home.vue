@@ -10,7 +10,7 @@
     >
       <kinesis-container
         v-rellax="{
-          speed: 8,
+          speed: 7,
         }"
         v-if="['desktop', 'laptop', 'tablet'].includes($mq)"
       >

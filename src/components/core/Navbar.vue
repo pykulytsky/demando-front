@@ -35,11 +35,10 @@
           <unicon v-else ref="sun" name="brightness" />
         </template>
       </vs-switch> -->
-      <vs-tooltip bottom v-if="currentUser" not-hover v-model="activeProfileTooltip">
+      <vs-tooltip bottom v-if="currentUser && isLogined" not-hover v-model="activeProfileTooltip">
         <vs-avatar circle primary @click="activeProfileTooltip = !activeProfileTooltip">
-          <template #text >
-            {{currentUser.username}}
-          </template>
+          <img v-if="currentUser.avatar" :src="currentUser.avatar" alt="" />
+          <unicon v-else name="user" width="50" height="50" />
         </vs-avatar>
         <template #tooltip>
           <p @click="$router.push('/profile')" class="tooltip-item">Profile</p>
@@ -47,7 +46,7 @@
         </template>
       </vs-tooltip>
 
-      <vs-tooltip bottom v-else not-hover v-model="activeProfileTooltip">
+      <vs-tooltip bottom v-if="!currentUser && isLogined" not-hover v-model="activeProfileTooltip">
         <vs-avatar circle primary @click="activeProfileTooltip = !activeProfileTooltip">
           <unicon  name="user" />
         </vs-avatar>

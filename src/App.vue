@@ -48,9 +48,18 @@
         </vs-sidebar-item>
         <template #footer>
           <vs-row justify="space-between">
-            <vs-avatar>
-              <img src="/avatars/avatar-5.png" alt="" />
+            <vs-avatar circle primary v-if="currentUser && isLogined" @click="$router.push('/profile')" >
+              <template #text >
+                {{currentUser.username}}
+              </template>
             </vs-avatar>
+            <vs-avatar circle primary v-if="!currentUser && isLogined" @click="$router.push('/profile')"  >
+              <template #text >
+                {{currentUser.username}}
+                <unicon  name="user" />
+              </template>
+            </vs-avatar>
+
             <vs-switch
               @mouseover="isSwitchHovered = true"
               @mouseleave="isSwitchHovered = false"
@@ -118,7 +127,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentTheme", "isLoading", "error", "currentUser"]),
+    ...mapGetters(["currentTheme", "isLoading", "error", "currentUser", "isLogined" ]),
     activeRoute() {
       return this.$route.name;
     },

@@ -4,8 +4,6 @@ const ENDPOINT = 'auth/users/'
 
 const getUsers = () => httpClient.get(ENDPOINT)
 
-
-
 const getMe = () => httpClient.get(ENDPOINT + 'me/')
 
 const refreshToken = (password, username, isEmail) => {
@@ -42,11 +40,23 @@ const getUser = (id) => {
 const verifyEmail = (verificationCode) => {
     return httpClient.patch(ENDPOINT + 'verify/' + verificationCode)
 }
+
+const patchUser = (userID, username, firstName, lastName, age, country) => {
+    return httpClient.patch(ENDPOINT + userID, {
+        username,
+        first_name: firstName,
+        last_name: lastName,
+        age,
+        country
+    })
+}
+
 export {
     getUsers,
     getMe,
     refreshToken,
     register,
     getUser,
-    verifyEmail
+    verifyEmail,
+    patchUser
 }
