@@ -1,12 +1,15 @@
 <template>
+<div class="quizzes-main">
+
   <vs-row>
-    <vs-col w="6" v-responsive.lg.xl >
+    <vs-col w="6" v-if="$mq == 'desktop'" >
       <create-quiz-alert/>
     </vs-col>
-    <vs-col w="6" v-responsive.lg.xl>
+    <vs-col w="6" v-if="$mq == 'desktop'" >
       <code-input-form />
     </vs-col>
-      <code-input-form v-responsive.sm.xs />
+      <code-input-form v-if="$mq !== 'desktop'" />
+  </vs-row>
     <div class="quizzes explore-items">
       <div class="explore-events">
         <h1
@@ -169,7 +172,8 @@
         </div>
       </div>
     </div>
-  </vs-row>
+
+</div>
 </template>
 
 <script>

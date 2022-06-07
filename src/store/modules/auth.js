@@ -33,9 +33,6 @@ export default {
             }
             commit('SET_LOADING', false)
         }
-        catch(error){
-            console.log(error.response.data)
-        }
         finally {
             commit('SET_LOADING', false)
         }
@@ -46,9 +43,6 @@ export default {
             const response = await refreshToken(payload.password, payload.username, payload.isEmail)
             commit('SET_TOKEN', response.data.token)
             await dispatch('loadCurrentUser')
-          }
-          catch (error) {
-            console.log(error.response.data)
           }
           finally {
             commit('SET_LOADING', false)

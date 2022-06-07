@@ -274,9 +274,6 @@ export default {
             this.testTimer--;
           }, 1000);
         } else if (this.testTimerEnabled) {
-          console.log("TEST Timer");
-          console.log("test timer -", this.testTimer);
-          console.log("test timer enabled -", this.testTimerEnabled);
           this.testTimerEnabled = false;
           this.testTimer = 10;
         }
@@ -320,7 +317,6 @@ export default {
       let correntAnswer = "";
       this.currentStepData.options.forEach((option) => {
         if (option.is_right) {
-          console.log(option.title);
           correntAnswer = option.title;
         }
       });
@@ -472,8 +468,14 @@ export default {
           this.createUserDialog = true;
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        this.$vs.notification({
+          color: "danger",
+          icon: '<unicon name="exclamation-triangle" fill="white"/>',
+          position: "bottom-center",
+          title: "Critical error",
+          text: "Error occured when receiving data from server",
+        });
         this.$router.push("/404");
       });
     getAnonUsers().then((response) => {
@@ -487,7 +489,7 @@ export default {
 <style>
 .gradient-background {
   background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
-  background-size: 400% 400%;
+  background-size: 600% 600%;
   animation: gradient 15s ease infinite;
   /* background: url("../assets/quiz-background4.jpg"); */
 }
@@ -506,6 +508,8 @@ export default {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  overflow: hidden;
+
 }
 .members {
   display: flex;

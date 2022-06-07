@@ -10,6 +10,7 @@ import Profile from '../views/Profile.vue'
 import Quizzes from '../views/Quizzes.vue'
 import QuizConstructor from '../views/QuizConstructor.vue'
 import NotFound from '../views/NotFound.vue'
+import CriticalError from '../views/CriticalError.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 import Logout from '../views/auth/Logout.vue'
@@ -84,6 +85,11 @@ const routes = [
     path: "/profile",
     component: Profile,
     name: "Profile"
+  },
+  {
+    path: "/505",
+    component: CriticalError,
+    name: "CriticalError"
   },
   {
     path: '*',

@@ -7,7 +7,7 @@
         }"
     >
       <h1
-        class="qa-title-header"
+        :class="$mq !== 'mobile'? 'polls-header-title': 'polls-header-title-small'"
         v-rellax="{
           speed: 4,
         }"
@@ -27,7 +27,12 @@
       </vs-button>
     </div>
     <div
-      class="event-search"
+      :class="{
+        'event-search': $mq !== 'mobile' && currentTheme == 'light',
+        'event-search-small': $mq == 'mobile' && currentTheme == 'light',
+        'event-search-dark': $mq !== 'mobile' && currentTheme == 'dark',
+        'event-search-small-dark': $mq == 'mobile' && currentTheme == 'dark'
+      }"
       v-motion-pop-visible-once
     >
       <h1>Enter identifier of event</h1>
@@ -305,8 +310,37 @@ export default {
 }
 .event-search .vs-input-content {
   font-size: 24px;
+  background-color: #a8adb7;
+  width: 28vw;
+}
+
+.event-search-small .vs-input {
+  font-size: 24px;
+  width: 72vw;
+}
+.event-search-small .vs-input-content {
+  font-size: 24px;
+  background-color: #a8adb7;
+  width: 73vw;
+}
+.event-search-dark .vs-input {
+  font-size: 24px;
+  width: 25vw;
+}
+.event-search-dark .vs-input-content {
+  font-size: 24px;
   background-color: #1e2023;
   width: 28vw;
+}
+
+.event-search-small-dark .vs-input {
+  font-size: 24px;
+  width: 72vw;
+}
+.event-search-small-dark .vs-input-content {
+  font-size: 24px;
+  background-color: #1e2023;
+  width: 73vw;
 }
 
 .alert {
@@ -331,6 +365,7 @@ export default {
   align-items: center;
   flex-direction: column;
   min-height: 650px;
+  padding: 0 10vw;
   padding-bottom: 100px;
   position: relative;
   background: url("../assets/polls-background-light3.svg");
@@ -344,6 +379,7 @@ export default {
   align-items: center;
   flex-direction: column;
   min-height: 650px;
+  padding: 0 10vw;
   padding-bottom: 100px;
   position: relative;
   background: url("../assets/polls-background-dark3.svg");

@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" v-if="user">
     <div class="profile-header">
       <div
         :class="$mq !== 'mobile' ? 'profile-cover' : 'profile-cover-small'"
@@ -203,6 +203,7 @@
 import ProfileBadge from "../components/profile/ProfileBadge.vue";
 import { getMe, patchUser } from "../api/auth.api";
 import { uploadFile } from "../api/file.api";
+import {mapActions} from "vuex";
 
 const STATUS_INITIAL = 0,
   STATUS_SAVING = 1,
@@ -506,6 +507,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["setLoading"]),
     badgeHandler(e) {
       if (e.percentCenter < 0.7) {
         this.participatedIsVisible = true;
@@ -572,10 +574,9 @@ export default {
       this.uploadedFiles = [];
       this.uploadError = null;
     },
-    save(formData) {
+    save() {
       // upload data to the server
       this.currentStatus = STATUS_SAVING;
-      console.log(formData);
       // upload(formData)
       //   .then(x => {
       //     this.uploadedFiles = [].concat(x);
@@ -593,8 +594,7 @@ export default {
       this.avatar = fileList[0];
       formData.append("file", this.avatar)
       uploadFile(formData)
-      .then(response => {
-        console.log(response.data)
+      .then(() => {
         getMe().then(resp => {
           this.user = resp.data
           this.avatarUploaderDialog = false
@@ -613,6 +613,7 @@ export default {
     },
   },
   created() {
+    this.setLoading(true)
     this.reset();
     getMe().then((response) => {
       this.user = response.data;
@@ -621,6 +622,7 @@ export default {
       this.lastName = this.user.last_name;
       this.age = this.user.age ? this.user.age : 0;
     });
+    this.setLoading(false)
   },
 };
 </script>

@@ -319,7 +319,6 @@ export default {
     createSteps() {
       let valid = true;
       let steps = this.steps.slice(0, -1);
-      console.log(steps);
       steps.forEach((step) => {
         if (step.name == "") {
           valid = false;
@@ -361,8 +360,7 @@ export default {
     },
     onSelectCover(data) {
       if (data !== this.defaultCover) {
-        patchQuizCover(this.quiz.pk, data.src).then((response) => {
-          console.log(response);
+        patchQuizCover(this.quiz.pk, data.src).then(() => {
           this.$vs.notification({
             color: "success",
             icon: '<unicon name="exclamation-triangle" fill="white"/>',
@@ -373,8 +371,7 @@ export default {
           });
         });
       } else {
-        patchQuizCover(this.quiz.pk, "").then((response) => {
-          console.log(response);
+        patchQuizCover(this.quiz.pk, "").then(() => {
           this.$vs.notification({
             color: "success",
             icon: '<unicon name="exclamation-triangle" fill="white"/>',
@@ -385,7 +382,6 @@ export default {
           });
         });
       }
-      console.log(data);
     },
     addStep() {
       this.options.push(this.currentOption);

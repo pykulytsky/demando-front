@@ -3,14 +3,6 @@
     <transition name="fade">
       <loading v-if="isLoading" />
     </transition>
-    <!-- <lottie-animation
-      v-if="isLoading"
-      id="load"
-      ref="anim"
-      :animationData="require('@/assets/lottie/73991-30th-anniversary-of-ukraines-independence.json')"
-      :loop="true"
-      :width="$mq == 'mobile' ? '150%' : '50%'"
-    /> -->
     <div class="hidden">
       <vs-sidebar absolute v-model="sidebarActive" :open.sync="sidebar">
         <template #logo>
@@ -105,6 +97,7 @@ import { mapActions, mapGetters } from "vuex";
 import Navbar from "./components/core/Navbar.vue";
 import Footer from "./components/core/Footer.vue";
 import Loader from "./components/core/Loader.vue";
+import httpClient from "./api/axios";
 export default {
   name: "App",
   metaInfo: {
@@ -205,6 +198,14 @@ export default {
       setTimeout(() => {
         this.setLoading(false)
       }, 500)
+    })
+
+    httpClient.interceptors.response.use((response) => response, (error) => {
+      if(error.response.status > 499 && error.response.status < 600 ) {
+        this.$router.push("/505")
+      }
+      console.log(error)
+      return Promise.reject(error);
     })
   },
 };

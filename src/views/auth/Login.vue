@@ -84,8 +84,6 @@ export default {
           password: this.password,
           isEmail: this.isEmail,
         });
-        console.log("isLogined: ", this.isLogined);
-        console.log("currentUser: ", this.currentUser);
         if (this.isLogined) {
           this.$router.push("/");
         } else {

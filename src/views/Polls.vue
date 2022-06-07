@@ -19,7 +19,12 @@
     </div>
     <div class="polls-content">
     <div
-      class="event-search"
+      :class="{
+        'event-search': $mq !== 'mobile' && currentTheme == 'light',
+        'event-search-small': $mq == 'mobile' && currentTheme == 'light',
+        'event-search-dark': $mq !== 'mobile' && currentTheme == 'dark',
+        'event-search-small-dark': $mq == 'mobile' && currentTheme == 'dark'
+      }"
       v-motion-pop-visible
     >
       <h1>Enter poll identifier</h1>

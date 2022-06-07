@@ -646,8 +646,7 @@
               <span> {{ event.owner.username }}</span>
             </vs-button>
             <vs-button class="btn-chat" shadow primary>
-              <unicon width="15" height="15" name="question" />
-              <span class="span"> {{ event.steps.length }} </span>
+              <span class="span"> {{ event.steps.length }} questions</span>
             </vs-button>
             <vs-button class="btn-chat" shadow primary>
               <unicon width="15" height="15" name="dialpad-alt" />
@@ -686,8 +685,7 @@
                   <span> {{ event.owner.username }}</span>
                 </vs-button>
                 <vs-button class="btn-chat" shadow primary>
-                  <unicon width="15" height="15" name="question" />
-                  <span class="span"> {{ event.steps.length }} </span>
+                  <span class="span"> {{ event.steps.length }} questions</span>
                 </vs-button>
                 <vs-button class="btn-chat" shadow primary>
                   <unicon width="15" height="15" name="dialpad-alt" />
@@ -721,8 +719,7 @@
                   <span> {{ event.owner.username }}</span>
                 </vs-button>
                 <vs-button class="btn-chat" shadow primary>
-                  <unicon width="15" height="15" name="question" />
-                  <span class="span"> {{ event.steps.length }} </span>
+                  <span class="span"> {{ event.steps.length }} questions </span>
                 </vs-button>
                 <vs-button class="btn-chat" shadow primary>
                   <unicon width="15" height="15" name="dialpad-alt" />

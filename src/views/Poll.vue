@@ -208,8 +208,6 @@ export default {
         this.poll = JSON.parse(event.data);
         if(this.poll.limited_time) {
           let date = new Date(Date.parse(this.poll.time_to_vote))
-          console.log(date)
-          console.log(date < new Date())
           this.dueToDate = {
             year: date.getFullYear(),
             month: date.getMonth()+1,

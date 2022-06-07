@@ -4,7 +4,12 @@ const ENDPOINT = "quiz/quizzes/";
 
 const getQuiz = (quizId) => httpClient.get(ENDPOINT + quizId);
 
-const getQuizzes = () => httpClient.get(ENDPOINT);
+const getQuizzes = () => httpClient.get(ENDPOINT, {
+  params: {
+    order_by: "created",
+    desc: true
+  }
+});
 
 const createQuiz = (name, enter_code, isPrivate, deleteAfterFinish, secondsPerAnswer) => {
   if (enter_code !== "") {

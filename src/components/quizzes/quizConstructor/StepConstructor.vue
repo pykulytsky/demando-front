@@ -71,8 +71,6 @@ export default {
       this.currentCorrectAnswer = payload.correctAnswer;
     },
     addStep() {
-      console.log(this.currentStep);
-      console.log(this.options);
       createStep(this.currentStep, this.quiz.pk).then((response) => {
         this.currentStepData = response.data;
         this.currentStep = "";
@@ -82,9 +80,7 @@ export default {
             option,
             index == this.currentCorrectAnswer,
             this.currentStepData.pk
-          ).then((response) => {
-            console.log("Created option - ", response.data);
-          });
+          )
         });
       });
     },
