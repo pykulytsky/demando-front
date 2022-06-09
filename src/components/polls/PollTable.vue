@@ -1,46 +1,45 @@
 <template>
   <div class="events-table">
-    <h2>Related events</h2>
+    <h2>Related polls</h2>
     <vs-table striped>
       <template #header>
-        <vs-input v-model="searchEvent" border placeholder="Search" />
+        <vs-input v-model="searchPoll" border placeholder="Search" />
       </template>
       <template #thead>
         <vs-tr>
-          <vs-th sort @click="events = $vs.sortData($event, events, 'name')"
+          <vs-th sort @click="polls = $vs.sortData($event, polls, 'name')"
             >Name</vs-th
           >
           <vs-th
             v-if="$mq !== 'mobile'"
             sort
-            @click="events = $vs.sortData($event, events, 'owner.username')"
+            @click="polls = $vs.sortData($event, polls, 'owner.username')"
             >Owner</vs-th
           >
           <vs-th
             v-if="$mq !== 'mobile'"
             sort
-            @click="events = $vs.sortData($event, events, 'questions.length')"
-            >Total questions</vs-th
+            @click="polls = $vs.sortData($event, polls, 'votes.length')"
+            >Total votes</vs-th
           >
           <vs-th></vs-th>
         </vs-tr>
       </template>
       <template #tbody>
         <vs-tr
-          v-for="event in $vs.getSearch(events, searchEvent)"
-          :key="event.pk"
-          :data="event"
+          v-for="poll in $vs.getSearch(polls, searchPoll)"
+          :key="poll.pk"
+          :data="poll"
         >
-          <vs-td>{{ event.name }}</vs-td>
-          <vs-td
-
-            v-if="$mq !== 'mobile'"
-          >{{ event.owner.username }}</vs-td>
+          <vs-td>{{ poll.name }}</vs-td>
           <vs-td
             v-if="$mq !== 'mobile'"
-          >{{ event.questions.length }}</vs-td>
+          >{{ poll.owner.username }}</vs-td>
           <vs-td
-            ><vs-button icon border circle :to="'/qa/events/' + event.pk">
+            v-if="$mq !== 'mobile'"
+          >{{ poll.votes.length }}</vs-td>
+          <vs-td
+            ><vs-button icon border circle :to="'/polls/' + poll.pk">
               <unicon
                 name="angle-double-right"
                 height="20"
@@ -56,11 +55,11 @@
 <script>
 export default {
   props: {
-    events: Array,
+    polls: Array,
   },
   data: () => {
     return {
-      searchEvent: "",
+      searchPoll: "",
     };
   },
 };
@@ -71,7 +70,17 @@ export default {
   display: flex;
   flex-direction: column;
   margin-top: 150px;
-  width: 70%;
+  width: 80vw;
+}
+
+.vs-table__tr:first-of-type .vs-table__td:first-child {
+    border-radius: 0px 0px 0px 15px;
+    width: 45%;
+}
+
+.vs-table__td:last-child {
+    border-radius: 0px 15px 15px 0px;
+    align-items:flex-start;
 }
 
 .list-item {

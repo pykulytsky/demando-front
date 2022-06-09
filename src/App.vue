@@ -77,7 +77,7 @@
       </vs-sidebar>
     </div>
     <nav-bar
-      v-if="!['Login', 'Register', 'NotFound', 'Quiz'].includes($route.name)"
+      v-if="!['Login', 'Register', 'NotFound', 'Quiz', 'CriticalError'].includes($route.name)"
       @toggleSidebar="toggleSidebar"
       @toggleTheme="toggleTheme"
     />
@@ -87,7 +87,7 @@
       </transition>
     </div>
     <Footer
-      v-if="!['Login', 'Register', 'NotFound', 'Quiz'].includes($route.name)"
+      v-if="!['Login', 'Register', 'NotFound', 'Quiz', 'CriticalError'].includes($route.name)"
     />
   </div>
 </template>

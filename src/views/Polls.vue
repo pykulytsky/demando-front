@@ -54,6 +54,12 @@
         </vs-col>
       </vs-row>
     </div>
+      <div
+        v-rellax="{
+          speed: -2
+        }"
+        data-rellax-percentage="0.5"
+        class="create-poll-btn">
       <vs-button
         v-if="isLogined"
         success
@@ -61,6 +67,9 @@
         @click="createPollDialog = true"
         >Create poll</vs-button
       >
+      </div>
+
+      <poll-table :polls="polls"></poll-table>
 
       <div class="polls explore-items">
         <div class="explore-events">
@@ -296,9 +305,10 @@
 import { mapGetters, mapActions } from "vuex";
 import VueNumericInput from "vue-numeric-input";
 import { Datetime } from "vue-datetime";
-import { createPoll, createOption, getPoll } from "../api/items/polls.api";
+import { createPoll, createOption, getPoll, getPolls } from "../api/items/polls.api";
 import LottieAnimation from "lottie-web-vue";
 import { VueTyper } from "vue-typer";
+import PollTable from "../components/polls/PollTable.vue"
 export default {
   name: "Polls",
   metaInfo: {
@@ -309,9 +319,11 @@ export default {
     datetime: Datetime,
     LottieAnimation,
     VueTyper,
+    PollTable
   },
   data: () => {
     return {
+      polls: null,
       createPollDialog: false,
       steps: null,
       currentOption: "",
@@ -417,6 +429,11 @@ export default {
   computed: {
     ...mapGetters(["currentTheme", "isLogined"]),
   },
+  created() {
+    getPolls().then(response => {
+      this.polls = response.data
+    })
+  }
 };
 </script>
 <style>
@@ -490,7 +507,7 @@ export default {
   flex-direction: column;
 }
 .polls-content .vs-button--size-xl .vs-button__content {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 .poll-name .vs-input-content,
 .vs-input,
@@ -547,5 +564,8 @@ export default {
 }
 .vue-numeric-input {
   margin-top: 20px;
+}
+.create-poll-btn {
+  margin-top: 15vh;
 }
 </style>

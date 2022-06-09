@@ -102,6 +102,7 @@ import ProgressBar from "vue-simple-progress";
 import jwt_decode from "jwt-decode";
 import QrcodeVue from "qrcode.vue";
 import Counter from "../components/core/Counter.vue";
+import axios from "axios"
 export default {
   components: {
     ProgressBar,
@@ -119,7 +120,8 @@ export default {
       pollLoaded: false,
       link: "",
       votes: [],
-      dueToDate: null
+      dueToDate: null,
+      ipAddress: null
     };
   },
   watch: {
@@ -152,7 +154,7 @@ export default {
       } else {
         this.connection.send(
           JSON.stringify({
-            ip_address: window.location.hostname,
+            ip_address: this.ipAddress,
             poll_id: this.pollId,
             option_id: optionId,
           })
@@ -172,7 +174,7 @@ export default {
       } else {
         this.connection.send(
           JSON.stringify({
-            ip_address: window.location.hostname,
+            ip_address: this.ipAddress,
             poll_id: this.pollId,
             options: this.votes,
             multiply: true,
@@ -201,8 +203,9 @@ export default {
     },
     connectToWebsocket() {
       this.connection = new WebSocket(
-        "ws://" + "localhost:8000" + "/ws/vote/" + this.pollId
+        "wss://" + "demando-backend.herokuapp.com" + "/ws/vote/" + this.pollId
       );
+      console.log(this.connection)
       this.connection.onmessage = (event) => {
         this.setLoading(true);
         this.poll = JSON.parse(event.data);
@@ -221,10 +224,10 @@ export default {
         }
         try {
           const userPk = jwt_decode(localStorage.getItem("token")).pk;
-          this.voted = this.poll.votes.filter((vote) => vote.owner.pk == userPk).length > 0
+          this.voted = this.poll.votes.filter((vote) => vote.owner !== null ? vote.owner.pk == userPk: null).length > 0
         }
         catch {
-          this.voted = this.poll.votes.filter((vote) => vote.owner_host == window.location.hostname).length > 0
+          this.voted = this.poll.votes.filter((vote) => vote.owner_host !== null ?  vote.owner_host == this.ipAddress: null).length > 0
         }
         if(new Date(Date.parse(this.poll.time_to_vote)) < new Date()) {
           this.voted = true
@@ -233,9 +236,14 @@ export default {
       };
       this.connection.onopen = () => {};
       this.connection.onclose = (e) => {
+        this.connection = null
+        this.connectToWebsocket()
         console.log(e);
       };
       this.connection.onerror = (err) => {
+        // this.connection = null
+        // this.connectToWebsocket()
+        this.$router.push("/505")
         console.log(err);
       };
     },
@@ -243,8 +251,13 @@ export default {
   created() {
     this.setLoading(true);
     this.pollId = this.$route.params.pk;
-    this.connectToWebsocket();
     this.link = new URL(this.$route.fullPath, window.location.href).href;
+    axios.get('https://cors-anywhere.herokuapp.com/https://api.ipify.org?format=json')
+    .then(response => {
+      this.ipAddress = response.data.ip
+    })
+
+    this.connectToWebsocket();
     this.setLoading(false);
   },
   destroyed() {

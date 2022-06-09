@@ -80,7 +80,7 @@
         </template>
       </vs-alert>
     </div>
-    <event-table v-if="$mq !== 'mobile'" :events="events"></event-table>
+    <event-table :events="events"></event-table>
 <div class="events explore-items">
       <div class="explore-events">
         <h1
@@ -415,7 +415,7 @@ export default {
     border: 2px solid transparent;
     width: 100%;
 } */
-.event-search h1 {
+.event-search, .event-search-small, .event-search-dark, .event-search-small-dark h1 {
   text-align: center;
 }
 </style>

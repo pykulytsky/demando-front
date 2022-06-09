@@ -338,8 +338,8 @@ export default {
     connectToWebsocket() {
       if (this.newUserNickname == "") {
         this.connection = new WebSocket(
-          "ws://" +
-            "localhost:8000" +
+          "wss://" +
+            "demando-backend.herokuapp.com" +
             "/ws/quiz/" +
             this.quiz.enter_code +
             "/" +
@@ -347,8 +347,8 @@ export default {
         );
       } else {
         this.connection = new WebSocket(
-          "ws://" +
-            "localhost:8000" +
+          "wss://" +
+            "demando-backend.herokuapp.com" +
             "/ws/quiz/" +
             this.quiz.enter_code +
             "/username:" +
