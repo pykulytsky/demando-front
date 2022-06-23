@@ -77,7 +77,7 @@
       </vs-sidebar>
     </div>
     <nav-bar
-      v-if="!['Login', 'Register', 'NotFound', 'Quiz', 'CriticalError'].includes($route.name)"
+      v-if="!['Login', 'Register', 'NotFound', 'Quiz', 'CriticalError'].includes($route.name) && !isLoading"
       @toggleSidebar="toggleSidebar"
       @toggleTheme="toggleTheme"
     />
@@ -97,7 +97,6 @@ import { mapActions, mapGetters } from "vuex";
 import Navbar from "./components/core/Navbar.vue";
 import Footer from "./components/core/Footer.vue";
 import Loader from "./components/core/Loader.vue";
-import httpClient from "./api/axios";
 export default {
   name: "App",
   metaInfo: {
@@ -200,13 +199,7 @@ export default {
       }, 500)
     })
 
-    httpClient.interceptors.response.use((response) => response, (error) => {
-      if(error.response.status > 499 && error.response.status < 600 ) {
-        this.$router.push("/505")
-      }
-      console.log(error)
-      return Promise.reject(error);
-    })
+
   },
 };
 </script>

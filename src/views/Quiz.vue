@@ -29,7 +29,7 @@
         size="xl"
         class="start-btn"
         v-if="isOwner"
-        @click="startQuiz"
+        @click="startTimerEnabled = true"
       >
         Start Game
       </vs-button>
@@ -42,6 +42,8 @@
         />
       </div>
     </div>
+
+    <start-timer v-if="startTimerEnabled"></start-timer>
 
     <transition name="component-fade" mode="out-in">
       <quiz-step
@@ -155,6 +157,7 @@ import QuizStep from "../components/quizzes/QuizStep.vue";
 import ProgressBar from "vue-simple-progress";
 import ResultsTable from "../components/quizzes/ResultsTable.vue";
 import LottieAnimation from "lottie-web-vue";
+import StartTimer from "../components/quizzes/StartTimer.vue"
 export default {
   components: {
     QrcodeVue,
@@ -162,6 +165,7 @@ export default {
     ProgressBar,
     ResultsTable,
     LottieAnimation,
+    StartTimer
   },
   data: () => {
     return {
@@ -183,6 +187,9 @@ export default {
 
       testTimer: 10,
       testTimerEnabled: false,
+
+      startTimer: 3,
+      startTimerEnabled: false,
 
       isNoAnswer: false,
 
@@ -233,6 +240,13 @@ export default {
         }, 1000);
       }
     },
+    startTimerEnabled(value) {
+      if (value) {
+        setTimeout(() => {
+          this.startTimer--;
+        }, 1000);
+      }
+    },
     timer: {
       handler(value) {
         if (value > 0 && this.timerEnabled) {
@@ -276,6 +290,20 @@ export default {
         } else if (this.testTimerEnabled) {
           this.testTimerEnabled = false;
           this.testTimer = 10;
+        }
+      },
+    },
+    startTimer: {
+      handler(value) {
+        if (value > 0 && this.startTimerEnabled) {
+          setTimeout(() => {
+            this.startTimer--;
+          }, 1000);
+        } else if (this.startTimerEnabled) {
+          this.startTimerEnabled = false;
+          this.startTimer = 3;
+
+          this.startQuiz()
         }
       },
     },
@@ -329,7 +357,7 @@ export default {
       e.preventDefault();
       e.returnValue = "";
     },
-    startTimer() {
+    startTimerEn() {
       this.timerEnabled = true;
     },
     stopTimer() {
@@ -339,7 +367,7 @@ export default {
       if (this.newUserNickname == "") {
         this.connection = new WebSocket(
           "wss://" +
-            "demando-backend.herokuapp.com" +
+            "demando-backend.onrender.com" +
             "/ws/quiz/" +
             this.quiz.enter_code +
             "/" +
@@ -348,7 +376,7 @@ export default {
       } else {
         this.connection = new WebSocket(
           "wss://" +
-            "demando-backend.herokuapp.com" +
+            "demando-backend.onrender.com" +
             "/ws/quiz/" +
             this.quiz.enter_code +
             "/username:" +
@@ -363,7 +391,7 @@ export default {
         } else if (data.step) {
           this.currentStep = data.step_number;
           this.currentStepData = data.step;
-          this.startTimer();
+          this.startTimerEn();
         } else if (data.results) {
           this.currentResults = data.results;
         } else if (data.action == "finish") {
@@ -488,7 +516,7 @@ export default {
 
 <style>
 .gradient-background {
-  background: linear-gradient(-45deg, #ee7752, #c55982, #538ba0, #42e6bf);
+  background-image: linear-gradient( 135deg, #FFF886 10%, #F072B6 100%);
   background-size: 600% 600%;
   animation: gradient 15s ease infinite;
   /* background: url("../assets/quiz-background4.jpg"); */
@@ -536,7 +564,6 @@ export default {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 5%;
 }
 .fade-enter-active,
 .fade-leave-active {

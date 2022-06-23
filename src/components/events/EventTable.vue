@@ -1,6 +1,6 @@
 <template>
-  <div class="events-table">
-    <h2>Related events</h2>
+  <div :class="onProfile ? '': 'events-table'">
+    <h2 v-if="!onProfile">Explore events</h2>
     <vs-table striped>
       <template #header>
         <vs-input v-model="searchEvent" border placeholder="Search" />
@@ -11,13 +11,13 @@
             >Name</vs-th
           >
           <vs-th
-            v-if="$mq !== 'mobile'"
+            v-if="$mq !== 'mobile' && !onProfile"
             sort
             @click="events = $vs.sortData($event, events, 'owner.username')"
             >Owner</vs-th
           >
           <vs-th
-            v-if="$mq !== 'mobile'"
+            v-if="$mq !== 'mobile' && !onProfile"
             sort
             @click="events = $vs.sortData($event, events, 'questions.length')"
             >Total questions</vs-th
@@ -27,17 +27,17 @@
       </template>
       <template #tbody>
         <vs-tr
-          v-for="event in $vs.getSearch(events, searchEvent)"
+          v-for="event in $vs.getPage($vs.getSearch(events, searchEvent), page, max)"
           :key="event.pk"
           :data="event"
         >
           <vs-td>{{ event.name }}</vs-td>
           <vs-td
 
-            v-if="$mq !== 'mobile'"
+            v-if="$mq !== 'mobile' && !onProfile"
           >{{ event.owner.username }}</vs-td>
           <vs-td
-            v-if="$mq !== 'mobile'"
+            v-if="$mq !== 'mobile' && !onProfile"
           >{{ event.questions.length }}</vs-td>
           <vs-td
             ><vs-button icon border circle :to="'/qa/events/' + event.pk">
@@ -49,6 +49,9 @@
           ></vs-td>
         </vs-tr>
       </template>
+      <template #footer>
+        <vs-pagination v-model="page" :length="$vs.getLength(events, max)" />
+      </template>
     </vs-table>
   </div>
 </template>
@@ -57,12 +60,25 @@
 export default {
   props: {
     events: Array,
+    onProfile: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => {
     return {
       searchEvent: "",
+      page: 1,
+      max: 10,
     };
   },
+  created() {
+    if(this.onProfile) {
+      this.max = 5
+    } else {
+      this.max = 10
+    }
+  }
 };
 </script>
 

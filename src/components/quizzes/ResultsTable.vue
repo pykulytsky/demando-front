@@ -2,6 +2,24 @@
   <div class="results-table">
     <h1>Congratulations! You are on {{ place }} place!</h1>
 
+    <div class="place-anim">
+        <lottie-animation
+          v-if="place == 1"
+          :animationData="require('@/assets/lottie/108451-trophy.json')"
+          :loop="true"
+        />
+        <lottie-animation
+          v-if="place == 2"
+          :animationData="require('@/assets/lottie/69654-sport-winner-medal-2nd.json')"
+          :loop="true"
+        />
+        <lottie-animation
+          v-if="place == 3"
+          :animationData="require('@/assets/lottie/69653-sport-winner-medal-3rd.json')"
+          :loop="true"
+        />
+    </div>
+
     <table-item
       v-for="([key, value], i) in Object.entries(results)"
       :key="i"
@@ -22,6 +40,7 @@
 <script>
 import TableItem from "./TableItem.vue";
 import { mapGetters } from "vuex";
+import LottieAnimation from "lottie-web-vue";
 export default {
   data: () => {
     return {
@@ -30,6 +49,7 @@ export default {
   },
   components: {
     TableItem,
+    LottieAnimation
   },
   computed: {
     ...mapGetters(["currentUser"]),
@@ -91,5 +111,10 @@ export default {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+.place-anim {
+  height: 300px;
+  display: flex;
+  justify-content: center;
 }
 </style>

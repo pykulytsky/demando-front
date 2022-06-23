@@ -17,10 +17,12 @@ style="color:aqua;"
           @complete="$emit('complete', title)"
         />
     <p v-if="showCaption" id="badge-caption">{{title}}</p>
+
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
+
 export default {
   props: {
     icon: String,
@@ -29,7 +31,9 @@ export default {
   },
   data: () => {
     return {
-      showCaption: false
+      showCaption: true,
+
+
     }
   },
   computed: {

@@ -10,12 +10,13 @@
           <span>#{{ poll.pk }}</span>
         </h1>
 
-        <qrcode-vue class="qr-code" :value="link" :size="100" level="H" />
+        <qrcode-vue v-if="$mq !== 'mobile'" class="qr-code" :value="link" :size="100" level="H" />
       </div>
     </div>
     <div class="vote-item-wrap" v-for="option in poll.options" :key="option.pk">
       <div class="vote-item">
-        <h2 v-if="voted">{{ option.name }}</h2>
+        <h2 v-if="voted && $mq !== 'mobile'">{{ option.name }}</h2>
+        <h3 v-if="voted && $mq == 'mobile'">{{ option.name }}</h3>
         <vs-row align="center">
           <vs-col w="1" v-if="!voted">
             <vs-radio
@@ -203,10 +204,11 @@ export default {
     },
     connectToWebsocket() {
       this.connection = new WebSocket(
-        "wss://" + "demando-backend.herokuapp.com" + "/ws/vote/" + this.pollId
+        "wss://" + "demando-backend.onrender.com" + "/ws/vote/" + this.pollId
       );
       console.log(this.connection)
       this.connection.onmessage = (event) => {
+        console.log(event)
         this.setLoading(true);
         this.poll = JSON.parse(event.data);
         if(this.poll.limited_time) {
@@ -241,8 +243,8 @@ export default {
         console.log(e);
       };
       this.connection.onerror = (err) => {
-        // this.connection = null
-        // this.connectToWebsocket()
+        this.connection = null
+        this.connectToWebsocket()
         this.$router.push("/505")
         console.log(err);
       };

@@ -1,54 +1,64 @@
 <template>
-  <div :class="onProfile ? '': 'events-table'">
-    <h2 v-if="!onProfile">Explore polls</h2>
+  <div :class="onProfile? '': 'quizzes-table'">
+    <h2 v-if="!onProfile">Explore quizzes</h2>
     <vs-table striped>
       <template #header>
-        <vs-input v-model="searchPoll" border placeholder="Search" />
+        <vs-input v-model="searchQuiz" border placeholder="Search" />
       </template>
       <template #thead>
         <vs-tr>
-          <vs-th sort @click="polls = $vs.sortData($event, polls, 'name')"
+          <vs-th sort @click="quizzes = $vs.sortData($event, quizzes, 'name')"
             >Name</vs-th
           >
           <vs-th
             v-if="$mq !== 'mobile' && !onProfile"
             sort
-            @click="polls = $vs.sortData($event, polls, 'owner.username')"
+            @click="quizzes = $vs.sortData($event, quizzes, 'owner.username')"
             >Owner</vs-th
-          >
-          <vs-th
-            v-if="$mq !== 'mobile' && onProfile"
-            sort
-            @click="polls = $vs.sortData($event, polls, 'allowed_votes')"
-            >Allowed votes</vs-th
           >
           <vs-th
             v-if="$mq !== 'mobile' && !onProfile"
             sort
-            @click="polls = $vs.sortData($event, polls, 'votes.length')"
-            >Total votes</vs-th
+            @click="quizzes = $vs.sortData($event, quizzes, 'steps.length')"
+            >Total questions</vs-th
+          >
+          <vs-th
+            v-if="$mq !== 'mobile' && onProfile"
+            sort
+            @click="quizzes = $vs.sortData($event, quizzes, 'done')"
+            >Done</vs-th
+          >
+          <vs-th
+            v-if="$mq !== 'mobile' && onProfile"
+            sort
+            @click="quizzes = $vs.sortData($event, quizzes, 'enter_code')"
+            >PIN code</vs-th
           >
           <vs-th></vs-th>
         </vs-tr>
       </template>
       <template #tbody>
         <vs-tr
-          v-for="poll in $vs.getPage($vs.getSearch(polls, searchPoll), page, max)"
-          :key="poll.pk"
-          :data="poll"
+          v-for="quiz in $vs.getPage($vs.getSearch(quizzes, searchQuiz), page, max)"
+          :key="quiz.pk"
+          :data="quiz"
         >
-          <vs-td>{{ poll.name }}</vs-td>
+          <vs-td>{{ quiz.name }}</vs-td>
+          <vs-td
+
+            v-if="$mq !== 'mobile' && !onProfile"
+          >{{ quiz.owner.username }}</vs-td>
           <vs-td
             v-if="$mq !== 'mobile' && !onProfile"
-          >{{ poll.owner.username }}</vs-td>
+          >{{ quiz.steps.length }}</vs-td>
           <vs-td
-            v-if="$mq !== 'mobile' && onProfile"
-          >{{ poll.allowed_votes }}</vs-td>
+            v-if="onProfile"
+          >{{ quiz.done }}</vs-td>
           <vs-td
-            v-if="$mq !== 'mobile' && !onProfile"
-          >{{ poll.votes.length }}</vs-td>
+            v-if="onProfile"
+          >{{ quiz.enter_code }}</vs-td>
           <vs-td
-            ><vs-button icon border circle :to="'/polls/' + poll.pk">
+            ><vs-button icon border circle :to="'/quizzes/quiz/' + quiz.pk">
               <unicon
                 name="angle-double-right"
                 height="20"
@@ -58,7 +68,7 @@
         </vs-tr>
       </template>
       <template #footer>
-        <vs-pagination v-model="page" :length="$vs.getLength(polls, max)" />
+        <vs-pagination v-model="page" :length="$vs.getLength(quizzes, max)" />
       </template>
     </vs-table>
   </div>
@@ -67,7 +77,7 @@
 <script>
 export default {
   props: {
-    polls: Array,
+    quizzes: Array,
     onProfile: {
       type: Boolean,
       default: false
@@ -75,7 +85,7 @@ export default {
   },
   data: () => {
     return {
-      searchPoll: "",
+      searchQuiz: "",
       page: 1,
       max: 10,
     };
@@ -91,26 +101,11 @@ export default {
 </script>
 
 <style>
-.events-table {
+.quizzes-table {
   display: flex;
   flex-direction: column;
   margin-top: 150px;
   width: 80vw;
-}
-.events-table-profile {
-  display: flex;
-  flex-direction: column;
-  width: 95vw;
-}
-
-.vs-table__tr:first-of-type .vs-table__td:first-child {
-    border-radius: 0px 0px 0px 15px;
-    width: 45%;
-}
-
-.vs-table__td:last-child {
-    border-radius: 0px 15px 15px 0px;
-    align-items:flex-start;
 }
 
 .list-item {

@@ -44,6 +44,7 @@
     >
       <transition name="slide-fade">
         <profile-badge
+          @click.native="showCreatedPolls = true"
           :count="user.polls.length"
           :title="'Polls'"
           :icon="'align-left'"
@@ -52,6 +53,7 @@
       </transition>
       <transition name="slide-fade">
         <profile-badge
+          @click.native="showCreatedQuizzes = true"
           v-if="showQuizzes"
           :count="user.quizzes.length"
           :title="'Quizzes'"
@@ -62,6 +64,7 @@
 
       <transition name="slide-fade">
         <profile-badge
+          @click.native="showCreatedEvents = true"
           v-if="showEvents"
           :count="user.events.length"
           :title="'Q&A'"
@@ -197,13 +200,73 @@
         </div>
       </div>
     </vs-dialog>
+
+    <vs-dialog overflow-hidden v-model="showCreatedPolls">
+      <template #header>
+        <h4 class="not-margin">Created Polls</h4>
+      </template>
+
+      <div class="con-content">
+        <poll-table :polls="user.polls" :onProfile="true"></poll-table>
+      </div>
+    </vs-dialog>
+    <vs-dialog v-model="showCreatedQuizzes">
+      <template #header>
+        <h4 class="not-margin">Created Quizzes</h4>
+      </template>
+
+      <div class="con-content">
+        <quizzes-table :quizzes="user.quizzes" :onProfile="true"></quizzes-table>
+      </div>
+    </vs-dialog>
+    <vs-dialog v-model="showCreatedEvents">
+      <template #header>
+        <h4 class="not-margin">Created Q&A Events</h4>
+      </template>
+
+      <div class="con-content">
+        <event-table :events="user.events" :onProfile="true"></event-table>
+      </div>
+    </vs-dialog>
+
+    <vs-dialog v-model="showParticipatedPolls">
+      <template #header>
+        <h4 class="not-margin">Participated in Polls</h4>
+      </template>
+
+      <div class="con-content">
+        <poll-table :polls="participatedPolls"></poll-table>
+      </div>
+    </vs-dialog>
+    <vs-dialog v-model="showParticipatedQuizzes">
+      <template #header>
+        <h4 class="not-margin">Participated in Quizzes</h4>
+      </template>
+
+      <div class="con-content">
+        <quizzes-table :quizzes="participatedQuizzes"></quizzes-table>
+      </div>
+    </vs-dialog>
+    <vs-dialog v-model="showParticipatedEvents">
+      <template #header>
+        <h4 class="not-margin">Participated in Q&A Events</h4>
+      </template>
+
+      <div class="con-content">
+        <event-table :events="participatedEvents"></event-table>
+      </div>
+    </vs-dialog>
   </div>
 </template>
 <script>
 import ProfileBadge from "../components/profile/ProfileBadge.vue";
 import { getMe, patchUser } from "../api/auth.api";
 import { uploadFile } from "../api/file.api";
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
+
+import EventTable from "../components/events/EventTable.vue";
+import PollTable from "../components/polls/PollTable.vue";
+import QuizzesTable from "../components/quizzes/QuizzesTable.vue";
 
 const STATUS_INITIAL = 0,
   STATUS_SAVING = 1,
@@ -213,6 +276,9 @@ const STATUS_INITIAL = 0,
 export default {
   components: {
     ProfileBadge,
+    EventTable,
+    PollTable,
+    QuizzesTable
   },
   data: () => {
     return {
@@ -233,6 +299,21 @@ export default {
       currentStatus: null,
       uploadFieldName: "photos",
       avatar: null,
+
+      showCreatedPolls: false,
+      showCreatedQuizzes: false,
+      showCreatedEvents: false,
+      showParticipatedPolls: false,
+      showParticipatedQuizzes: false,
+      showParticipatedEvents: false,
+
+      createdPolls: null,
+      createdQuizzes: null,
+      createdEvents: null,
+
+      participatedPolls: null,
+      participatedQuizzes: null,
+      participatedEvents: null,
 
       username: "",
       firstName: "",
@@ -592,14 +673,13 @@ export default {
       const formData = new FormData();
 
       this.avatar = fileList[0];
-      formData.append("file", this.avatar)
-      uploadFile(formData)
-      .then(() => {
-        getMe().then(resp => {
-          this.user = resp.data
-          this.avatarUploaderDialog = false
-        })
-      })
+      formData.append("file", this.avatar);
+      uploadFile(formData).then(() => {
+        getMe().then((resp) => {
+          this.user = resp.data;
+          this.avatarUploaderDialog = false;
+        });
+      });
 
       if (!fileList.length) return;
 
@@ -613,7 +693,7 @@ export default {
     },
   },
   created() {
-    this.setLoading(true)
+    this.setLoading(true);
     this.reset();
     getMe().then((response) => {
       this.user = response.data;
@@ -622,7 +702,7 @@ export default {
       this.lastName = this.user.last_name;
       this.age = this.user.age ? this.user.age : 0;
     });
-    this.setLoading(false)
+    this.setLoading(false);
   },
 };
 </script>

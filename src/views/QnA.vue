@@ -275,7 +275,7 @@ export default {
       this.setLoading(false);
     },
     async fetchEvents() {
-      this.events = await (await getEvents(5, "created", true)).data;
+      this.events = await (await getEvents(100, "created", true)).data;
     },
     typerViewHandler(e) {
       switch (e.target.element.id) {

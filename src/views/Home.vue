@@ -2,17 +2,35 @@
   <div class="explore">
     <div
       v-rellax="{
-        speed: -1,
+        speed: -3,
       }"
       :class="
         currentTheme == 'light' ? 'explore-header' : 'explore-header-dark'
       "
     >
+    <div
+      v-if="['desktop', 'laptop', 'tablet'].includes($mq)"
+      class="header-content">
+
+      <div class="header-image">
+        <img
+          v-motion-pop
+          class="header-image-con"
+          src="../assets/poll.gif" height="350px" alt="">
+        <img
+          v-motion-pop
+          class="header-image-con1"
+          src="../assets/poll.gif" height="350px" alt="">
+        <img
+          v-motion-pop
+          class="header-image-con2"
+          src="../assets/poll.gif" height="350px" alt="">
+      </div>
+
       <kinesis-container
         v-rellax="{
-          speed: 7,
+          speed: 5,
         }"
-        v-if="['desktop', 'laptop', 'tablet'].includes($mq)"
       >
         <kinesis-element
           type="depth_inv"
@@ -39,11 +57,12 @@
           Explore events to find out one you are interested in.
         </kinesis-element>
       </kinesis-container>
+    </div>
       <h2
         v-else
         class="explore-title-header-small"
         v-rellax="{
-          speed: 8,
+          speed: 3,
         }"
       >
         Create or participate in polls, quizzes or events where you can ask
@@ -54,7 +73,7 @@
         class="header-buttons"
         v-motion-fade
         v-rellax="{
-          speed: 4,
+          speed: 5,
           'z-index': -999
         }"
       >
@@ -100,7 +119,7 @@
       <h2
         :class="$mq == 'mobile' ? 'sm-caption' : 'lg-caption'"
         v-rellax="{
-          speed: 4,
+          speed: 3,
         }"
       >
         <span>Demando</span> is the platform that you can use for <span>learning</span>. Doesn't matter
@@ -128,7 +147,7 @@
         <div
           class="sign-in-invite-section"
           v-rellax="{
-            speed: 4,
+            speed: 5,
           }"
           data-rellax-percentage="0.5"
         >
@@ -1169,7 +1188,6 @@ export default {
   align-items: center;
 }
 .explore-title-header {
-  font-size: 50px;
   color: white;
 }
 .explore-title-header-small {
@@ -1356,4 +1374,33 @@ box-shadow: rgb(38, 57, 77) 0px 10px 20px -10px;
   width: 150px;
   height: 150px;
 }
+.header-content {
+  display: flex;
+  justify-content: space-around;
+}
+.header-image {
+  width: 40%;
+}
+.header-image-con {
+  position: relative;
+  z-index: 2;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+.header-image-con1 {
+  position: relative;
+  z-index: 1;
+  top: -31%;
+  right: -2%;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+.header-image-con2 {
+  position: relative;
+  z-index: 0;
+  top: -62%;
+  right: -4%;
+  border-radius: 10px;
+}
+
 </style>

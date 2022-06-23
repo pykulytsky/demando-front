@@ -10,6 +10,9 @@
     </vs-col>
       <code-input-form v-if="$mq !== 'desktop'" />
   </vs-row>
+    <div class="quiz-table">
+      <quizzes-table :quizzes="quizzes"></quizzes-table>
+    </div>
     <div class="quizzes explore-items">
       <div class="explore-events">
         <h1
@@ -182,6 +185,8 @@ import CreateQuizAlert from "../components/quizzes/CreateQuizAlert.vue";
 import LottieAnimation from "lottie-web-vue";
 import { VueTyper } from "vue-typer";
 import {mapGetters} from "vuex";
+import QuizzesTable from "../components/quizzes/QuizzesTable.vue";
+import { getQuizzes } from "../api/items/quizzes.api";
 export default {
   name: "Quizzes",
   metaInfo: {
@@ -192,12 +197,14 @@ export default {
     CreateQuizAlert,
     LottieAnimation,
     VueTyper,
+    QuizzesTable
   },
   data: () => {
     return {
       quizzesIsVisible: false,
       learnIsVisible: false,
       funIsVisible: false,
+      quizzes: null
     }
   },
   computed: {
@@ -217,6 +224,11 @@ export default {
           break;
       }
     },
+  },
+  created() {
+    getQuizzes().then(response => {
+      this.quizzes = response.data
+    })
   }
 };
 </script>
@@ -231,5 +243,9 @@ export default {
   background: url("../assets/blob-dark.svg");
   background-repeat: no-repeat;
   background-size: cover;
+}
+.quiz-table {
+  display: flex;
+  justify-content: center;
 }
 </style>
