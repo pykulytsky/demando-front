@@ -27,6 +27,7 @@
           src="../assets/poll.gif" height="350px" alt="">
       </div>
 
+      <div class="header-kinesis">
       <kinesis-container
         v-rellax="{
           speed: 5,
@@ -57,6 +58,7 @@
           Explore events to find out one you are interested in.
         </kinesis-element>
       </kinesis-container>
+      </div>
     </div>
       <h2
         v-else
@@ -1402,5 +1404,7 @@ box-shadow: rgb(38, 57, 77) 0px 10px 20px -10px;
   right: -4%;
   border-radius: 10px;
 }
-
+.header-kinesis {
+  width: 50%;
+}
 </style>

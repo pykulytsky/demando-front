@@ -6,7 +6,6 @@
     <div class="hidden">
       <vs-sidebar absolute v-model="sidebarActive" :open.sync="sidebar">
         <template #logo>
-          <img height="200" src="./assets/logo1-d.png" alt="" />
         </template>
         <vs-sidebar-item to="/" id="explore">
           <template #icon>
